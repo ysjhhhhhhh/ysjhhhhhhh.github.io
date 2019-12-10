@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-10T13:27:51.469Z</updated>
+    <updated>2019-12-10T13:54:56.625Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,88 +10,4 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
-    <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/hello-gridea</id>
-        <link href="https://ysjhhhhhhh.github.io/post/hello-gridea">
-        </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Apache Tomcat下载、安装、配置图文教程]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/apache-tomcat-xia-zai-an-zhuang-pei-zhi-tu-wen-jiao-cheng</id>
-        <link href="https://ysjhhhhhhh.github.io/post/apache-tomcat-xia-zai-an-zhuang-pei-zhi-tu-wen-jiao-cheng">
-        </link>
-        <updated>2018-03-10T11:56:46.000Z</updated>
-        <content type="html"><![CDATA[<p>Apache Tomcat下载、安装、配置图文教程自我心得<br>
-1、Tomcat下载<br>
-（1）Tomcat官网：<a href="http://tomcat.apache.org/">Tomcat官方网址</a>，可以在此处下载Tomcat。<br>
-（2）点击左侧Download下的对应版本。<br>
-注意有zip和exe两种格式的，zip是免安装版的，exe是安装版。同时观察自己的电脑是64位系统还是32位系统。<br>
-例如进入：<a href="http://tomcat.apache.org/download-90.cgi">Tomcat 9 版本下载页面</a>，下滑，到core处选择自己需要的版本，如图所示：<br>
-<img src="https://img-blog.csdn.net/20170227190709370?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>我的电脑是64位，可以直接选择32-bit/64-bit Windows Service installer(pgp,md5,sha1)，点击即可选择下载位置，点击下载，此处选择下载的是exe安装版本。若想下载免安装版本的，选择下载64-bit Windows zip(pgp,md5,sha1)。<br>
-2、Tomcat安装<br>
-2.1 exe版本安装<br>
-1、从下载位置双击下载的zip<br>
-<img src="https://img-blog.csdn.net/20170227220255334?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>点击next；<br>
-2、同意安装协议：即点击I Agree<br>
-<img src="https://img-blog.csdn.net/20170227220536666?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>3、点开Tomcat，选中Service，以后将可以在管理的服务中启动和关闭Tomcat（也可以默认，不改变配置），点击next<br>
-<img src="https://img-blog.csdn.net/20170227220858858?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>4、出现管理提示框，要求输入端口和管理密码，保持默认设置就行。默认的端口号就是8080，这里一般不用设置。点击Next。<br>
-<img src="https://img-blog.csdn.net/20170227221248471?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>5、点击Next后会出现下图，它会自动找到JRE位置，如果用户没有安装JRE，可以修改指向JDK目录（很多用户安装后无法编译JSP，就是这里没找到JRE，请务必先要安装JDK，并把这个目录正确指向JRE或者JDK的目录）。<br>
-<img src="https://img-blog.csdn.net/20170227221856106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>6、点击next，之后会出现Tomcat安装路径选择，一般默认安装到C盘，可以直接把C改成D，没有的文件夹会自动创建。修改完毕后点击Install。<br>
-<img src="https://img-blog.csdn.net/20170227222133335?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>7、安装完毕，点击finish。<br>
-<img src="https://img-blog.csdn.net/20170227222413424?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>8、打开浏览器 键入 <a href="http://localhost:8080/">http://localhost:8080</a> 进入如下页面则表示安装成功：<br>
-<img src="https://img-blog.csdn.net/20170227222804476?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuZ3hpbmdwYQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p>2.2 zip版（免安装版本）<br>
-直接解压缩，找到目录bin下的startup.bat，启动Tomcat；shutdown.bat：关闭Tomcat。<br>
-3、Tomcat配置<br>
-配置Tomcat之前要保证jdk已经配置完成。<br>
-右击，计算机——属性——高级系统设置——打开环境变量的配置窗口，在系统环境变量一栏点击新建。变量名为TOMCAT_HOME，变量值为Tomcat安装目录，此处为：D:\Program Files (x86)\Apache Software Foundation\Tomcat 9.0。点击确定即可。<br>
-在另外一篇博客中这样介绍Tomcat配置过程：<br>
-Tomcat环境变量配置：<br>
-如果你的Tomcat安装在C盘里，如：C:\Program Files\Apache Software Foundation\Tomcat 8.0（在这里切记一下，安装Tomcat时，在其字母周围一定不要存在空格，否则最后可能导致配置不成功）<br>
-同样，在系统变量里点新建：<br>
-变量名：CATALINA_BASE<br>
-变量值：C:\Program Files\Apache Software Foundation\Tomcat 8.0;<br>
-再次新建：<br>
-变量名：CATALINA_HOME<br>
-变量值：C:\Program Files\Apache Software Foundation\Tomcat 8.0;<br>
-点击确定后在classpath中加入%CATALINA_HOME%\common\lib\servlet-api.jar;（注意加的时候在原变量值后加英文状态下的“；”）<br>
-在path中加入%CATALINA_HOME%\bin;（注意加的时候在原变量值后加英文状态下的“；”）<br>
-确定后你的Tomcat就配置好了，同样要验证是否配置成功，那就运行Tomcat,点击启动（或Start service）后，打开浏览器，敲入<a href="http://localhost:8080/">http://localhost:8080</a>,如果出现页面，那么配置成功。</p>
-]]></content>
-    </entry>
 </feed>
