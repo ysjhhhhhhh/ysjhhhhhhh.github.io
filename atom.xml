@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-11T06:01:03.463Z</updated>
+    <updated>2019-12-11T06:11:15.988Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,592 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Litener&Filter]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/Litener&amp;Filter</id>
+        <link href="https://ysjhhhhhhh.github.io/post/Litener&amp;Filter">
+        </link>
+        <updated>2018-03-28T02:04:40.000Z</updated>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<h1 id="listener">Listener</h1>
+<blockquote>
+<p>监听器</p>
+</blockquote>
+<ul>
+<li>能做什么事？</li>
+</ul>
+<blockquote>
+<p>监听某一个事件的发生。 状态的改变。</p>
+</blockquote>
+<ul>
+<li>监听器的内部机制</li>
+</ul>
+<blockquote>
+<p>其实就是接口回调.</p>
+</blockquote>
+<h2 id="监听器实现原理观察者模式">监听器实现原理——观察者模式</h2>
+<ul>
+<li>需求：</li>
+</ul>
+<blockquote>
+<p>A在执行循环，当循环到5的时候， 通知B。</p>
+</blockquote>
+<blockquote>
+<p>事先先把一个对象传递给 A ， 当A 执行到5的时候，通过这个对象，来调用B中的方法。 但是注意，不是直接传递B的实例，而是传递一个接口的实例过去。</p>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://ysjhhhhhhh.github.io/post-images/1576044349452.png" alt=""></figure>
+<h2 id="web监听器介绍">Web监听器介绍</h2>
+<p>在JavaWeb开发中监听器总共有8个</p>
+<h3 id="按照使用方法来划分可以分为两类">按照使用方法来划分可以分为两类</h3>
+<h4 id="第一类-实现接口然后通过注册生效">第一类 实现接口然后通过注册生效</h4>
+<p>具体配置步骤</p>
+<ol>
+<li>实现对应的监听器接口</li>
+<li>重写接口中的方法</li>
+<li>然后在web.xml或者注解的方式注册到容器中来使用</li>
+</ol>
+<p>适用的监听器类型</p>
+<p>ServletRequestListener、HttpSessionListener、ServletContextListener、ServletRequestAttributeListener、HttpSessionAttributeListener、SerlvetContextAttributeListener</p>
+<h4 id="第二类-让需要监听session中的特定类型实现监听接口不需要注册生效">第二类  让需要监听Session中的特定类型实现监听接口，不需要注册生效</h4>
+<p>具体配置步骤</p>
+<ol>
+<li>让需要监听Session中的特定类型，如UserInfo实现监听接口</li>
+<li>实现接口中的方法</li>
+</ol>
+<p>适用的监听器类型</p>
+<p>HttpSessionBindingListener、HttpSessionActivationListener</p>
+<h3 id="按照监听器的作用可以划分为三类">按照监听器的作用可以划分为三类</h3>
+<h4 id="监听三个作用域创建和销毁">监听三个作用域创建和销毁</h4>
+<ul>
+<li>request  ---HttpServletRequest</li>
+<li>session  ---HttpSession</li>
+<li>application  --- ServletContext</li>
+</ul>
+<h5 id="servletrequestlistener">ServletRequestListener</h5>
+<ul>
+<li>监听事件</li>
+</ul>
+<pre><code>request创建:
+
+    访问服务器上的任意资源都会有请求出现。
+
+    访问 html： 会
+    访问 jsp:	会
+    访问 servlet : 会 
+
+request销毁：
+
+	服务器已经对这次请求作出了响应。			
+</code></pre>
+<ul>
+<li>实现示例</li>
+</ul>
+<ol>
+<li>新建Java类，实现ServletRequestListener接口</li>
+</ol>
+<pre><code class="language-java">import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+
+public class RequestListener implements ServletRequestListener {
+
+	@Override
+	public void requestDestroyed(ServletRequestEvent sre) {
+		System.out.println(&quot;request请求结束&quot;);
+	}
+
+	@Override
+	public void requestInitialized(ServletRequestEvent sre) {
+		System.out.println(&quot;request请求开始&quot;);
+	}
+}
+</code></pre>
+<ol start="2">
+<li>在web.xml中注册监听器</li>
+</ol>
+<pre><code class="language-xml">&lt;listener&gt;
+    &lt;listener-class&gt;com.lanou3g.demo.RequestListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+</code></pre>
+<h5 id="httpsessionlistener">HttpSessionListener</h5>
+<ul>
+<li>监听事件</li>
+</ul>
+<pre><code>	session的创建
+	    只要调用getSession
+	
+	    html:		不会
+	    jsp:		会	  getSession();
+	    servlet: 	会
+	
+	session的销毁
+	    超时  30分钟
+	    非正常关闭 销毁
+	    正常关闭服务器(序列化)
+</code></pre>
+<ul>
+<li>应用场景</li>
+</ul>
+<blockquote>
+<p>统计在线人数.</p>
+</blockquote>
+<ul>
+<li>实现示例</li>
+</ul>
+<ol>
+<li>新建Java类，实现HttpSessionListener接口</li>
+</ol>
+<pre><code class="language-java">import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
+public class SessionLinsener implements HttpSessionListener {
+	@Override
+	public void sessionCreated(HttpSessionEvent se) {
+		System.out.println(&quot;session被创建了&quot;);
+	}
+
+	@Override
+	public void sessionDestroyed(HttpSessionEvent se) {
+		System.out.println(&quot;session销毁了&quot;);
+	}
+}
+</code></pre>
+<ol start="2">
+<li>在web.xml中注册监听器</li>
+</ol>
+<pre><code class="language-xml">&lt;listener&gt;
+    &lt;listener-class&gt;com.lanou3g.demo.SessionLinsener&lt;/listener-class&gt;
+&lt;/listener&gt;
+</code></pre>
+<h5 id="servletcontextlistener">ServletContextListener</h5>
+<ul>
+<li>
+<p>监听事件</p>
+<ul>
+<li>
+<p>ServletContext创建：启动服务器的时候</p>
+</li>
+<li>
+<p>ServletContext销毁：关闭服务器. 从服务器移除项目</p>
+</li>
+</ul>
+</li>
+<li>
+<p>应用场景</p>
+</li>
+</ul>
+<blockquote>
+<p>在servletcontext创建的时候，</p>
+<ol>
+<li>完成自己想要的初始化工作</li>
+<li>执行自定义任务调度。 执行某一个任务。 Timer</li>
+</ol>
+</blockquote>
+<ul>
+<li>实现示例</li>
+</ul>
+<p>新建Java类，实现ServletContextListener接口</p>
+<pre><code class="language-java">import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+public class ContextListener implements ServletContextListener {
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+		System.out.println(&quot;ServletContext初始化&quot;);
+	}
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+		System.out.println(&quot;ServletContext销毁&quot;);
+	}
+}
+</code></pre>
+<p>在web.xml中注册监听器</p>
+<pre><code class="language-xml">&lt;listener&gt;
+    &lt;listener-class&gt;com.lanou3g.demo.ContextListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+</code></pre>
+<h4 id="监听三个作用域属性状态变更">监听三个作用域属性状态变更</h4>
+<blockquote>
+<p>可以监听在作用域中值 添加  | 替换  | 移除的动作。</p>
+</blockquote>
+<h5 id="servletcontext-servletcontextattributelistener">servletContext --- ServletContextAttributeListener</h5>
+<figure data-type="image" tabindex="2"><img src="https://ysjhhhhhhh.github.io/post-images/1576044425334.png" alt=""></figure>
+<h5 id="request-servletrequestattributelistener">request --- ServletRequestAttributeListener</h5>
+<figure data-type="image" tabindex="3"><img src="https://ysjhhhhhhh.github.io/post-images/1576044439138.png" alt=""></figure>
+<h5 id="session-httpsessionattributelistener">session --- HttpSessionAttributeListener</h5>
+<figure data-type="image" tabindex="4"><img src="https://ysjhhhhhhh.github.io/post-images/1576044413990.png" alt=""></figure>
+<h4 id="监听httpsession里面存值的状态变更">监听httpSession里面存值的状态变更</h4>
+<blockquote>
+<p>这一类监听器不用注册。</p>
+</blockquote>
+<h5 id="httpsessionbindinglistener">HttpSessionBindingListener</h5>
+<blockquote>
+<p>监听特定类型对象与session 绑定和解除绑定 的动作，注意此监听器是让JavaBean实现监听接口，即表示当session中此类型的value状态发生变更时，此JavaBean会收到通知</p>
+</blockquote>
+<p><span style="color:red;font-weight:bold;">与HttpSessionAttributeListener监听器不同的是，该监听器只对Session中的某种特定类型的属性变化感兴趣</span></p>
+<pre><code class="language-java">// 注意：是让JavaBean实现该接口，不需要添加任何注解或在web.xml中配置
+
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
+
+public class Man implements HttpSessionBindingListener {
+
+	private String name;
+	private String nickName;
+	private int age;
+
+	public Man() {
+	}
+
+	public Man(String name, String nickName, int age) {
+		this.name = name;
+		this.nickName = nickName;
+		this.age = age;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+		Man man = (Man) event.getValue();
+		System.out.println(&quot;man对象绑定到session中 name: &quot; + man.getName() + &quot;, value: &quot; + event.getValue());
+	}
+
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+		Man man = (Man) event.getValue();
+		System.out.println(&quot;man对象从session中解绑 name: &quot; + man.getName() + &quot;, value: &quot; + event.getValue());
+	}
+}
+</code></pre>
+<h5 id="httpsessionactivationlistener">HttpSessionActivationListener</h5>
+<blockquote>
+<p>用于监听现在session的值 是 钝化 （序列化）还是活化 （反序列化）的动作</p>
+</blockquote>
+<ul>
+<li>钝化 （序列化）</li>
+</ul>
+<blockquote>
+<p>把内存中的数据 存储到硬盘上</p>
+</blockquote>
+<ul>
+<li>活化 （反序列化）</li>
+</ul>
+<blockquote>
+<p>把硬盘中的数据读取到内存中。</p>
+</blockquote>
+<ul>
+<li>session的钝化活化的用意何在</li>
+</ul>
+<blockquote>
+<p>session中的值可能会很多， 并且我们有很长一段时间不使用这个内存中的值， 那么可以考虑把session的值可以存储到硬盘上【钝化】，等下一次在使用的时候，在从硬盘上提取出来。 【活化】</p>
+</blockquote>
+<ul>
+<li>如何让session的在一定时间内钝化.</li>
+</ul>
+<h6 id="钝化-活化监听需要修改tomcat配置">钝化、活化监听需要修改Tomcat配置</h6>
+<p>修改的地方有三个可选，主要是作用范围不一样</p>
+<pre><code>1. 在tomcat里面 conf/context.xml 里面配置
+
+		对所有的运行在这个服务器的项目生效
+
+2. 在conf/Catalina/localhost/context.xml 配置
+
+		对 localhost生效。  localhost:8080
+
+3. 在自己的web工程项目中的 META-INF/context.xml
+
+		只对当前的工程生效。
+</code></pre>
+<p>修改方法：</p>
+<pre><code class="language-xml">	&lt;!--
+		参数说明：
+		# maxIdleSwap ： 1分钟不用就钝化
+		# directory ：  钝化后的那个文件存放的目录位置。 
+	--&gt;
+	&lt;Context&gt;
+		&lt;Manager className=&quot;org.apache.catalina.session.PersistentManager&quot; maxIdleSwap=&quot;1&quot;&gt;
+			&lt;Store className=&quot;org.apache.catalina.session.FileStore&quot; directory=&quot;F:/temp&quot;/&gt;
+		&lt;/Manager&gt;
+	&lt;/Context&gt;
+</code></pre>
+<h6 id="监听器使用步骤">监听器使用步骤</h6>
+<ol>
+<li>与HttpSessionBindingListener类似， HttpSessionActivationListener也是针对特定类型监听的。那我们需要让需要监听钝化、活化状态的特定的JavaBean实现HttpSessionActivationListener接口</li>
+<li>上面提到的几种配置方法，任选一种告诉Tomcat当Session不活跃、或者容器停止时Session钝化的策略</li>
+</ol>
+<p>做好上面两步，当Session中有监听的特定类型，并且Session钝化、活化时就能触发通知</p>
+<h2 id="filter">Filter</h2>
+<blockquote>
+<p>过滤器 ， 其实就是对客户端发出来的请求进行过滤。 浏览器发出， 然后服务器派servlet处理。  在中间就可以过滤， 其实过滤器起到的是拦截的作用。</p>
+</blockquote>
+<ul>
+<li>
+<p>作用</p>
+<ol>
+<li>对一些敏感词汇进行过滤</li>
+<li>统一设置编码</li>
+<li>自动登录</li>
+</ol>
+<p>...</p>
+</li>
+</ul>
+<h3 id="如何使用filter">如何使用Filter</h3>
+<ol>
+<li>定义一个类， 实现Filter</li>
+</ol>
+<pre><code class="language-java">public class FilterDemo implements Filter {	
+    public void destroy() {
+    }
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    System.out.println(&quot;来到过虑器了。。。&quot;);
+    chain.doFilter(request, response);
+    }
+
+    public void init(FilterConfig fConfig) throws ServletException {
+    }
+}
+</code></pre>
+<ol start="2">
+<li>注册过滤器</li>
+</ol>
+<blockquote>
+<p>在web.xml里面注册，注册的手法与servlet基本一样。</p>
+</blockquote>
+<pre><code class="language-xml">&lt;filter&gt;
+    &lt;display-name&gt;FilterDemo&lt;/display-name&gt;
+    &lt;filter-name&gt;FilterDemo&lt;/filter-name&gt;
+    &lt;filter-class&gt;com.itheima.filter.FilterDemo&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;FilterDemo&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+</code></pre>
+<blockquote>
+<p>在Servlet3.0里可以通过 @WebFilter注解配置</p>
+</blockquote>
+<h3 id="filter的生命周期">Filter的生命周期</h3>
+<ul>
+<li>创建</li>
+</ul>
+<blockquote>
+<p>在服务器启动的时候就创建。</p>
+</blockquote>
+<ul>
+<li>销毁</li>
+</ul>
+<blockquote>
+<p>服务器停止的时候。</p>
+</blockquote>
+<h3 id="filter执行顺序">Filter执行顺序</h3>
+<ol>
+<li>
+<p>客户端发出请求，先经过过滤器， 如果过滤器放行，那么才能到servlet</p>
+</li>
+<li>
+<p>如果有多个过滤器， 那么他们会按照注册的映射顺序 来 排队。 只要有一个过滤器， 不放行，那么后面排队的过滤器以及咱们的servlet都不会收到请求。</p>
+</li>
+</ol>
+<h3 id="filter细节">Filter细节</h3>
+<ol>
+<li>
+<p>init方法的参数 FilterConfig , 可以用于获取filter在注册的名字 以及初始化参数。  其实这里的设计的初衷与ServletConfig是一样的。</p>
+</li>
+<li>
+<p>如果想放行，那么在doFilter 方法里面操作，使用参数 chain</p>
+</li>
+</ol>
+<pre><code class="language-java">chain.doFilter(request, response); 放行， 让请求到达下一个目标。
+</code></pre>
+<ol start="3">
+<li>
+<p><url-pattern>/*</url-pattern> 写法格式与servlet一样。</p>
+<ol>
+<li>
+<p>全路径匹配  以 /  开始</p>
+<pre><code> /LoginServlet
+</code></pre>
+</li>
+<li>
+<p>以目录匹配 以 / 开始  以 * 结束</p>
+<p>/demo01/*</p>
+</li>
+<li>
+<p>以后缀名匹配  以 * 开始 以后缀名结束</p>
+<p>*.jsp  *.html *.do</p>
+</li>
+</ol>
+<blockquote>
+<p>注意：*号只能代表一段目录或者文件名，不能代替单词中的部分字母</p>
+</blockquote>
+</li>
+<li>
+<p>针对 dispatcher 设置</p>
+<pre><code> ​	REQUEST ： 只要是请求过来，都拦截，默认就是REQUEST 
+</code></pre>
+<p>​	FORWARD : 只要是转发都拦截。<br>
+​	ERROR ： 页面出错发生跳转<br>
+​	INCLUDE ： 包含页面的时候就拦截。<br>
+​</p>
+</li>
+</ol>
+<h3 id="案例一-实现自动登录">案例一 实现自动登录</h3>
+<ul>
+<li>
+<p>需求分析</p>
+<ol>
+<li>用户正常登录过一次以后，只要session不失效，用户可以直接访问网站中的其他页面，而不用再次登录。</li>
+<li>如果没有登录或者session失效了， 那直接访问其他页面重定向到登录页面</li>
+</ol>
+</li>
+</ul>
+<h4 id="1-搭建环境">1. 搭建环境</h4>
+<ol>
+<li>搭建数据库</li>
+<li>搭建页面</li>
+</ol>
+<h4 id="2-部分后台代码">2. 部分后台代码</h4>
+<p>登录servlet代码</p>
+<pre><code class="language-java">protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	try {
+		String userName = request.getParameter(&quot;username&quot;);
+		String password = request.getParameter(&quot;password&quot;);
+		String autoLogin = request.getParameter(&quot;auto_login&quot;);
+		UserBean user = new UserBean();
+		user.setUsername(userName);
+		user.setPassword(password);
+		
+		UserDao dao = new UserDaoImpl();
+		UserBean userBean = dao.login(user);
+		
+		if(userBean != null){
+			//成功了，进入首页
+			request.getSession().setAttribute(&quot;userBean&quot;, userBean);
+			response.sendRedirect(&quot;index.jsp&quot;);
+		}else{
+			//不成功...
+			request.getRequestDispatcher(&quot;login.jsp&quot;).forward(request, response);
+		}
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+}
+</code></pre>
+<p>过滤器代码</p>
+<ul>
+<li>实现思路</li>
+</ul>
+<ol>
+<li>
+<p>先判断session是否有效， 如果失效了，直接把请求重定向到登录页，让用户完成手动登录</p>
+</li>
+<li>
+<p>如果session没有失效，那么就从session中获取用户登录信息和数据库中做对比，如果正确就可以正常登录。否则重定向到登录页，让用户手动登录。</p>
+</li>
+</ol>
+<pre><code class="language-java">public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
+		HttpSession session = req.getSession();
+		
+		// 如果session里没有登录信息，无法自动登录，重定向到登录页，让用户手动登录
+		if(session.getAttribute(&quot;username&quot;) == null) {
+			resp.sendRedirect(&quot;login.jsp&quot;);
+			return;
+		}
+		
+		String username = (String) session.getAttribute(&quot;username&quot;);
+		String password = (String) session.getAttribute(&quot;password&quot;);
+		
+		// 检查session中的登录信息是否正确
+		if(checkValid(username, password)) {
+			chain.doFilter(request, response);
+		}
+	}
+</code></pre>
+<h2 id="总结">总结</h2>
+<h3 id="listener-2">Listener</h3>
+<pre><code>8个 
+
+三种类型  
+	针对三个作用域的创建和销毁
+	针对三个作用域的值改变 【添加 | 替换 | 移除】
+	针对session中的值 【钝化 活化】 ， 【绑定  解绑】
+
+钝化 ( 序列化 ) 
+	内存中的对象存储到硬盘 
+
+	超时失效。 session销毁了。 
+
+非正常关闭服务器， 钝化  。 正常关闭服务器 销毁
+
+设置了session钝化策略：context.xml
+
+活化 (反序列化)
+	从硬盘里面读取到内存
+</code></pre>
+<p>应用场景：</p>
+<p>ServletContextListner  ： 应用被部署的时候， 服务器加载这个项目的时候，做一些初始化工作， 任务调度。<br>
+HttpSessionBindingListener	： 统计在线人数<br>
+HttpSessionActivationListener  ： 钝化活化处理</p>
+<h3 id="filter-2">Filter</h3>
+<blockquote>
+<p>使用频率更高</p>
+</blockquote>
+<ul>
+<li>如果要写一个过滤器。</li>
+</ul>
+<blockquote>
+<ol>
+<li>定义一个类，实现接口 Filter</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>注册 web.xml . 与servlet相似。</li>
+</ol>
+</blockquote>
+<ul>
+<li>过滤器放行。</li>
+</ul>
+<blockquote>
+<p>chain.doFilter(request, response);</p>
+</blockquote>
+<ul>
+<li>
+<p>过滤器生命周期</p>
+<p>创建： 服务器加载这个项目的时候创建实例</p>
+<p>销毁： 关闭服务器或者从服务器中移除项目的时候。</p>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[JSP & EL & JSTL]]></title>
         <id>https://ysjhhhhhhh.github.io/post/jsp-and-el-and-jstl</id>
