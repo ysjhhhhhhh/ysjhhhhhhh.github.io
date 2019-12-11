@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-11T09:48:23.521Z</updated>
+    <updated>2019-12-11T12:42:21.821Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,244 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[jdbc]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/jdbc</id>
+        <link href="https://ysjhhhhhhh.github.io/post/jdbc">
+        </link>
+        <updated>2018-04-05T13:38:39.000Z</updated>
+        <content type="html"><![CDATA[<p>一. JDBC编程概述</p>
+<ol>
+<li>
+<p>什么JDBC<br>
+  JDBC（Java Database Connection）：为多种关系数据库提供统一访问。它由一组用Java语言编写的类和接口组成。是Java访问数据库的标准和规范。</p>
+</li>
+<li>
+<p>常见数据库介绍<br>
+  Mysql：开源免费的数据库，小型的数据库。非常实用和受欢迎。已经被Oracle收购了.MySQL6.x版本也开始收费。<br>
+  Oracle：收费的大型数据库，Oracle公司的产品。一般中大型公司会使用。Oracle收购了SUN公司，Mysql数据库。<br>
+  DB2：IBM公司的收费数据库产品。常应用在银行系统和金融系统中.<br>
+  SQLServer：MicroSoft 公司收费的中型的数据库。常常在C#、.net等语言中使用。<br>
+  SyBase：提供了一个非常专业数据建模的工具PowerDesigner，但是数据库本身已经淡出历史舞台。<br>
+  SQLite: 嵌入式的小型数据库，基本上用于移动端。<br>
+  Java相关的数据库：MYSQL，Oracle。<br>
+  数据库的设计和开发，sql语句的编写在这里不做详细的介绍。</p>
+</li>
+</ol>
+<p>oracle.jpg<br>
+3. JDBC开发原理<br>
+  Java和数据库之间没有必然的联系，两者之间是如何连接的呢？虽然Java提供了各种数据库接口，但是我们并不知道各种数据库具体的实现原理，难以对接口进行具体的实现。<br>
+  所以，数据库生产商提供了这些接口的实现类：驱动<br>
+  Java提供访问数据库规范称为JDBC，而生产厂商提供规范的实现类称为驱动。</p>
+<p>JDBC原理图.png</p>
+<p>JDBC是接口，驱动是接口的实现，没有驱动将无法完成数据库连接，从而不能操作数据库。每个数据库厂商都需要提供自己的驱动，用来连接自己公司的数据库。<br>
+二. JDBC开发步骤<br>
+JDBC一般的开发步骤如下：<br>
+首先要从官方网站上下载Mysql的驱动，并通过Eclipse导入驱动（jar包）<br>
+导入驱动的方法.png</p>
+<p>JDBC开发步骤如下：<br>
+注册驱动（Driver）<br>
+获得连接（Connection）<br>
+获得语句执行平台（Statement）<br>
+使用SQL语句进行处理<br>
+释放资源，关闭链接<br>
+数据库中创建示例：<br>
+create table users(<br>
+username varchar(10),<br>
+pass varchar(10),<br>
+nicheng varchar(30)<br>
+);<br>
+insert into users (username,pass,nicheng) values('wjy','wjykl22','凉凉夜色为你思念成河');<br>
+select * from users;<br>
+Java连接数据库<br>
+1.注册驱动:<br>
+官方API推荐方法：</p>
+<p>Class.forName(&quot;com.mysql.jdbc.Driver&quot;);<br>
+不推荐使用DriverManager.registerDriver(new com.mysql.jdbc.Driver());注册，以上代码有两点不足：</p>
+<p>硬编码，后期不易维护<br>
+驱动在源码中就被注册过，驱动会被两次注册<br>
+Driver源码：<br>
+public class Driver extends NonRegisteringDriver implements java.sql.Driver {<br>
+static {<br>
+try {<br>
+java.sql.DriverManager.registerDriver(new Driver());<br>
+} catch (SQLException E) {<br>
+throw new RuntimeException(&quot;Can't register driver!&quot;);<br>
+}<br>
+}<br>
+}<br>
+2.获得连接:<br>
+String url = &quot;jdbc:mysql://localhost:3306/jdbc&quot;;<br>
+String username = &quot;root&quot;;<br>
+String password = &quot;wjykl22&quot;;<br>
+Connection con = DriverManager.getConnection(url, username, password);<br>
+其中url：需要连接数据库的位置（网址）目前来说格式基本上固定。</p>
+<p>第一部分：jdbc，这是固定的；<br>
+第二部分：数据库名称，我们连接的是Mysql数据库，所以使用Mysql<br>
+第三部分：由数据库厂商规定的，每个厂商都有各自的要求，分别由数据库服务器的IP地址（localhost）、端口号（3306），以及DATABASE名称(jdbc)组成。</p>
+<p>username：数据库用户名。<br>
+password：数据库密码。<br>
+采用上述方法就可以获得数据库的链接。</p>
+<p>3.获得执行平台并执行sql语句<br>
+Statement stat = con.createStatement();<br>
+int executeUpdate(String sql);//用于执行insert update delete语句.<br>
+ResultSet executeQuery(String sql); //用于执行select语句.<br>
+boolean execute(String sql); //用于执行select返回true 执行其他的语句返回false.<br>
+4.结果集处理<br>
+得到ResultSet结果集后，需要对其中的数据进行数据的提取，对于ResultSet结果集的处理方法：</p>
+<p>Object getObject(int index) / Object getObject(String name) 获得任意对象<br>
+String getString(int index) / Object getObject(String name) 获得字符串<br>
+int getInt(int index) / Object getObject(String name) 获得整形<br>
+double getDouble(int index) / Object getObject(String name) 获得双精度浮点型<br>
+5.释放资源<br>
+最后一步就是释放资源，与IO释放资源的方式如出一辙。</p>
+<p>rs.close();<br>
+stmt.close();<br>
+con.close();<br>
+总结<br>
+完整的上述步骤如下：</p>
+<p>public class JDBCDemo {<br>
+public static void main(String args[]) {<br>
+try {<br>
+Class.forName(&quot;com.mysql.jdbc.Driver&quot;);<br>
+String url = &quot;jdbc:mysql://localhost:3306/jdbc&quot;;<br>
+String username = &quot;root&quot;;<br>
+String password = &quot;wjykl22&quot;;<br>
+Connection con = DriverManager.getConnection(url, username, password);<br>
+Statement stat = con.createStatement();<br>
+stat.executeUpdate(&quot;insert into users (username,pass,nicheng) values('wjy2','wjykl33','如水流央')&quot;);<br>
+ResultSet rs = stat.executeQuery(&quot;select * from users&quot;);<br>
+while(rs.next()) {<br>
+System.out.println(rs.getString(&quot;username&quot;)<br>
++&quot;\t&quot;+rs.getString(&quot;pass&quot;)+&quot;\t&quot;+rs.getString(&quot;nicheng&quot;));<br>
+}<br>
+rs.close();<br>
+stat.close();<br>
+con.close();<br>
+} catch (Exception e) {<br>
+e.printStackTrace();<br>
+}<br>
+}<br>
+}<br>
+预处理对象方法<br>
+  为了防止代码存在SQL注入漏洞，使得代码更加完善，我们一般采用预处理对象：PreparedStatement<br>
+  每条sql语句所有的实际参数，都使用逗号分隔。</p>
+<ol>
+<li>预处理对象并执行sql语句<br>
+String sql = &quot;insert into sort(sid,sname) values(?,?)&quot;;<br>
+PreparedStatement psmt = conn.prepareStatement(sql)</li>
+<li>设置实际参数<br>
+void setXxx(int index, Xxx xx)<br>
+完整的代码程序段如下：</li>
+</ol>
+<p>public class LoginDemo {<br>
+/*<br>
+* Java程序实现用户的登录，用户名和密码，数据库检查<br>
+* 防止注入攻击<br>
+* Statment有一个子接口PrepareStatment，表示预编译的SQL语句对象，可以高效的执行<br>
+* 这个方法是Connection数据库连接的方法<br>
+* 如何获取这个实现类呢？<br>
+*/<br>
+public static void main(String args[]) throws Exception {<br>
+Class.forName(&quot;com.mysql.jdbc.Driver&quot;);<br>
+String url = &quot;jdbc:mysql://localhost:3306/world&quot;;<br>
+String username = &quot;root&quot;;<br>
+String password = &quot;wjykl22&quot;;<br>
+Connection con = DriverManager.getConnection(url,username,password);<br>
+Scanner sc = new Scanner(System.in);<br>
+String user = sc.nextLine();<br>
+String pass = sc.nextLine();<br>
+//执行sql语句，查询用户名和密码。<br>
+//注意要写问号<br>
+String sql = &quot;select * from users where username =? and pass =?&quot;;<br>
+java.sql.PreparedStatement pst = con.prepareStatement(sql);<br>
+//调用pst中的set方法<br>
+pst.setObject(1, user);<br>
+pst.setObject(2, pass);</p>
+<pre><code>    System.out.println(sql);
+    ResultSet rs = pst.executeQuery();
+    while(rs.next()) {
+        System.out.println(rs.getString(&quot;username&quot;) + &quot;    &quot; + rs.getString(&quot;pass&quot;));
+    }
+}
+</code></pre>
+<p>}<br>
+三. 工具类撰写和使用<br>
+  作为一名程序员最应该学会的事情就是偷懒。设想一下，如果我们要在多各程序中使用Mysql数据库，会有很多代码重复使用，我们可以创建一个工具类Utils，通过工具类来完成注册驱动，获得链接，获得执行平台以及释放资源的操作。<br>
+  <br>
+  代码如下：</p>
+<p>public class JDBCUtils {<br>
+public static final  String DRIVERNAME = &quot;com.mysql.jdbc.Driver&quot;;<br>
+public static final  String URL = &quot;jdbc:mysql://localhost:3306/mydb&quot;;<br>
+public static final  String USER = &quot;root&quot;;<br>
+public static final  String PASSWORD = &quot;root&quot;;<br>
+static {<br>
+try {<br>
+Class.forName(DRIVERNAME);<br>
+} catch (ClassNotFoundException e) {<br>
+System.out.println(&quot;数据库驱动注册失败！&quot;);<br>
+}<br>
+}<br>
+public static Connection getConn() throws Exception {<br>
+Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);<br>
+return conn;<br>
+}<br>
+}<br>
+通过调用Utils类中的各种静态方法来达到重复利用代码的效果。</p>
+<p>四. properties配置文件<br>
+  上述代码还是不太方便，如果要修改某个参数，需要修改源代码，有没有方法能够不修改源代码就能够完成配置的修改呢？<br>
+  通常情况下，我们习惯使用properties文件来存储与数据库有关的配置文件。</p>
+<p>文件位置：任意，建议src下<br>
+文件名称：任意，扩展名为properties<br>
+文件内容：一行一组数据，格式是“key=value”.<br>
+3.1 key命名自定义，如果是多个单词，习惯使用点分隔。例如：jdbc.driver<br>
+3.2 value值不支持中文，如果需要使用非英文字符，将进行unicode转换。<br>
+例如：<br>
+driver=com.mysql.jdbc.Driver<br>
+url=jdbc:mysql://localhost:3306/jdbc<br>
+user=root<br>
+password=root</p>
+<p>加载配置文件properties的方法：<br>
+  对应properties文件处理，开发中也使用Properties对象进行。我们将采用加载properties文件获得流，然后使用Properties对象进行处理。</p>
+<p>public class JDBCUtils {<br>
+private static String driver;<br>
+private static String url;<br>
+private static String user;<br>
+private static String password;<br>
+static {<br>
+try {<br>
+// 1. 使用Properties处理流<br>
+// 使用load()方法加载指定的流<br>
+Properties props = new Properties();<br>
+Reader is = new FileReader(&quot;db.properties&quot;);<br>
+props.load(is);<br>
+// 2. 使用getProperty(key)，通过key获得需要的值，<br>
+driver = props.getProperty(&quot;driver&quot;);<br>
+url = props.getProperty(&quot;url&quot;);<br>
+user = props.getProperty(&quot;user&quot;);<br>
+password = props.getProperty(&quot;password&quot;);<br>
+} catch (Exception e) {<br>
+throw new RuntimeException(e);<br>
+}<br>
+}</p>
+<pre><code>/**
+ * 获得连接
+ */
+public static Connection getConnection() {
+    try {
+        // 1 注册驱动
+        Class.forName(driver);
+        // 2 获得连接
+        Connection conn = DriverManager.getConnection(url, user, password);
+        return conn;
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}
+</code></pre>
+<p>}</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Ajax]]></title>
         <id>https://ysjhhhhhhh.github.io/post/ajax</id>
