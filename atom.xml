@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-11T02:35:37.630Z</updated>
+    <updated>2019-12-11T02:46:06.327Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,55 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[数据分页]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/shu-ju-fen-ye</id>
+        <link href="https://ysjhhhhhhh.github.io/post/shu-ju-fen-ye">
+        </link>
+        <updated>2018-03-25T12:35:14.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="核心参数">核心参数</h2>
+<ul>
+<li>总数据条数
+<ul>
+<li>来源： 后台自己从数据库中查询而来</li>
+</ul>
+</li>
+<li>每页展示条数(pageSize)
+<ul>
+<li>来源：从前端页面传递过来</li>
+</ul>
+</li>
+<li>总页数（计算得知）
+<ul>
+<li>来源： 根据总条数和每页展示数量计算得来</li>
+</ul>
+</li>
+<li>当前展示的页码（currentPage)
+<ul>
+<li>来源：从前端页面传递过来</li>
+</ul>
+</li>
+<li>每页要展示的数据本身
+<ul>
+<li>来源：后台自己从数据库中查询而来</li>
+</ul>
+</li>
+</ul>
+<h2 id="物理分页">物理分页</h2>
+<h3 id="概述">概述</h3>
+<p>所谓的物理分页其实就是直接通过数据库来实现返回一部分数据。每次只从数据库中查询一页的数据。与之相对应的还有逻辑分页。</p>
+<h3 id="mysql中实现语句">Mysql中实现语句</h3>
+<pre><code class="language-sql">    SELECT * FROM `shop` LIMIT (currentPage-1)*pageSize, pageSize;
+</code></pre>
+<h2 id="逻辑分页">逻辑分页</h2>
+<p>所谓的逻辑分页其实就是通过内存来进行分页。具体来说，首次查询数据时，将所有数据都取出放到内存中，展示其他页的数据时，在内存中实现数据的截取，展示。</p>
+<h2 id="两种分页的对比">两种分页的对比</h2>
+<ol>
+<li>物理分页节约内存空间，效率相比逻辑分页理论上效率低一些。试用场景：数据量大的时候。</li>
+<li>逻辑分页占用空间大，理论上分页性能高一些。试用场景：数据量小，访问用户多。要处理缓存数据同步的问题。</li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Apache Tomcat下载、安装、配置]]></title>
         <id>https://ysjhhhhhhh.github.io/post/apache-tomcat-xia-zai-an-zhuang-pei-zhi</id>
