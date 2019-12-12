@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-12T11:34:38.878Z</updated>
+    <updated>2019-12-12T11:42:04.250Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,1058 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Netflix系列]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/netflix-xi-lie</id>
+        <link href="https://ysjhhhhhhh.github.io/post/netflix-xi-lie">
+        </link>
+        <updated>2018-06-19T07:39:20.000Z</updated>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<h1 id="netflix体系简介">Netflix体系简介</h1>
+<p>Netflix这可是个大boss，地位仅次于老大，老大各项服务依赖与它，与各种Netflix OSS组件集成，组成微服务的核心，它的小弟主要有Eureka, Hystrix, Zuul, Archaius… 太多了</p>
+<h2 id="核心成员">核心成员</h2>
+<h3 id="netflix-eureka">Netflix Eureka</h3>
+<p>服务中心，云端服务发现，一个基于 REST 的服务，用于定位服务，以实现云端中间层服务发现和故障转移。这个可是springcloud最牛鼻的小弟，服务中心，任何小弟需要其它小弟支持什么都需要从这里来拿，同样的你有什么独门武功的都赶紧过报道，方便以后其它小弟来调用；它的好处是你不需要直接找各种什么小弟支持，只需要到服务中心来领取，也不需要知道提供支持的其它小弟在哪里，还是几个小弟来支持的，反正拿来用就行，服务中心来保证稳定性和质量。</p>
+<h3 id="netflix-ribbon">Netflix Ribbon</h3>
+<p>Ribbon是一个客户端负载均衡组件，帮我们实现后端服务节点动态扩容，而不影响调用方。</p>
+<h3 id="netflix-hystrix">Netflix Hystrix</h3>
+<p>熔断器，容错管理工具，旨在通过熔断机制控制服务和第三方库的节点,从而对延迟和故障提供更强大的容错能力。比如突然某个小弟生病了，但是你还需要它的支持，然后调用之后它半天没有响应，你却不知道，一直在等等这个响应；有可能别的小弟也正在调用你的武功绝技，那么当请求多之后，就会发生严重的阻塞影响老大的整体计划。这个时候Hystrix就派上用场了，当Hystrix发现某个小弟不在状态不稳定立马马上让它下线，让其它小弟来顶上来，或者给你说不用等了这个小弟今天肯定不行，该干嘛赶紧干嘛去别在这排队了。</p>
+<h3 id="netflix-zuul">Netflix Zuul</h3>
+<p>Zuul 是在云平台上提供动态路由,监控,弹性,安全等边缘服务的框架。Zuul 相当于是设备和 Netflix 流应用的 Web 网站后端所有请求的前门。当其它门派来找大哥办事的时候一定要先经过zuul,看下有没有带刀子什么的给拦截回去，或者是需要找那个小弟的直接给带过去。</p>
+<h3 id="netflix-archaius">Netflix Archaius</h3>
+<p>配置管理API，包含一系列配置管理API，提供动态类型化属性、线程安全配置操作、轮询框架、回调机制等功能。可以实现动态获取配置， 原理是每隔60s（默认，可配置）从配置源读取一次内容，这样修改了配置文件后不需要重启服务就可以使修改后的内容生效，前提使用archaius的API来读取。</p>
+<h1 id="eurekanetflix-服务发现与注册">Eureka(Netflix) - 服务发现与注册</h1>
+<h2 id="eureka介绍">Eureka介绍</h2>
+<blockquote>
+<p>Eureka是xxx</p>
+</blockquote>
+<h2 id="eureka的使用方法">Eureka的使用方法</h2>
+<p>Eureka分为服务端和客户端，Eureka Server负责集中管理所有注册上来的微服务,维护一个完整的服务列表，同时监控每个服务的状态（通过客户端定时renew），及时下线down掉的服务<br>
+Eureka Client端负责上报服务、服务下线、拉取服务端的服务列表等功能。</p>
+<h3 id="eureka-server端配置">Eureka Server端配置</h3>
+<ol>
+<li>添加依赖</li>
+</ol>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<ol start="2">
+<li>properties配置</li>
+</ol>
+<pre><code class="language-yml">spring:
+  application:
+    name: eureka-server
+  profiles:
+    active: dev
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: lisi
+    password: 123
+
+eureka:
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    #instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+
+---
+spring:
+  profiles: dev
+server:
+  port: 8781
+eureka:
+  instance:
+    hostname: peer1
+    lease-renewal-interval-in-seconds: 30   #eureka client续租的超时时长
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    register-with-eureka: false  #单机模式：禁止向别的eureka server注册自己
+    fetch-registry: false #单机模式：禁止从别的eureka server获取服务列表
+
+security:
+  basic:
+    enabled: false
+---
+spring:
+  profiles: peer1
+server:
+  port: 8781
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    service-url:
+      defaultZone: http://${security.user.name}:${security.user.password}@peer2:8782/eureka/,http://${security.user.name}:${security.user.password}@peer3:8783/eureka/
+security:
+  basic:
+    enabled: true
+
+
+---
+spring:
+  profiles: peer2
+server:
+  port: 8782
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    service-url:
+      defaultZone: http://${security.user.name}:${security.user.password}@peer1:8781/eureka/,http://${security.user.name}:${security.user.password}@peer3:8783/eureka/
+
+---
+spring:
+  profiles: peer3
+server:
+  port: 8783
+eureka:
+  instance:
+    hostname: peer3
+  client:
+    service-url:
+      defaultZone: http://${security.user.name}:${security.user.password}@peer1:8781/eureka/,http://${security.user.name}:${security.user.password}@peer2:8782/eureka/
+</code></pre>
+<ol start="3">
+<li>开启应用的Eureka Server功能<br>
+在应用启动类上加 @EnableEurekaServer注解</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableEurekaServer
+public class EurekaApplication
+{
+    public static void main( String[] args )
+    {
+        SpringApplication.run(EurekaApplication.class, args);
+    }
+}
+</code></pre>
+<h3 id="eureka-client端">Eureka Client端</h3>
+<ol>
+<li>添加依赖</li>
+</ol>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<ol start="2">
+<li>客户端配置</li>
+</ol>
+<pre><code class="language-yml">eureka:
+  client:
+    serviceUrl:
+#      defaultZone: http://lisi:123@peer1:8781/eureka/
+      defaultZone: http://peer1:8781/eureka/
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+</code></pre>
+<ol start="3">
+<li>开启应用的Eureka Client功能<br>
+在应用启动类上加 @EnableEurekaClient或者@EnableDiscoveryClient注解</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableEurekaClient
+// @EnableDiscoveryClient  //与EnableEurekaClient二选一
+public class ClientApplicationStart {
+    public static void main(String[] args) {
+        new SpringApplicationBuilder(ClientApplicationStart.class).web(true).run(args);
+    }
+}
+</code></pre>
+<h2 id="eureka的保护模式">Eureka的保护模式</h2>
+<p>在使用Eureka作为服务注册中心时，有时控制台的网页上会出现红色的警告：<br>
+EMERGENCY! EUREKA MAY BE INCORRECTLY CLAIMING INSTANCES ARE UP WHEN THEY'RE NOT. RENEWALS ARE LESSER THAN THRESHOLD AND HENCE THE INSTANCES ARE NOT BEING EXPIRED JUST TO BE SAFE.</p>
+<p>出现此问题的原因是要从Eureka服务注册中心的原理说起， 所有注册到Eureka中的微服务与Eureka Server之间一直保持着一个心跳连接， 当Eureka Server这边收不到某个微服务（其实就是Eureka Client）的心跳连接时，有可能有两种情况： 1. 微服务真的挂了； 2. Eureka Server与微服务(Eureka Client)之间的网络中断，但微服务本身并没有挂。</p>
+<p>默认情况下，如果Eureka Server在一定时间内没有接收到某个微服务实例的心跳，Eureka Server将会注销该实例（默认90秒）。但是当网络分区故障发生时，微服务与Eureka Server之间无法正常通信，这就可能变得非常危险了----因为微服务本身是健康的，此时本不应该注销这个微服务。</p>
+<p>Eureka Server通过“自我保护模式”来解决这个问题----当Eureka Server节点在短时间内丢失过多客户端时（可能发生了网络分区故障），那么这个节点就会进入自我保护模式。一旦进入该模式，Eureka Server就会保护服务注册表中的信息，不再删除服务注册表中的数据（也就是不会注销任何微服务）。当网络故障恢复后，该Eureka Server节点会自动退出自我保护模式。</p>
+<p>自我保护模式是一种对网络异常的安全保护措施。使用自我保护模式，而已让Eureka集群更加的健壮、稳定。</p>
+<p>如果不想看到这个警告，我们也可以通过下面的配置显式关闭保护模式（生产环境不建议关掉）：</p>
+<pre><code class="language-properties"># 关闭Eureka Server保护模式
+eureka.server.enable-self-preservation=false
+</code></pre>
+<h1 id="ribbionnetflix-客户端负载均衡">Ribbion(Netflix) - 客户端负载均衡</h1>
+<h2 id="ribbon介绍">Ribbon介绍</h2>
+<p>Ribbon是一个客户端负载均衡组件，帮我们实现后端服务节点动态扩容，而不影响调用方。</p>
+<h2 id="ribbon的使用方法">Ribbon的使用方法</h2>
+<p>Eureka和Feign中已经默认集成了Ribbon，如果项目中引入了Eureka，通过在RestTemplate上添加@LoadBalanced；如果用的是Feign声明式REST客户端，feign默认就已经帮我们开启了ribbon负载均衡能力。</p>
+<h2 id="ribbon的配置">Ribbon的配置</h2>
+<h3 id="通过代码修改ribbon全局配置">通过代码修改ribbon全局配置</h3>
+<ol>
+<li>创建Ribbon配置类</li>
+</ol>
+<pre><code class="language-java">/**
+ * 通过注解的方式自定义ribbon策略
+ * 可自定义的属性参见：https://cloud.spring.io/spring-cloud-static/spring-cloud-netflix/2.0.2.RELEASE/single/spring-cloud-netflix.html#_customizing_the_ribbon_client
+ * 注意：此配置不可放置到ComponentScan可以扫描到的位置（一般来说可以放到Application启动类的上层包中），否则就会全局生效
+ */
+@Configuration  //官方文档说配置类必须加上此注解，但本人测试不加也可以，建议最好还是按官方要求加上
+public class RibbonConfiguration {
+    @Bean
+    public IRule ribbonRule() {
+        return new RoundRobinRule();
+    }
+}
+</code></pre>
+<ol start="2">
+<li>在Spring @Configuration类中引用配置，并加上@RibbonClients注解引用上面定义的配置</li>
+</ol>
+<pre><code class="language-java">/**
+ * 用用全局配置
+ * @author: john
+ * @create: 2018-12-14 20:37:14
+ */
+@Configuration
+@RibbonClients(defaultConfiguration = RibbonConfiguration.class)    //配置ribbon全局策略
+public class ApplicationConfiguration {
+}
+</code></pre>
+<h3 id="通过代码修改指定微服务的ribbon配置">通过代码修改指定微服务的ribbon配置</h3>
+<ol>
+<li>创建Robbon配置类</li>
+</ol>
+<blockquote>
+<p>见1.1中创建的Ribbon配置类</p>
+</blockquote>
+<ol start="2">
+<li>在Spring @Configuration类中引用配置，并且加上@RibbonClient注解</li>
+</ol>
+<pre><code class="language-java">/**
+ * @className: PrintServiceConfiguration
+ * @description: 通过注解的方式自定义指定service的ribbon配置
+ * @author: john
+ * @create: 2018-12-14 20:29:19
+ */
+@Configuration
+@RibbonClient(name = &quot;MICROSERVER-PRINT&quot;, configuration = RibbonConfiguration.class) //name对应微服务名称
+public class PrintServiceConfiguration {
+}
+
+</code></pre>
+<h3 id="属性文件全局配置">属性文件全局配置</h3>
+<pre><code>官方文档中没有找到，应该是不支持
+</code></pre>
+<h3 id="属性文件特定配置">属性文件特定配置</h3>
+<pre><code>&lt;clientName&gt;.ribbon.xxx，支持的属性如下：
+- NFLoadBalancerClassName: should implement ILoadBalancer
+- NFLoadBalancerRuleClassName: should implement IRule
+- NFLoadBalancerPingClassName: should implement IPing
+- NIWSServerListClassName: should implement ServerList
+- NIWSServerListFilterClassName should implement ServerListFilter
+
+例如：
+```yml
+microserver-print:
+    ribbon:
+        NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #设置ribbon访问microserver-print这个微服务的负载均衡Rule
+```
+</code></pre>
+<h2 id="ribbon与eureka配合使用">Ribbon与Eureka配合使用</h2>
+<p>Eureka中已经默认集成了Ribbon，所以当我们引入Eureka后，不需要额外做什么操作只要在ResultTemplate的Bean配置上加上@LoadBalanced（或者和Feign一起使用，feign也集成了ribbon）。</p>
+<pre><code class="language-java">@Configuration
+public class ApplicationConfiguration {
+    @Bean
+    @LoadBalanced
+    public RestTemplate setRestTemplate() {
+        return new RestTemplate();
+    }
+}
+
+// 使用RestTemplate通过服务ID调用服务，http://{serviceId}/path
+@RequestMapping(&quot;/name/{name}&quot;)
+public String nameHello(@PathVariable String name, Model model) {
+    String result = restTemplate.getForObject(&quot;http://hello-server/name/&quot;+name, String.class);
+    model.addAttribute(&quot;msg&quot;, result);
+    return &quot;index&quot;;
+}
+
+</code></pre>
+<blockquote>
+<p>当Ribbon与Eureka一起使用时，Eureka会修改Ribbon以下几个全局配置：</p>
+<ul>
+<li>ribbonServerList被设置为：DiscoveryEnabledNIWSServerList的扩展DomainExtractingServerList</li>
+<li>IPing被设置为：NIWSDiscoveryPing</li>
+</ul>
+</blockquote>
+<h2 id="ribbon脱离eureka单独使用">Ribbon脱离Eureka单独使用</h2>
+<p>Ribbon本身并不依赖Eureka，完全可以单独作为客户端负载均衡使用。用法如下：<br>
+在yml文件中做如下配置：</p>
+<pre><code class="language-yml"># 测试use ribbon without eureka, must set ribbon.eureka.enabled=false
+print:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+    listOfServers: localhost:8001,localhost:8002
+
+ribbon:
+  eureka:
+    enabled: false  #如果项目引入了Eureka，必须设置关闭在eureka中使用ribbon
+
+</code></pre>
+<p>然后通过以下两种方式使用ribbon：</p>
+<ol>
+<li>在RestTemplate配置Bean上添加@LoadBalanced注解。访问http://print/rest/print/ 就会开启ribbon的负载均衡能力</li>
+<li>直接通过ribbon提供的API使用</li>
+</ol>
+<pre><code class="language-java">public class MyClass {
+    @Autowired
+    private LoadBalancerClient loadBalancer;
+
+    public void doStuff() {
+        ServiceInstance instance = loadBalancer.choose(&quot;print&quot;);
+        URI storesUri = URI.create(String.format(&quot;http://%s:%s&quot;, instance.getHost(), instance.getPort()));
+        // ... do something with the URI
+    }
+}
+</code></pre>
+<h1 id="hystrixnetflix-服务熔断-降级-限流-隔离">Hystrix(Netflix) - 服务熔断、降级、限流、隔离</h1>
+<h2 id="hystrix介绍">Hystrix介绍</h2>
+<blockquote>
+<p>在分布式环境中，许多服务依赖项中的一些不可避免地会失败。<br>
+Hystrix是一个库，可通过添加延迟容错和容错逻辑来帮助您控制这些分布式服务之间的交互。<br>
+Hystrix通过隔离服务之间的访问点，阻止它们之间的级联故障以及提供后备选项来实现这一目标，这些都可以提高系统的整体恢复能力</p>
+</blockquote>
+<blockquote>
+<p>通俗的说Hystrix是Netflix公司开源的一个用于服务调用的断路器组件，给我们提供了包括服务熔断、降级、超时、资源隔离在内的完整解决方案。</p>
+</blockquote>
+<h2 id="hystrix的用法">Hystrix的用法</h2>
+<p>Hystrix已经集成到了Feign中，可以和feign无缝对接。 如果没有引入Feign，我们也可以通过引入Hystrix相关依赖，通过HystrixCommand对指定的请求包裹Hystrix熔断功能。</p>
+<h3 id="hystrix和feign一起使用">Hystrix和Feign一起使用</h3>
+<blockquote>
+<p>参见Feign章节中的《Feign与Hystrix集成》部分</p>
+</blockquote>
+<h3 id="hystrix与resttemplate一起使用">Hystrix与RestTemplate一起使用</h3>
+<ol>
+<li>引入Hystrix依赖包</li>
+</ol>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<ol start="2">
+<li>在Application启动类中开启Hystrix熔断</li>
+<li>在SpringMVC Controller的请求方法上添加 @HystrixCommand注解</li>
+</ol>
+<pre><code class="language-java">/**
+ * commandKey用于在Properties文件中配置此Command的参数，也可以直接用注解在这里配置参数
+ * fallbackMethod指定服务降级时调用的方法
+ */
+@HystrixCommand(fallbackMethod = &quot;addFallback&quot;,commandKey = &quot;addFallbackCommandKey&quot;)    
+@GetMapping(&quot;/add/{num1}_{num2}&quot;)
+public Map&lt;String, Object&gt; add(@PathVariable int num1, @PathVariable int num2) {
+    Map&lt;String, Object&gt; result = restTemplate.getForObject(calcServerUrl+&quot;add/&quot;+num1+&quot;_&quot;+num2, Map.class);
+    return result;
+}
+</code></pre>
+<h2 id="hystrix的配置">Hystrix的配置</h2>
+<p>和Netflix Ribbon组件类似，Hystrix的所有配置参数也分四个级别：</p>
+<ol>
+<li>Global default from code（代码中全局默认）</li>
+<li>Dynamic global default property （properties文件全局配置）</li>
+<li>Instance default from code（代码中修改指定实例的参数）</li>
+<li>Dynamic instance property (通过properteis文件修改指定实例的参数)</li>
+</ol>
+<p>以上四种方式的配置优先级依次升高，下面我们来依次介绍这四种方式的配置方法</p>
+<h3 id="hystrix代码全局默认参数">Hystrix代码全局默认参数</h3>
+<p>指的是Hystrix源码中设置的默认参数，我们可以在Properties文件中通过将CommandKey指向&quot;default&quot;，修改大部分全局默认参数。</p>
+<h3 id="通过代码修改指定hystrixcommand参数">通过代码修改指定HystrixCommand参数</h3>
+<h4 id="通过javanica的方式修改单个方法的hystrix参数推荐">通过javanica的方式修改单个方法的Hystrix参数（推荐）</h4>
+<p>直接配置方法上的@HystrixCommand注解参数即可，如</p>
+<pre><code class="language-java">@HystrixCommand(
+        fallbackMethod = &quot;addFallback&quot;, commandKey = &quot;calc-add-command&quot;,
+        groupKey = &quot;calc-command-group&quot;, threadPoolKey = &quot;calc-add-command-pool&quot;,
+        commandProperties = {
+                @HystrixProperty(name = &quot;execution.isolation.thread.timeoutInMilliseconds&quot;, value = &quot;1500&quot;),
+                @HystrixProperty(name = &quot;circuitBreaker.requestVolumeThreshold&quot;, value = &quot;3&quot;),
+                @HystrixProperty(name = &quot;metrics.rollingStats.timeInMilliseconds&quot;, value = &quot;10000&quot;),
+                @HystrixProperty(name = &quot;metrics.rollingPercentile.enabled&quot;, value = &quot;false&quot;)
+        },
+        threadPoolProperties = {
+                @HystrixProperty(name = &quot;coreSize&quot;, value = &quot;10&quot;),
+                @HystrixProperty(name = &quot;queueSizeRejectionThreshold&quot;, value = &quot;9&quot;)
+        }
+)
+@GetMapping(&quot;/add/{num1}_{num2}&quot;)
+public Map&lt;String, Object&gt; add(@ApiParam @PathVariable int num1, @ApiParam @PathVariable int num2) {
+    log.info(&quot;request calc.add, params: &quot; + num1 + &quot;,&quot; + num2);
+    Map&lt;String, Object&gt; result = restTemplate.getForObject(calcServerUrl + &quot;add/&quot; + num1 + &quot;_&quot; + num2, Map.class);
+    return result;
+}
+
+</code></pre>
+<p>注：如果不配threadPoolKey的话，默认会取groupKey得值。相同threadPoolKey会共享同一个线程池的资源</p>
+<h4 id="通过javanica的方式修改多个方法的hystrix参数">通过javanica的方式修改多个方法的Hystrix参数</h4>
+<p>通过在类上面添加 @DefaultProperteis注解，可以修改此类中所有用@HystrixCommand注解的方法的默认Hystrix参数</p>
+<pre><code class="language-java">@DefaultProperties(groupKey = &quot;DefaultGroupKey&quot;)
+class Service {
+    @HystrixCommand // hystrix command group key is 'DefaultGroupKey'
+    public Object commandInheritsDefaultProperties() {
+        return null;
+    }
+    @HystrixCommand(groupKey = &quot;SpecificGroupKey&quot;) // command overrides default group key
+    public Object commandOverridesGroupKey() {
+        return null;
+    }
+}
+</code></pre>
+<h4 id="通过自定义command类的方式包裹请求方法不推荐实际写起来太复杂">通过自定义Command类的方式包裹请求方法（不推荐，实际写起来太复杂）</h4>
+<pre><code class="language-java">public class CommandHelloWorld extends HystrixCommand&lt;String&gt; {
+
+    private final String name;
+
+    static HystrixCommand.Setter commandSetter;
+
+    static {
+        HystrixCommandProperties.Setter commandPropertiesSetter = HystrixCommandProperties.Setter()
+                .withExecutionIsolationSemaphoreMaxConcurrentRequests(20)   //最大并发请求数
+                .withExecutionTimeoutInMilliseconds(1500)   //请求超过1.5秒执行降级逻辑
+                .withCircuitBreakerRequestVolumeThreshold(3)    //在一个统计窗口期内，请求失败3次熔断
+                .withCircuitBreakerSleepWindowInMilliseconds(2000)  //开启熔断后多久进入半熔断状态，断路器根据下一次的执行结果决定是否继续开启熔断
+                .withMetricsRollingStatisticalWindowInMilliseconds(10000)   //10秒内如果大于等于3个错误请求就开启熔断
+                .withMetricsRollingPercentileEnabled(false);    //关闭以错误请求百分比为度量指标的逻辑，仅按一个统计时间窗口内错误请求次数计算(主要是方便演示)
+
+        HystrixThreadPoolProperties.Setter threadPoolPropertiesSetter = HystrixThreadPoolProperties.Setter()
+                .withCoreSize(10)
+                .withMaxQueueSize(10);
+
+        commandSetter = HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(&quot;defalt-hystrix-group&quot;))
+                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(&quot;default-hystrix-threadpool&quot;))
+                .andCommandKey(HystrixCommandKey.Factory.asKey(&quot;default&quot;))
+                .andCommandPropertiesDefaults(commandPropertiesSetter)
+                .andThreadPoolPropertiesDefaults(threadPoolPropertiesSetter)
+                ;
+    }
+
+    public CommandHelloWorld(String name) {
+        super(commandSetter);
+        this.name = name;
+    }
+
+    @Override
+    protected String run() {
+        // a real example would do work like a network call here
+        return &quot;Hello &quot; + this.name;
+    }
+}
+
+//调用
+String s = new CommandHelloWorld(&quot;World&quot;).execute();
+</code></pre>
+<p>这种方式一般一个请求就得写一个自定义HystrixCommand，太复杂。当然也可以封装一个通用的CommonHystrixCommand，将业务逻辑抽象后传进来调用。不过一般工作中不会这么写，因为通过Properties配置文件或者javanica的方式会方便很多</p>
+<pre><code class="language-java">// 这是一个利用Callable把业务方法和降级方法都传进来的例子，只是提供思路，当然还有其他更好的方式也是可以的
+public static class DefaultHystrixCommand&lt;E&gt; extends HystrixCommand&lt;E&gt; {
+
+        static HystrixCommand.Setter commandSetter;
+
+        private Callable&lt;E&gt; callable;
+        private Callable&lt;E&gt; fallBackCallable;
+
+        static {
+            HystrixCommandProperties.Setter commandPropertiesSetter = HystrixCommandProperties.Setter()
+                    .withExecutionIsolationSemaphoreMaxConcurrentRequests(20)   //最大并发请求数
+                    .withExecutionTimeoutInMilliseconds(5000)   //请求超过1.5秒执行降级逻辑
+                    .withCircuitBreakerRequestVolumeThreshold(20)    //在一个统计窗口期内，请求失败3次熔断
+                    .withCircuitBreakerSleepWindowInMilliseconds(2000)  //开启熔断后多久进入半熔断状态，断路器根据下一次的执行结果决定是否继续开启熔断
+                    .withMetricsRollingStatisticalWindowInMilliseconds(10000)   //10秒内如果大于等于3个错误请求就开启熔断
+                    .withMetricsRollingPercentileEnabled(false);    //关闭以错误请求百分比为度量指标的逻辑，仅按一个统计时间窗口内错误请求次数计算(主要是方便演示)
+
+            HystrixThreadPoolProperties.Setter threadPoolPropertiesSetter = HystrixThreadPoolProperties.Setter()
+                    .withCoreSize(10)
+                    .withMaxQueueSize(8)
+                    .withQueueSizeRejectionThreshold(4);
+
+            commandSetter = HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(&quot;defalt-hystrix-group&quot;))
+                    .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(&quot;default-hystrix-threadpool&quot;))
+                    .andCommandKey(HystrixCommandKey.Factory.asKey(&quot;default&quot;))
+                    .andCommandPropertiesDefaults(commandPropertiesSetter)
+                    .andThreadPoolPropertiesDefaults(threadPoolPropertiesSetter)
+            ;
+        }
+        public DefaultHystrixCommand(Callable callable, Callable fallbackCallable) {
+            super(commandSetter);
+            this.callable = callable;
+            this.fallBackCallable = fallbackCallable;
+        }
+
+        @Override
+        protected E run() throws Exception {
+            return this.callable.call();
+        }
+
+        @Override
+        protected E getFallback(){
+            try {
+                return this.fallBackCallable.call();
+            } catch (Exception e) {
+                throw new RuntimeException(&quot;执行降级方法失败&quot;, e);
+            }
+        }
+    }
+</code></pre>
+<h3 id="通过代码修改feignclient的hystrix参数配置">通过代码修改FeignClient的Hystrix参数配置</h3>
+<ol>
+<li>定义配置类</li>
+</ol>
+<pre><code class="language-java">@Configuration
+public class DefaultFeignWithHystrixConfiguration {
+    //这个是修改feign的请求超时时间，和Hystrix参数无关
+    @Bean
+    public Request.Options requestOptions() {
+        return new Request.Options(1500, 1500);
+    }
+
+    @Bean
+    public HystrixFeign.Builder feignBuilder() {
+        return HystrixFeign.builder().setterFactory((target, method) -&gt; {
+            HystrixCommandProperties.Setter commandPropertiesSetter = HystrixCommandProperties.Setter()
+//                    .withExecutionIsolationSemaphoreMaxConcurrentRequests(20)   //最大并发请求数
+                    .withExecutionTimeoutInMilliseconds(7000)   //请求超过1.5秒执行降级逻辑
+                    .withCircuitBreakerRequestVolumeThreshold(20)    //在一个统计窗口期内，请求失败3次熔断
+                    .withCircuitBreakerSleepWindowInMilliseconds(2000)  //开启熔断后多久进入半熔断状态，断路器根据下一次的执行结果决定是否继续开启熔断
+                    .withMetricsRollingStatisticalWindowInMilliseconds(10000)   //10秒内如果大于等于3个错误请求就开启熔断
+                    .withMetricsRollingPercentileEnabled(false);    //关闭以错误请求百分比为度量指标的逻辑，仅按一个统计时间窗口内错误请求次数计算(主要是方便演示)
+
+            HystrixThreadPoolProperties.Setter threadPoolPropertiesSetter = HystrixThreadPoolProperties.Setter()
+                    .withCoreSize(10)
+                    .withMaxQueueSize(8)
+                    .withQueueSizeRejectionThreshold(4);
+
+//            String groupKey = target.name();
+//            String commandKey = Feign.configKey(target.type(), method);
+            String groupKey = &quot;default&quot;;
+            String commandKey = &quot;default&quot;;
+            return HystrixCommand.Setter
+                    .withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupKey))
+                    .andCommandKey(HystrixCommandKey.Factory.asKey(commandKey))
+                    .andCommandPropertiesDefaults(commandPropertiesSetter)
+                    .andThreadPoolPropertiesDefaults(threadPoolPropertiesSetter);
+        });
+    }
+}
+</code></pre>
+<p><font color="red">上面的配置类也不能放到@ComponentScan能扫描到的路径下，否则就会覆盖所有FeignClient的默认配置。</font></p>
+<ol start="2">
+<li>在需要的FeignClient上通过注解引用此配置就可以了</li>
+</ol>
+<pre><code class="language-java">@FeignClient(value = &quot;MICROSERVER-CALC&quot;, fallback = CalcServiceFallback.class, configuration = DefaultFeignWithHystrixConfiguration.class)
+public interface CalcService {
+}
+</code></pre>
+<h3 id="通过properties修改指定hystrixcommand的参数">通过Properties修改指定HystrixCommand的参数</h3>
+<pre><code class="language-yml">hystrix:
+  command:
+    hystrixCommandName (如：calc_add_command):  #对应@HystrixCommand注解的commandKey属性，指定特定熔断器的属性(一般建议在代码中通过注解配置)，此处换成default可修改全局属性。
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000 #设置熔断器判定超时的时间，超过此时间的请求会执行降级逻辑，默认1s
+      circuitBreaker:
+        requestVolumeThreshold: 2 #设置熔断阈值，在熔断统计窗口期内，错误请求（超时、异常）次数达到阈值就会触发熔断，执行降级逻辑，默认20
+        sleepWindowInMilliseconds: 10000  #设置熔断器多久进入半开状态，然后再次尝试确定熔断器是否应再次关闭，默认5s
+        errorThresholdPercentage: 50  #设置在熔断统计窗口期内，错误请求达到百分之多少触发熔断，默认50
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 5000 #熔断度量窗口期时间， 默认10s
+</code></pre>
+<h3 id="通过properties修改hystrix全局默认参数">通过Properties修改Hystrix全局默认参数</h3>
+<p>修改指定HystrixCommand的参数，将上面参数中command的名称calc_add_command换成default即可</p>
+<h3 id="在properties中修改feignclient的hystrix参数">在Properties中修改FeignClient的Hystrix参数</h3>
+<p>如果是修改某个FeignClient的hystrix参数，将上面参数中command的名称修改为FeignClient接口的simpleName.methodName(参数表)，中间不能有空格，例如：CalcServer#add(int,int)</p>
+<p>参见 <a href="https://blog.csdn.net/xiao_jun_0820/article/details/78174502">源码资料</a></p>
+<h3 id="常用配置项">常用配置项</h3>
+<p>更多配置项请参见：<a href="https://github.com/Netflix/Hystrix/wiki/Configuration">Hystrix官方wiki</a></p>
+<h4 id="关于queuesizerejectionthreshold与maxqueuesize">关于queueSizeRejectionThreshold与maxQueueSize</h4>
+<p>官方的说法是maxQueueSize设置的是BlockingQueue的size，由于此size不能动态调整，所以maxQueueSize只能启动时加载，加载后无法动态调整。为了解决这个问题，官方提供了queueSizeRejectionThreshold参数，相当于人为的制造了一个“maxQueueSize”，当队列中达到此值后，再进来的新请求会直接reject，即使还没达到Queue的maxSize。</p>
+<h2 id="hystrix-metrics-stream">Hystrix Metrics Stream</h2>
+<blockquote>
+<p>Hystrix Metrics Stream用于通过流式数据的方式输出Hystrix使用过程中产生的各项指标，可通过Hystrix Dashboard查看。</p>
+</blockquote>
+<h3 id="配置方法">配置方法</h3>
+<ol>
+<li>引入Hystrix完整依赖</li>
+</ol>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<ol start="2">
+<li>在Application启动类上开启Hystrix功能</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableCircuitBreaker   //注意，要用metrics stream功能必须通过此注解显示打开断路器功能
+public class ClientApplicationStart {
+    public static void main(String[] args) {
+        new SpringApplicationBuilder(ClientApplicationStart.class).web(true).run(args);
+    }
+}
+</code></pre>
+<p>通过浏览器访问： http://host:port/hystrix.stream 就可以看到Hystrix实时输出的流式JSON数据，将此地址配置到Hystrix Dashboard中就可以查看</p>
+<p>注：Hystrix Metrics Stream必须配合SpringBoot Actuator一起使用</p>
+<h2 id="hystrix的监控-hystrix-dashboard">Hystrix的监控 - Hystrix Dashboard</h2>
+<blockquote>
+<p>参见 <a href="#hystrix-dashboard">Hystrix Dashboard章节</a></p>
+</blockquote>
+<h1 id="zuulnetflix-统一网关-地址路由">Zuul(Netflix) - 统一网关、地址路由</h1>
+<h2 id="zuul介绍">Zuul介绍</h2>
+<blockquote>
+<p>Zuul是Netflx开源的微服务网关。可以和Eureka、Ribbon、Hystrix配合使用，一个主要的功能就是可以将后端众多的微服务屏蔽、整合，对前端提供一套统一的服务(有点像是后端的Facade)。</p>
+</blockquote>
+<p>Zuul提供了以下几项支持：</p>
+<ul>
+<li>认证安全: 识别每一个资源的验证要求，并拒绝那些不符的请求</li>
+<li>监控</li>
+<li>动态路由: 动态将请求路由到不同后端集群</li>
+<li>压力测试: 逐渐增加指向集群的流量，以了解性能</li>
+<li>金丝雀测试: 灰度发布</li>
+<li>流量控制: 为每一种负载类型分配对应容量，并弃用超出限定值的请求</li>
+<li>服务迁移</li>
+<li>静态资源响应处理: 边缘位置进行响应，避免转发到内部集群</li>
+</ul>
+<h2 id="zuul的用法">Zuul的用法</h2>
+<ol>
+<li>引入依赖包</li>
+</ol>
+<pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;!-- eureka依赖是可选的，取决于是否需要代理接入eureka注册中心的服务 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+<ol start="2">
+<li>在Application启动类添加注解</li>
+</ol>
+<ul>
+<li>Server模式</li>
+</ul>
+<pre><code class="language-java">@SpringBootApplication
+@EnableZuulServer
+public class GatewayApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
+}
+</code></pre>
+<p>Server模式会关闭所有的代理相关功能</p>
+<ul>
+<li>Reverse Proxy模式</li>
+</ul>
+<pre><code class="language-java">@SpringBootApplication
+@EnableZuulProxy
+public class GatewayApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
+}
+</code></pre>
+<h3 id="动态路由需要在reverse-proxy模式下">动态路由(需要在Reverse Proxy模式下)</h3>
+<h4 id="通过服务名代理">通过服务名代理</h4>
+<pre><code class="language-yml">zuul:
+  routes:
+    microserver-calc: /calcs-direct/**  #直接通过服务名配置代理（必须是有效的服务名），所有访问/mi
+</code></pre>
+<h4 id="serviceidpath的方式">ServiceId+Path的方式</h4>
+<pre><code class="language-yml">zuul:
+  routes:
+    calc-service: #通过path+serviceId的方式，这种适合配置参数比较多的情况（route的名字可以任意）
+      path: /calcs/**  #匹配访问地址，访问地址如果可以匹配，则自动代理到对应的微服务
+      serviceId: microserver-calc   #必须是有效的微服务名称
+</code></pre>
+<h4 id="忽略代理指定服务">忽略代理指定服务</h4>
+<pre><code class="language-yml">zuul:
+  routes:
+    microserver-calc: /calcs-direct/** 
+  ignored-services: '*' #除了显示配置到路由规则里的服务外（如：microserver-calc），不代理其他任务服务(也可以配置多个服务名:service1,service2)
+  ignoredPatterns: /**/admin/** #更细粒度的忽略配置
+  
+</code></pre>
+<h4 id="代理未接入服务注册中心的服务">代理未接入服务注册中心的服务</h4>
+<pre><code class="language-yml">zuul:
+  routes:
+    service-calc:
+      path: /calcs/**
+      serviceId: service-calc-ribbon  #通过ribbon配置一个静态服务列表的service，用于代理为接入Eureka的服务
+      
+#ribbon:
+#  eureka:
+#    enabled: false
+
+service-calc-ribbon:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList  #如果不配置ServerList类型为ConfigurationBasedServerList的话就需要禁用ribbon的eureka支持
+    ConnectTimeout: 500
+    ReadTimeout: 2000
+    listOfServers: http://localhost:8101,http://localhost:8102
+</code></pre>
+<h4 id="测过正则配置代理规则">测过正则配置代理规则</h4>
+<pre><code class="language-java">// 从符合servicePattern的服务名中抽取出符合条件的内容，注入到路由模式中。
+// 下面的配置可以将服务&quot;myusers-v1&quot;映射成&quot;/myusers/v1/**&quot;
+@Bean
+public PatternServiceRouteMapper serviceRouteMapper() {
+    return new PatternServiceRouteMapper(&quot;(?&lt;name&gt;^.+)-(?&lt;version&gt;v.+$)&quot;,
+            &quot;${name}/${version}&quot;);
+}
+</code></pre>
+<p><font color="red">注：这种只针对注册到服务中心的服务生效</font></p>
+<h4 id="添加全局访问前缀">添加全局访问前缀</h4>
+<pre><code class="language-yml">server:
+  port: 8080
+
+zuul:
+  routes:
+    microserver-calc: /calcs/**  
+  prefix: /api
+  strip-prefix: true  #默认就是true
+</code></pre>
+<ul>
+<li>当strip-prefix设置为true时<br>
+访问：http://localhost:8080/api/calcs/**<br>
+会被映射到微服务：microserver-calc/**</li>
+<li>当strip-prefix设置为false时<br>
+访问：http://localhost:8080/api/calcs/**<br>
+会被映射到微服务：microserver-calc/api/**</li>
+</ul>
+<h4 id="给指定服务添加前缀">给指定服务添加前缀</h4>
+<pre><code class="language-yml">server:
+  port: 8080
+
+zuul:
+  routes:
+    microserver-calc: #给指定服务配置前缀(这里的服务名称必须是真实的服务名，eureka或者手动用ribbon配置的名称) 
+      path: /calc/**  #指定访问microserver-calc服务的前缀是/calc
+      strip-prefix: false
+</code></pre>
+<h4 id="本地转发forward">本地转发(forward)</h4>
+<pre><code class="language-yml">zuul:
+  routes:
+    route-name:
+      path: /path-a/**
+      url: forward:/path-b
+</code></pre>
+<h4 id="路由规则先后顺序">路由规则先后顺序</h4>
+<pre><code class="language-yml">zuul:
+  routes:
+    users:
+      path: /myusers/**
+    legacy:
+      path: /**
+</code></pre>
+<p>上面的配置如果用的是yml格式配置文件，如果访问/myusers/**会优先命中users服务；但是如果用properties文件，则可能导致无法路由到users服务</p>
+<h3 id="聚合多个后端微服务提供统一api给前端">聚合多个后端微服务提供统一API给前端</h3>
+<p>其实很简单，就是在Zuul层封装后端的多个请求，组合结果后返回给终端</p>
+<pre><code class="language-java">@RestController
+public class AggregationController {
+  public static final Logger LOGGER = LoggerFactory.getLogger(ZuulApplication.class);
+
+  @Autowired
+  private RestTemplate restTemplate;
+	
+  @GetMapping(&quot;/aggregate/{id}&quot;)
+  public Map&lt;String, User&gt; findById(@PathVariable Long id) throws Exception {
+	  Map&lt;String, User&gt; dataMap = new HashMap&lt;&gt;();
+	  User user = restTemplate.getForObject(&quot;http://microservice-provider-user/&quot; + id, User.class);
+	  User orderUser = restTemplate.getForObject(&quot;http://microservice-consumer-order/user/&quot; + id, User.class);
+	  dataMap.put(&quot;user&quot;, user);
+	  dataMap.put(&quot;orderUser&quot;, orderUser);
+	  return dataMap;
+  }
+}
+</code></pre>
+<h3 id="zuul的访问超时控制">Zuul的访问超时控制</h3>
+<h4 id="通过serviceid代理的请求">通过ServiceId代理的请求</h4>
+<p>由于通过ServiceId的方式代理的请求(包括手动配置的Ribbon 服务和自动服务发现的服务)会走Ribbon和Hystrix，所以我们要控制超时就包括Ribbon请求的超时和Hystrix的访问超时。</p>
+<pre><code class="language-yml">test-service:
+  ribbon:
+    ReadTimeout:100
+    ConnectTimeout:500
+    MaxAutoRetries:1
+    MaxAutoRetriesNextServer:1
+</code></pre>
+<p>上面这段配置通过Zuul访问test-service服务时，Ribbon的ConnectTimeout是500ms，ReadTimeout是100ms，重试次数为1次； Zuul会根据ribbon设置的超时时间和重试次数，自动设置Hystrix的超时时间(上面这段配置, Zuul会把Hystrix的超时时间设置为:(100+500)*2=1200ms<br>
+当然，我们也可以通过添加下面的配置显示指定Hystrix参数</p>
+<pre><code class="language-yml">hystrix:
+  command:
+    service-calc-ribbon:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+</code></pre>
+<p>这里如果不显示设置，Zuul会根据ribbon设置的ConnectionTimeout和ReadTimeout自动确定Hystrix的超时时间（所以一般可以通过配置ribbon的超时时间来控制hystrix超时），由于ribbon默认重试次数是1，所以Hystrix的超时时间会被设置为(500+2000)*2=5000</p>
+<h4 id="通过url代理的请求">通过URL代理的请求</h4>
+<p>通过简单url配置的代理由于并没有走Ribbon和Hystrix，所有涉及到的超时参数只有ConnectTimeout和ReadTimeout，我们可以通过下面两个参数来分别设置：</p>
+<pre><code>zuul.host.connect-timeout-millis=500 zuul.host.socket-timeout-millis=1000
+</code></pre>
+<h3 id="设置zuul请求使用的网络客户端">设置Zuul请求使用的网络客户端</h3>
+<p>Zuul现在默认使用Apache HTTP Client代替已过时的Ribbon RestClient，可以通过下面的配置更改zuul使用的网络客户端</p>
+<pre><code class="language-properties">ribbon.restclient.enabled=true #启用Ribbon RestClient
+ribbon.okhttp.enabled=true #启用OkHttpClient
+</code></pre>
+<p>还可以通过自定义ClosableHttpClient或者OkHttpClient来设置Ribbon RestClient和OkHttpClient客户端的属性</p>
+<h3 id="禁用zuul过滤器">禁用Zuul过滤器</h3>
+<p>Zuul默认开启了好多各种用途的过滤器，我们也可以根据需要禁用自己不需要的过滤器（具体过滤器可查看ZuulFilter的子类）</p>
+<pre><code class="language-properties">zuul.&lt;SimpleClassName&gt;.&lt;filterType&gt;.disable=true
+</code></pre>
+<p>如：禁用org.springframework.cloud.netflix.zuul.filters.post.SendResponseFilter</p>
+<pre><code>zuul.SendResponseFilter.post.disable=true
+</code></pre>
+<h3 id="zuul针对特定路由的服务熔断">Zuul针对特定路由的服务熔断</h3>
+<p>简单的降级处理示例：</p>
+<pre><code class="language-java">@Component
+public class MyGlobalFallbackProvider implements FallbackProvider {
+    @Override
+    public String getRoute() {
+        return null;    //返回要设置降级的微服务名称或者配置的route名称，return &quot;*&quot;或者null 匹配所有微服务和路由（全局降级配置）
+    }
+
+    @Override
+    public ClientHttpResponse fallbackResponse() {
+        return response(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ClientHttpResponse fallbackResponse(Throwable cause) {
+        if(cause instanceof HystrixTimeoutException) {
+            return response(HttpStatus.GATEWAY_TIMEOUT);
+        } else {
+            return fallbackResponse();
+        }
+    }
+
+    public ClientHttpResponse response(final HttpStatus httpStatus) {
+        return new ClientHttpResponse() {
+            @Override
+            public HttpStatus getStatusCode() throws IOException {
+                return httpStatus;
+            }
+
+            @Override
+            public int getRawStatusCode() throws IOException {
+                return httpStatus.value();
+            }
+
+            @Override
+            public String getStatusText() throws IOException {
+                return httpStatus.getReasonPhrase();
+            }
+
+            @Override
+            public void close() {
+
+            }
+
+            @Override
+            public InputStream getBody() throws IOException {
+                return new ByteArrayInputStream(&quot;服务不可用，请稍后再试。&quot;.getBytes());
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                // headers设定
+                HttpHeaders headers = new HttpHeaders();
+//                MediaType mt = new MediaType(&quot;application&quot;, &quot;json&quot;, Charset.forName(&quot;UTF-8&quot;));
+                MediaType mt = MediaType.APPLICATION_JSON_UTF8;
+                headers.setContentType(mt);
+                return headers;
+            }
+        };
+    }
+}
+</code></pre>
+<blockquote>
+<p>Zuul 目前只支持服务级别的熔断，不支持具体到某个URL进行熔断。</p>
+</blockquote>
+<h3 id="zuul路由重试">Zuul路由重试</h3>
+<p>有时候因为网络或者其它原因，服务可能会暂时的不可用，这个时候我们希望可以再次对服务进行重试，Zuul也帮我们实现了此功能，需要结合Spring Retry 一起来实现</p>
+<ol>
+<li>添加依赖</li>
+</ol>
+<pre><code class="language-xml">&lt;dependency&gt;
+	&lt;groupId&gt;org.springframework.retry&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-retry&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<ol start="2">
+<li>配置方法</li>
+</ol>
+<pre><code class="language-yml">#是否开启重试功能
+zuul.retryable=true
+#对当前服务的重试次数
+ribbon.MaxAutoRetries=2
+#切换相同Server的次数
+ribbon.MaxAutoRetriesNextServer=0
+</code></pre>
+<p>这样我们就开启了Zuul的重试功能。</p>
+<h3 id="zuul高可用">Zuul高可用</h3>
+<p><img src="http://www.itmind.net/assets/images/2018/springcloud/zuul-case.png" alt="Zuul高可用"><br>
+我们实际使用Zuul的方式如上图，不同的客户端使用不同的负载将请求分发到后端的Zuul，Zuul在通过Eureka调用后端服务，最后对外输出。因此为了保证Zuul的高可用性，前端可以同时启动多个Zuul实例进行负载，在Zuul的前端使用<font color="red">Nginx</font>或者<font color="red">F5</font>进行负载转发以达到高可用性。</p>
+<h3 id="zuul的核心filter">Zuul的核心——Filter</h3>
+<p>Filter是Zuul的核心，用来实现对外服务的控制。Filter的生命周期有4个，分别是“PRE”、“ROUTING”、“POST”、“ERROR”，整个生命周期可以用下图来表示。<br>
+<img src="http://www.itmind.net/assets/images/2018/springcloud/zuul-core.png" alt="Zuul Filter"><br>
+Zuul大部分功能都是通过过滤器来实现的，这些过滤器类型对应于请求的典型生命周期。</p>
+<ul>
+<li>PRE： 这种过滤器在请求被路由之前调用。我们可利用这种过滤器实现身份验证、在集群中选择请求的微服务、记录调试信息等。</li>
+<li>ROUTING：这种过滤器将请求路由到微服务。这种过滤器用于构建发送给微服务的请求，并使用Apache HttpClient或Netfilx Ribbon请求微服务。</li>
+<li>POST：这种过滤器在路由到微服务以后执行。这种过滤器可用来为响应添加标准的HTTP Header、收集统计信息和指标、将响应从微服务发送给客户端等。</li>
+<li>ERROR：在其他阶段发生错误时执行该过滤器。 除了默认的过滤器类型，Zuul还允许我们创建自定义的过滤器类型。例如，我们可以定制一种STATIC类型的过滤器，直接在Zuul中生成响应，而不将请求转发到后端的微服务。</li>
+</ul>
+<h4 id="zuul中默认实现的filter">Zuul中默认实现的Filter</h4>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>顺序</th>
+<th>过滤器</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pre</td>
+<td>-3</td>
+<td>ServletDetectionFilter</td>
+<td>标记处理Servlet的类型</td>
+</tr>
+<tr>
+<td>pre</td>
+<td>-2</td>
+<td>Servlet30WrapperFilter</td>
+<td>包装HttpServletRequest请求</td>
+</tr>
+<tr>
+<td>pre</td>
+<td>-1</td>
+<td>FormBodyWrapperFilter</td>
+<td>包装请求体</td>
+</tr>
+<tr>
+<td>route</td>
+<td>1</td>
+<td>DebugFilter</td>
+<td>标记调试标志</td>
+</tr>
+<tr>
+<td>route</td>
+<td>5</td>
+<td>PreDecorationFilter</td>
+<td>处理请求上下文供后续使用</td>
+</tr>
+<tr>
+<td>route</td>
+<td>10</td>
+<td>RibbonRoutingFilter</td>
+<td>serviceId请求转发</td>
+</tr>
+<tr>
+<td>route</td>
+<td>100</td>
+<td>SimpleHostRoutingFilter</td>
+<td>url请求转发</td>
+</tr>
+<tr>
+<td>route</td>
+<td>500</td>
+<td>SendForwardFilter</td>
+<td>forward请求转发</td>
+</tr>
+<tr>
+<td>post</td>
+<td>0</td>
+<td>SendErrorFilter</td>
+<td>处理有错误的请求响应</td>
+</tr>
+<tr>
+<td>post</td>
+<td>1000</td>
+<td>SendResponseFilter</td>
+<td>处理正常的请求响应</td>
+</tr>
+</tbody>
+</table>
+<h4 id="禁用指定的filter">禁用指定的Filter</h4>
+<pre><code class="language-yml">zuul:
+  FormBodyWrapperFilter:
+    pre:
+	  disable: true
+</code></pre>
+<h4 id="自定义filter示例">自定义Filter示例</h4>
+<p>我们假设有这样一个场景，因为服务网关应对的是外部的所有请求，为了避免产生安全隐患，我们需要对请求做一定的限制，比如请求中含有Token便让请求继续往下走，如果请求不带Token就直接返回并给出提示。</p>
+<ol>
+<li>首先自定义一个Filter，在run()方法中验证参数是否含有Token。</li>
+</ol>
+<pre><code class="language-java">public class TokenFilter extends ZuulFilter {
+
+    private final Logger logger = LoggerFactory.getLogger(TokenFilter.class);
+
+    @Override
+    public String filterType() {
+        return &quot;pre&quot;; // 可以在请求被路由之前调用
+    }
+
+    @Override
+    public int filterOrder() {
+        return 0; // filter执行顺序，通过数字指定 ,优先级为0，数字越大，优先级越低
+    }
+
+    @Override
+    public boolean shouldFilter() {
+        return true;// 是否执行该过滤器，此处为true，说明需要过滤
+    }
+
+    @Override
+    public Object run() {
+        RequestContext ctx = RequestContext.getCurrentContext();
+        HttpServletRequest request = ctx.getRequest();
+
+        logger.info(&quot;---&gt;&gt;&gt; TokenFilter {},{}&quot;, request.getMethod(), request.getRequestURL().toString());
+
+        String token = request.getParameter(&quot;token&quot;);// 获取请求的参数
+
+        if (StringUtils.isNotBlank(token)) {
+            ctx.setSendZuulResponse(true); //对请求进行路由
+            ctx.setResponseStatusCode(200);
+            ctx.set(&quot;isSuccess&quot;, true);
+            return null;
+        } else {
+            ctx.setSendZuulResponse(false); //不对其进行路由
+            ctx.setResponseStatusCode(400);
+            ctx.setResponseBody(&quot;token is empty&quot;);
+            ctx.set(&quot;isSuccess&quot;, false);
+            return null;
+        }
+    }
+
+}
+</code></pre>
+<ol start="2">
+<li>将TokenFilter加入到请求拦截队列，在启动类中添加以下代码</li>
+</ol>
+<pre><code class="language-java">@Bean
+public TokenFilter tokenFilter() {
+	return new TokenFilter();
+}
+</code></pre>
+<p>通过上面这例子我们可以看出，我们可以使用“PRE”类型的Filter做很多的验证工作，在实际使用中我们可以结合shiro、oauth2.0等技术去做鉴权、验证。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[SpringCloud全局依赖定义]]></title>
         <id>https://ysjhhhhhhh.github.io/post/springcloud-quan-ju-yi-lai-ding-yi</id>
@@ -3454,244 +4506,6 @@ smbclient -L ip_addr/hostname show remote shares of a windows host<br>
 smbget -Rr smb://ip_addr/share like wget can download files from a host windows via smb<br>
 mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share mount a windows network share</p>
 <p>转发自：<a href="http://www.cnblogs.com/fnlingnzb-learner/p/5831284.html">原博客</a> 谢谢。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[jdbc]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/jdbc</id>
-        <link href="https://ysjhhhhhhh.github.io/post/jdbc">
-        </link>
-        <updated>2018-04-05T13:38:39.000Z</updated>
-        <content type="html"><![CDATA[<p>一. JDBC编程概述</p>
-<ol>
-<li>
-<p>什么JDBC<br>
-  JDBC（Java Database Connection）：为多种关系数据库提供统一访问。它由一组用Java语言编写的类和接口组成。是Java访问数据库的标准和规范。</p>
-</li>
-<li>
-<p>常见数据库介绍<br>
-  Mysql：开源免费的数据库，小型的数据库。非常实用和受欢迎。已经被Oracle收购了.MySQL6.x版本也开始收费。<br>
-  Oracle：收费的大型数据库，Oracle公司的产品。一般中大型公司会使用。Oracle收购了SUN公司，Mysql数据库。<br>
-  DB2：IBM公司的收费数据库产品。常应用在银行系统和金融系统中.<br>
-  SQLServer：MicroSoft 公司收费的中型的数据库。常常在C#、.net等语言中使用。<br>
-  SyBase：提供了一个非常专业数据建模的工具PowerDesigner，但是数据库本身已经淡出历史舞台。<br>
-  SQLite: 嵌入式的小型数据库，基本上用于移动端。<br>
-  Java相关的数据库：MYSQL，Oracle。<br>
-  数据库的设计和开发，sql语句的编写在这里不做详细的介绍。</p>
-</li>
-</ol>
-<p>oracle.jpg<br>
-3. JDBC开发原理<br>
-  Java和数据库之间没有必然的联系，两者之间是如何连接的呢？虽然Java提供了各种数据库接口，但是我们并不知道各种数据库具体的实现原理，难以对接口进行具体的实现。<br>
-  所以，数据库生产商提供了这些接口的实现类：驱动<br>
-  Java提供访问数据库规范称为JDBC，而生产厂商提供规范的实现类称为驱动。</p>
-<p>JDBC原理图.png</p>
-<p>JDBC是接口，驱动是接口的实现，没有驱动将无法完成数据库连接，从而不能操作数据库。每个数据库厂商都需要提供自己的驱动，用来连接自己公司的数据库。<br>
-二. JDBC开发步骤<br>
-JDBC一般的开发步骤如下：<br>
-首先要从官方网站上下载Mysql的驱动，并通过Eclipse导入驱动（jar包）<br>
-导入驱动的方法.png</p>
-<p>JDBC开发步骤如下：<br>
-注册驱动（Driver）<br>
-获得连接（Connection）<br>
-获得语句执行平台（Statement）<br>
-使用SQL语句进行处理<br>
-释放资源，关闭链接<br>
-数据库中创建示例：<br>
-create table users(<br>
-username varchar(10),<br>
-pass varchar(10),<br>
-nicheng varchar(30)<br>
-);<br>
-insert into users (username,pass,nicheng) values('wjy','wjykl22','凉凉夜色为你思念成河');<br>
-select * from users;<br>
-Java连接数据库<br>
-1.注册驱动:<br>
-官方API推荐方法：</p>
-<p>Class.forName(&quot;com.mysql.jdbc.Driver&quot;);<br>
-不推荐使用DriverManager.registerDriver(new com.mysql.jdbc.Driver());注册，以上代码有两点不足：</p>
-<p>硬编码，后期不易维护<br>
-驱动在源码中就被注册过，驱动会被两次注册<br>
-Driver源码：<br>
-public class Driver extends NonRegisteringDriver implements java.sql.Driver {<br>
-static {<br>
-try {<br>
-java.sql.DriverManager.registerDriver(new Driver());<br>
-} catch (SQLException E) {<br>
-throw new RuntimeException(&quot;Can't register driver!&quot;);<br>
-}<br>
-}<br>
-}<br>
-2.获得连接:<br>
-String url = &quot;jdbc:mysql://localhost:3306/jdbc&quot;;<br>
-String username = &quot;root&quot;;<br>
-String password = &quot;wjykl22&quot;;<br>
-Connection con = DriverManager.getConnection(url, username, password);<br>
-其中url：需要连接数据库的位置（网址）目前来说格式基本上固定。</p>
-<p>第一部分：jdbc，这是固定的；<br>
-第二部分：数据库名称，我们连接的是Mysql数据库，所以使用Mysql<br>
-第三部分：由数据库厂商规定的，每个厂商都有各自的要求，分别由数据库服务器的IP地址（localhost）、端口号（3306），以及DATABASE名称(jdbc)组成。</p>
-<p>username：数据库用户名。<br>
-password：数据库密码。<br>
-采用上述方法就可以获得数据库的链接。</p>
-<p>3.获得执行平台并执行sql语句<br>
-Statement stat = con.createStatement();<br>
-int executeUpdate(String sql);//用于执行insert update delete语句.<br>
-ResultSet executeQuery(String sql); //用于执行select语句.<br>
-boolean execute(String sql); //用于执行select返回true 执行其他的语句返回false.<br>
-4.结果集处理<br>
-得到ResultSet结果集后，需要对其中的数据进行数据的提取，对于ResultSet结果集的处理方法：</p>
-<p>Object getObject(int index) / Object getObject(String name) 获得任意对象<br>
-String getString(int index) / Object getObject(String name) 获得字符串<br>
-int getInt(int index) / Object getObject(String name) 获得整形<br>
-double getDouble(int index) / Object getObject(String name) 获得双精度浮点型<br>
-5.释放资源<br>
-最后一步就是释放资源，与IO释放资源的方式如出一辙。</p>
-<p>rs.close();<br>
-stmt.close();<br>
-con.close();<br>
-总结<br>
-完整的上述步骤如下：</p>
-<p>public class JDBCDemo {<br>
-public static void main(String args[]) {<br>
-try {<br>
-Class.forName(&quot;com.mysql.jdbc.Driver&quot;);<br>
-String url = &quot;jdbc:mysql://localhost:3306/jdbc&quot;;<br>
-String username = &quot;root&quot;;<br>
-String password = &quot;wjykl22&quot;;<br>
-Connection con = DriverManager.getConnection(url, username, password);<br>
-Statement stat = con.createStatement();<br>
-stat.executeUpdate(&quot;insert into users (username,pass,nicheng) values('wjy2','wjykl33','如水流央')&quot;);<br>
-ResultSet rs = stat.executeQuery(&quot;select * from users&quot;);<br>
-while(rs.next()) {<br>
-System.out.println(rs.getString(&quot;username&quot;)<br>
-+&quot;\t&quot;+rs.getString(&quot;pass&quot;)+&quot;\t&quot;+rs.getString(&quot;nicheng&quot;));<br>
-}<br>
-rs.close();<br>
-stat.close();<br>
-con.close();<br>
-} catch (Exception e) {<br>
-e.printStackTrace();<br>
-}<br>
-}<br>
-}<br>
-预处理对象方法<br>
-  为了防止代码存在SQL注入漏洞，使得代码更加完善，我们一般采用预处理对象：PreparedStatement<br>
-  每条sql语句所有的实际参数，都使用逗号分隔。</p>
-<ol>
-<li>预处理对象并执行sql语句<br>
-String sql = &quot;insert into sort(sid,sname) values(?,?)&quot;;<br>
-PreparedStatement psmt = conn.prepareStatement(sql)</li>
-<li>设置实际参数<br>
-void setXxx(int index, Xxx xx)<br>
-完整的代码程序段如下：</li>
-</ol>
-<p>public class LoginDemo {<br>
-/*<br>
-* Java程序实现用户的登录，用户名和密码，数据库检查<br>
-* 防止注入攻击<br>
-* Statment有一个子接口PrepareStatment，表示预编译的SQL语句对象，可以高效的执行<br>
-* 这个方法是Connection数据库连接的方法<br>
-* 如何获取这个实现类呢？<br>
-*/<br>
-public static void main(String args[]) throws Exception {<br>
-Class.forName(&quot;com.mysql.jdbc.Driver&quot;);<br>
-String url = &quot;jdbc:mysql://localhost:3306/world&quot;;<br>
-String username = &quot;root&quot;;<br>
-String password = &quot;wjykl22&quot;;<br>
-Connection con = DriverManager.getConnection(url,username,password);<br>
-Scanner sc = new Scanner(System.in);<br>
-String user = sc.nextLine();<br>
-String pass = sc.nextLine();<br>
-//执行sql语句，查询用户名和密码。<br>
-//注意要写问号<br>
-String sql = &quot;select * from users where username =? and pass =?&quot;;<br>
-java.sql.PreparedStatement pst = con.prepareStatement(sql);<br>
-//调用pst中的set方法<br>
-pst.setObject(1, user);<br>
-pst.setObject(2, pass);</p>
-<pre><code>    System.out.println(sql);
-    ResultSet rs = pst.executeQuery();
-    while(rs.next()) {
-        System.out.println(rs.getString(&quot;username&quot;) + &quot;    &quot; + rs.getString(&quot;pass&quot;));
-    }
-}
-</code></pre>
-<p>}<br>
-三. 工具类撰写和使用<br>
-  作为一名程序员最应该学会的事情就是偷懒。设想一下，如果我们要在多各程序中使用Mysql数据库，会有很多代码重复使用，我们可以创建一个工具类Utils，通过工具类来完成注册驱动，获得链接，获得执行平台以及释放资源的操作。<br>
-  <br>
-  代码如下：</p>
-<p>public class JDBCUtils {<br>
-public static final  String DRIVERNAME = &quot;com.mysql.jdbc.Driver&quot;;<br>
-public static final  String URL = &quot;jdbc:mysql://localhost:3306/mydb&quot;;<br>
-public static final  String USER = &quot;root&quot;;<br>
-public static final  String PASSWORD = &quot;root&quot;;<br>
-static {<br>
-try {<br>
-Class.forName(DRIVERNAME);<br>
-} catch (ClassNotFoundException e) {<br>
-System.out.println(&quot;数据库驱动注册失败！&quot;);<br>
-}<br>
-}<br>
-public static Connection getConn() throws Exception {<br>
-Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);<br>
-return conn;<br>
-}<br>
-}<br>
-通过调用Utils类中的各种静态方法来达到重复利用代码的效果。</p>
-<p>四. properties配置文件<br>
-  上述代码还是不太方便，如果要修改某个参数，需要修改源代码，有没有方法能够不修改源代码就能够完成配置的修改呢？<br>
-  通常情况下，我们习惯使用properties文件来存储与数据库有关的配置文件。</p>
-<p>文件位置：任意，建议src下<br>
-文件名称：任意，扩展名为properties<br>
-文件内容：一行一组数据，格式是“key=value”.<br>
-3.1 key命名自定义，如果是多个单词，习惯使用点分隔。例如：jdbc.driver<br>
-3.2 value值不支持中文，如果需要使用非英文字符，将进行unicode转换。<br>
-例如：<br>
-driver=com.mysql.jdbc.Driver<br>
-url=jdbc:mysql://localhost:3306/jdbc<br>
-user=root<br>
-password=root</p>
-<p>加载配置文件properties的方法：<br>
-  对应properties文件处理，开发中也使用Properties对象进行。我们将采用加载properties文件获得流，然后使用Properties对象进行处理。</p>
-<p>public class JDBCUtils {<br>
-private static String driver;<br>
-private static String url;<br>
-private static String user;<br>
-private static String password;<br>
-static {<br>
-try {<br>
-// 1. 使用Properties处理流<br>
-// 使用load()方法加载指定的流<br>
-Properties props = new Properties();<br>
-Reader is = new FileReader(&quot;db.properties&quot;);<br>
-props.load(is);<br>
-// 2. 使用getProperty(key)，通过key获得需要的值，<br>
-driver = props.getProperty(&quot;driver&quot;);<br>
-url = props.getProperty(&quot;url&quot;);<br>
-user = props.getProperty(&quot;user&quot;);<br>
-password = props.getProperty(&quot;password&quot;);<br>
-} catch (Exception e) {<br>
-throw new RuntimeException(e);<br>
-}<br>
-}</p>
-<pre><code>/**
- * 获得连接
- */
-public static Connection getConnection() {
-    try {
-        // 1 注册驱动
-        Class.forName(driver);
-        // 2 获得连接
-        Connection conn = DriverManager.getConnection(url, user, password);
-        return conn;
-    } catch (Exception e) {
-        throw new RuntimeException(e);
-    }
-}
-</code></pre>
-<p>}</p>
 ]]></content>
     </entry>
 </feed>
