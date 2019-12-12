@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-12T09:37:33.785Z</updated>
+    <updated>2019-12-12T11:34:38.878Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,136 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[SpringCloud全局依赖定义]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/springcloud-quan-ju-yi-lai-ding-yi</id>
+        <link href="https://ysjhhhhhhh.github.io/post/springcloud-quan-ju-yi-lai-ding-yi">
+        </link>
+        <updated>2018-06-17T11:28:54.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="全局依赖说明">全局依赖说明</h1>
+<blockquote>
+<p>SpringCloud是基于SpringBoot来构建的，一个SpringCloud工程本身也是一个SpringBoot工程。所以SpringCloud工程也需要添加SpringBoot依赖。</p>
+</blockquote>
+<h1 id="推荐的配置方法">推荐的配置方法</h1>
+<p>总的来说配置方法分为下面几步</p>
+<ol>
+<li>新建一个全局的parent依赖工程，集中管理依赖</li>
+<li>让微服务模块继承全局的pom</li>
+<li>在具体微服务模块中添加自己需要的依赖（不加版本）</li>
+</ol>
+<p>其中，定义全局依赖有下面两种方式</p>
+<h2 id="继承springboot依赖">继承SpringBoot依赖</h2>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.lanou3g&lt;/groupId&gt;
+    &lt;artifactId&gt;springcloud-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;pom&lt;/packaging&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;!-- 注意：SpringCloud最新的Greenwich版本是基于SpringBoot2.1.x(Greenwich)版本构建的
+            所以这里不支持SpringBoot2.2.x版本
+            具体SpringBoot与SpringCloud版本对应关系参见：https://spring.io/projects/spring-cloud页面最下方的Release Trains
+         --&gt;
+        &lt;version&gt;2.1.6.RELEASE&lt;/version&gt;
+        &lt;relativePath /&gt;
+    &lt;/parent&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;version&gt;1.18.10&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+            &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--&lt;dependency&gt;
+            &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;
+        &lt;/dependency&gt;--&gt;
+    &lt;/dependencies&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;!-- 定义SpringCloud依赖版本 --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;Greenwich.SR2&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+&lt;/project&gt;
+</code></pre>
+<h2 id="不继承springboot依赖">不继承SpringBoot依赖</h2>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.lanou3g&lt;/groupId&gt;
+    &lt;artifactId&gt;springcloud-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;pom&lt;/packaging&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;version&gt;1.18.10&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+            &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--&lt;dependency&gt;
+            &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;
+        &lt;/dependency&gt;--&gt;
+    &lt;/dependencies&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;!-- 定义SpringBoot依赖版本 --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+                &lt;!-- 注意：SpringCloud最新的Greenwich版本是基于SpringBoot2.1.x(Greenwich)版本构建的
+                    所以这里不支持SpringBoot2.2.x版本
+                    具体SpringBoot与SpringCloud版本对应关系参见：https://spring.io/projects/spring-cloud页面最下方的Release Trains
+                 --&gt;
+                &lt;!--&lt;version&gt;2.2.1.RELEASE&lt;/version&gt;--&gt;
+                &lt;version&gt;2.1.6.RELEASE&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;!-- 定义SpringCloud依赖版本 --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;Greenwich.SR2&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+&lt;/project&gt;
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Dubbo框架]]></title>
         <id>https://ysjhhhhhhh.github.io/post/dubbo-kuang-jia</id>
@@ -3562,799 +3692,6 @@ public static Connection getConnection() {
 }
 </code></pre>
 <p>}</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JS & EasyUI & LayUI]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/js-and-easyui-and-layui</id>
-        <link href="https://ysjhhhhhhh.github.io/post/js-and-easyui-and-layui">
-        </link>
-        <updated>2018-04-03T11:55:57.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="javascript">JavaScript</h1>
-<h2 id="1数据类型">1.数据类型</h2>
-<p>​	JavaScript数据类型大体分为6个类型分别为：</p>
-<p>​			Number数字	有BigInt可以保存精度更高的数字</p>
-<p>​			String字符串</p>
-<p>​			Boolean布尔</p>
-<p>​			Object对象  包含:{&quot;Array&quot;,&quot;Function&quot;,&quot;RegExp&quot;,&quot;Date&quot;,&quot;JSON&quot;}</p>
-<p>​			Undefined未定义</p>
-<p>​			Null空</p>
-<p>JavaScript中的变量和Java中一样，都需要先定义后使用。并且JavaScript中的变量都使用var进行修饰</p>
-<h2 id="2对象">2.对象</h2>
-<p>JavaScript中对象有两种，一种为内置对象，另一种为自定义对象</p>
-<p>自定义对象的方法为</p>
-<pre><code class="language-html">		&lt;script type=&quot;text/javascript&quot;&gt;
-			//第一种方式
-			var 名变量名 = {对象的属性};
-			
-			//第二种方式
-			var 名变量名 = new function(){对象的属性};
-		&lt;/script&gt;
-</code></pre>
-<p>内置对象有：</p>
-<p>​		BOM即 浏览器对象模型(Browser Object Model)</p>
-<p>​	浏览器对象包括</p>
-<p>​	Window(当前窗口对象，可对窗口进行操作)</p>
-<p>​		Navigator(浏览器对象，提供浏览器的相关信息)</p>
-<pre><code class="language-html">&lt;script type=&quot;text/javascript&quot;&gt;
-document.write(&quot;&lt;p&gt;浏览器产品名称：&quot;);
-document.write(navigator.appName + &quot;&lt;/p&gt;&quot;);
- 
-document.write(&quot;&lt;p&gt;浏览器版本号：&quot;);
-document.write(navigator.appVersion + &quot;&lt;/p&gt;&quot;);
- 
-document.write(&quot;&lt;p&gt;浏览器内部代码：&quot;);
-document.write(navigator.appCodeName + &quot;&lt;/p&gt;&quot;);
- 
-document.write(&quot;&lt;p&gt;操作系统：&quot;);
-document.write(navigator.platform + &quot;&lt;/p&gt;&quot;);
- 
-document.write(&quot;&lt;p&gt;是否启用Cookies：&quot;);
-document.write(navigator.cookieEnabled + &quot;&lt;/p&gt;&quot;);
- 
-document.write(&quot;&lt;p&gt;浏览器的用户代理报头：&quot;);
-document.write(navigator.userAgent + &quot;&lt;/p&gt;&quot;);
-&lt;/script&gt;
-</code></pre>
-<p>​		Screen (客户端屏幕对象,对显示的区域进行操作)</p>
-<pre><code class="language-html">&lt;html&gt;
-&lt;body&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-document.write(&quot;用户的屏幕分辨率: &quot;)
-document.write(screen.width + &quot;*&quot; + screen.height)
-document.write(&quot;&lt;br /&gt;&quot;)
-document.write(&quot;可用区域大小: &quot;)
-document.write(screen.availWidth + &quot;*&quot; + screen.availHeight)
-document.write(&quot;&lt;br /&gt;&quot;)
-&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p>​		History(访问历史，浏览器左上角有个前进按钮和后退按钮，此对象可以对浏览历史进行操作)</p>
-<pre><code class="language-html">&lt;script&gt;
-function goBack()
-  {
-     history.back();
-  }
-&lt;/script&gt;
- 
-&lt;button onclick=&quot;goBack()&quot;&gt;返回&lt;/button&gt;
-</code></pre>
-<p>​		Location(浏览器地址对象，就是浏览器上方的地址栏，可以操作地址实现页面跳转)</p>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-	&lt;head&gt;
-		&lt;meta charset=&quot;utf-8&quot; /&gt;
-		&lt;title&gt;&lt;/title&gt;
-	&lt;/head&gt;
-	&lt;body&gt;
-		&lt;input type=&quot;button&quot; name=&quot;&quot; id=&quot;&quot; value=&quot;跳转&quot; onclick=&quot;but()&quot;/&gt;
-	&lt;/body&gt;
-	&lt;script type=&quot;text/javascript&quot;&gt;
-		function but(){
-			location.href=&quot;http://www.baidu.com&quot;;	
-		}
-	&lt;/script&gt;
-&lt;/html&gt;
-</code></pre>
-<p>​		Document（正文对象，使用这个对象可以动态向页面中添加想添加的内容）</p>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-	&lt;head&gt;
-		&lt;meta charset=&quot;utf-8&quot; /&gt;
-		&lt;title&gt;&lt;/title&gt;
-	&lt;/head&gt;
-	&lt;body&gt;
-		&lt;input type=&quot;button&quot; name=&quot;&quot; id=&quot;&quot; value=&quot;插入&quot; onclick=&quot;but()&quot;/&gt;
-	&lt;/body&gt;
-	&lt;script type=&quot;text/javascript&quot;&gt;
-		function but(){
-			document.write(&quot;&lt;h1&gt;这是插入的标题&lt;/h1&gt;&quot;)		
-		}
-	&lt;/script&gt;
-&lt;/html&gt;
-</code></pre>
-<h2 id="3函数">3.函数</h2>
-<p>定义一个函数的方法：</p>
-<pre><code class="language-html">&lt;script&gt;
-function print(此处防止函数需要的参数，参数可以为各种类型，如果不需要可以不填){
-  document.write(&quot;这一句话是由一个自定义函数打印&quot;);
-}
-print();
-&lt;/script&gt;
-</code></pre>
-<p>调用函数的方法：</p>
-<pre><code class="language-html">&lt;script&gt;
-//调用函数的方法
-    函数名(参数);
-&lt;/script&gt;
-</code></pre>
-<pre><code class="language-html">&lt;script type=&quot;text/javascript&quot;&gt;
-    //自调用函数
-		(
-             function(){
-			document.write(&quot;&lt;h1&gt;这是插入的标题&lt;/h1&gt;&quot;)
-			}
-        )();
-		
-	&lt;/script&gt;
-</code></pre>
-<h2 id="4jquery">4.jQuery</h2>
-<p>什么是jQuery：jQuery是一个JavaScript类库，对原生的JS进行了全方面的封装。</p>
-<p>jQuery的好处：jQuery的使用可以极大减少js的代码量，用更少的代码做更多的事。</p>
-<p>引入jQuery</p>
-<pre><code class="language-html">//引入方式一：下载jQuery包，将解压后的文件复制到项目文件中，在head中引入
-&lt;head&gt;
-&lt;script src=&quot;jquery-1.10.2.min.js&quot;&gt;&lt;/script&gt;
-&lt;/head&gt;
-
-//引入方式二：通过 CDN（内容分发网络） 引用它。(百度CDN)
-&lt;head&gt;
-&lt;script src=&quot;https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js&quot;&gt;
-&lt;/script&gt;
-&lt;/head&gt;
-
-//使用第二种方式可能会因为网络原因，或者无法获取远程jQuery文件导致jQuery引入失败
-</code></pre>
-<p>使用jQuery</p>
-<pre><code class="language-html">&lt;script&gt;
-	$(selector).action()
-
-	$(selector)是选择器,其中selector代表特定的值，用来根据值选定元素如：(&quot;#id的值&quot;)
-
-    action()代表方法，如attr()用来操作属性
-&lt;/script&gt;
-</code></pre>
-<p>jQuery可以对HTML进行操作：</p>
-<p>​		DOM操作</p>
-<p>​		属性操作</p>
-<p>​		内容操作</p>
-<p>​		样式操作</p>
-<p>jQuery事件</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left"></th>
-<th style="text-align:left"></th>
-<th style="text-align:left"></th>
-<th style="text-align:left"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">鼠标事件</td>
-<td style="text-align:left">键盘事件</td>
-<td style="text-align:left">表单事件</td>
-<td style="text-align:left">文档/窗口事件</td>
-</tr>
-<tr>
-<td style="text-align:left">click</td>
-<td style="text-align:left">keypress</td>
-<td style="text-align:left">submit</td>
-<td style="text-align:left">load</td>
-</tr>
-<tr>
-<td style="text-align:left">dblclick</td>
-<td style="text-align:left">keydown</td>
-<td style="text-align:left">change</td>
-<td style="text-align:left">resize</td>
-</tr>
-<tr>
-<td style="text-align:left">mouseenter</td>
-<td style="text-align:left">keyup</td>
-<td style="text-align:left">focus</td>
-<td style="text-align:left">scroll</td>
-</tr>
-<tr>
-<td style="text-align:left">mouseleave</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">blur</td>
-<td style="text-align:left">unload</td>
-</tr>
-<tr>
-<td style="text-align:left">hover</td>
-<td style="text-align:left"></td>
-<td style="text-align:left"></td>
-<td style="text-align:left"></td>
-</tr>
-</tbody>
-</table>
-<p>jQuery也可以添加动画效果：</p>
-<p>​		显示隐藏</p>
-<p>​		淡出淡入</p>
-<p>​		滑动</p>
-<p>jQuery遍历也很方便</p>
-<pre><code class="language-html">&lt;script type=&quot;text/javascript&quot;&gt;
-		
-		//遍历数组
-		var list=[&quot;第一个元素&quot;,&quot;第二个元素&quot;,&quot;第三个元素&quot;,&quot;第四个元素&quot;];
-		$.each(list,function(index,obj){
-			console.log(&quot;下标&quot;+index+&quot;:&quot;+obj);
-		})
-		
-&lt;/script&gt;
-</code></pre>
-<h1 id="easyui">EasyUI</h1>
-<p>EasyUI 是一个基于 jQuery 的框架，集成了各种用户界面插件。</p>
-<p>EasyUI 框架提供了创建网页所需的一切，帮助您轻松建立站点</p>
-<p>EasyUI提供的组件：</p>
-<figure data-type="image" tabindex="1"><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1567838112112.png" alt="1567838112112"></figure>
-<p>利用EasyUI构建一个页面：</p>
-<ol>
-<li>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-	&lt;head&gt;
-		&lt;meta charset=&quot;UTF-8&quot;&gt;
-		&lt;title&gt;Basic Tree - jQuery EasyUI Demo&lt;/title&gt;
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/themes/default/easyui.css&quot;&gt;
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/themes/icon.css&quot;&gt;
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/demo.css&quot;&gt;
-		&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.min.js&quot;&gt;&lt;/script&gt;
-		&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.easyui.min.js&quot;&gt;&lt;/script&gt;
-
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/index.css&quot; /&gt;
-	&lt;/head&gt;
-	&lt;body&gt;
-		&lt;div id=&quot;panel&quot; class=&quot;easyui-panel&quot; title=&quot;智能停车系统后台管理&quot; style=&quot;width:100%;height:800px;padding:0px;&quot;&gt;
-
-			&lt;div style=&quot;margin-top: 5px;&quot;&gt;&lt;/div&gt;
-			&lt;div id=&quot;layout&quot; class=&quot;easyui-layout&quot; style=&quot;width:100%;height:100%;&quot;&gt;
-				&lt;div data-options=&quot;region:'west',iconCls:'icon-cut'&quot; title=&quot;导航&quot; style=&quot;width:30%;padding:0px&quot;&gt;
-
-					&lt;div class=&quot;easyui-panel&quot; style=&quot;padding:5px&quot;&gt;
-						&lt;ul class=&quot;easyui-tree&quot; data-options=&quot;lines:true&quot;&gt;&lt;/ul&gt;
-					&lt;/div&gt;
-
-				&lt;/div&gt;
-				&lt;div id=&quot;center&quot; data-options=&quot;region:'center',headerCls:'center_css'&quot; title=&quot;Center&quot;&gt;
-					&lt;div class=&quot;easyui-tabs&quot; style=&quot;width:100%;height:100%&quot;&gt;
-						&lt;div title=&quot;起始页&quot; style=&quot;padding:10px&quot;&gt;
-							&lt;ul class=&quot;easyui-tree&quot; data-options=&quot;url:'tree_data1.json',method:'get',animate:true&quot;&gt;&lt;/ul&gt;
-						&lt;/div&gt;
-						&lt;div title=&quot;添加停车区域&quot; data-options=&quot;iconCls:'icon-help',closable:true&quot; style=&quot;padding:10px&quot;&gt;
-							This is the help content.
-						&lt;/div&gt;
-						&lt;div title=&quot;停车区域管理&quot; data-options=&quot;iconCls:'icon-help',closable:true&quot; style=&quot;padding:10px&quot;&gt;
-							This is the help content.
-						&lt;/div&gt;
-						&lt;div title=&quot;用户管理&quot; data-options=&quot;iconCls:'icon-help',closable:true&quot; style=&quot;padding:10px&quot;&gt;
-							&lt;div class=&quot;easyui-panel&quot; style=&quot;padding:5px;&quot;&gt;
-								&lt;a href=&quot;#&quot; class=&quot;easyui-linkbutton&quot; data-options=&quot;plain:true&quot;&gt;修改&lt;/a&gt;
-								&lt;a href=&quot;#&quot; class=&quot;easyui-menubutton&quot; data-options=&quot;menu:'#mm1',iconCls:'icon-edit'&quot;&gt;删除&lt;/a&gt;
-								&lt;a href=&quot;#&quot; class=&quot;easyui-menubutton&quot; data-options=&quot;menu:'#mm2',iconCls:'icon-help'&quot;&gt;刷新&lt;/a&gt;
-								&lt;a href=&quot;#&quot; class=&quot;easyui-menubutton&quot; data-options=&quot;menu:'#mm3'&quot;&gt;取消选中&lt;/a&gt;
-								&lt;a href=&quot;#&quot; class=&quot;easyui-menubutton&quot; data-options=&quot;menu:'#mm3'&quot;&gt;导出到excel&lt;/a&gt;
-							&lt;/div&gt;
-							&lt;div id=&quot;mm1&quot; style=&quot;width:150px;&quot;&gt;
-								&lt;div data-options=&quot;iconCls:'icon-undo'&quot;&gt;Undo&lt;/div&gt;
-								&lt;div data-options=&quot;iconCls:'icon-redo'&quot;&gt;Redo&lt;/div&gt;
-								&lt;div class=&quot;menu-sep&quot;&gt;&lt;/div&gt;
-								&lt;div&gt;Cut&lt;/div&gt;
-								&lt;div&gt;Copy&lt;/div&gt;
-								&lt;div&gt;Paste&lt;/div&gt;
-								&lt;div class=&quot;menu-sep&quot;&gt;&lt;/div&gt;
-								&lt;div&gt;
-									&lt;span&gt;Toolbar&lt;/span&gt;
-									&lt;div&gt;
-										&lt;div&gt;Address&lt;/div&gt;
-										&lt;div&gt;Link&lt;/div&gt;
-										&lt;div&gt;Navigation Toolbar&lt;/div&gt;
-										&lt;div&gt;Bookmark Toolbar&lt;/div&gt;
-										&lt;div class=&quot;menu-sep&quot;&gt;&lt;/div&gt;
-										&lt;div&gt;New Toolbar...&lt;/div&gt;
-									&lt;/div&gt;
-								&lt;/div&gt;
-								&lt;div data-options=&quot;iconCls:'icon-remove'&quot;&gt;Delete&lt;/div&gt;
-								&lt;div&gt;Select All&lt;/div&gt;
-							&lt;/div&gt;
-							&lt;div id=&quot;mm2&quot; style=&quot;width:100px;&quot;&gt;
-								&lt;div&gt;Help&lt;/div&gt;
-								&lt;div&gt;Update&lt;/div&gt;
-								&lt;div&gt;About&lt;/div&gt;
-							&lt;/div&gt;
-							&lt;div id=&quot;mm3&quot; class=&quot;menu-content&quot; style=&quot;background:#f0f0f0;padding:10px;text-align:left&quot;&gt;
-								&lt;img src=&quot;http://www.jeasyui.com/images/logo1.png&quot; style=&quot;width:150px;height:50px&quot;&gt;
-								&lt;p style=&quot;font-size:14px;color:#444;&quot;&gt;Try jQuery EasyUI to build your modern, interactive, javascript
-									applications.&lt;/p&gt;
-							&lt;/div&gt;
-							&lt;form action=&quot;&quot; method=&quot;&quot; style=&quot;margin-top: 5px;&quot;&gt;
-								用户名:
-								&lt;input class=&quot;easyui-textbox&quot; style=&quot;width:150px;height:25px&quot;&gt;
-								&amp;nbsp;
-								姓名:
-								&lt;input class=&quot;easyui-textbox&quot; style=&quot;width:150px;height:25px&quot;&gt;
-								&amp;nbsp;
-								出生日期:
-								&lt;input class=&quot;easyui-textbox&quot; style=&quot;width:150px;height:25px&quot;&gt;
-								&amp;nbsp;
-								&lt;input type=&quot;button&quot; data-options=&quot;iconCls:'icon-search'&quot; name=&quot;&quot; id=&quot;&quot; value=&quot;搜索&quot; /&gt;
-							&lt;/form&gt;
-							&lt;table class=&quot;easyui-datagrid&quot;&gt;
-								&lt;thead&gt;
-									&lt;tr&gt;
-										&lt;th data-options=&quot;field:'nickname'&quot;&gt;用户名&lt;/th&gt;
-										&lt;th data-options=&quot;field:'name'&quot;&gt;姓名&lt;/th&gt;
-										&lt;th data-options=&quot;field:'sex'&quot;&gt;性别&lt;/th&gt;
-										&lt;th data-options=&quot;field:'birthday'&quot;&gt;出生日期&lt;/th&gt;
-										&lt;th data-options=&quot;field:'photo'&quot;&gt;用户照片&lt;/th&gt;
-										&lt;th data-options=&quot;field:'phone'&quot;&gt;联系电话&lt;/th&gt;
-									&lt;/tr&gt;
-								&lt;/thead&gt;
-								&lt;tbody&gt;
-									&lt;tr&gt;
-										&lt;td&gt;aaa&lt;/td&gt;
-										&lt;td&gt;张三&lt;/td&gt;
-										&lt;td&gt;男&lt;/td&gt;
-										&lt;td&gt;1998，8，8&lt;/td&gt;
-										&lt;td&gt;&lt;img src=&quot;1.jpg&quot;&gt;&lt;/td&gt;
-										&lt;td&gt;18888888888&lt;/td&gt;
-
-									&lt;/tr&gt;
-								&lt;/tbody&gt;
-							&lt;/table&gt;
-						&lt;/div&gt;
-						&lt;div title=&quot;修改密码&quot; data-options=&quot;iconCls:'icon-help',closable:true&quot; style=&quot;padding:10px&quot;&gt;
-							This is the help content.
-						&lt;/div&gt;
-						&lt;div title=&quot;添加用户&quot; data-options=&quot;iconCls:'icon-help',closable:true&quot; style=&quot;padding:10px&quot;&gt;
-							This is the help content.
-						&lt;/div&gt;
-					&lt;/div&gt;
-
-				&lt;/div&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-
-	&lt;/body&gt;
-	&lt;script type=&quot;text/javascript&quot; src=&quot;js/tree.js&quot;&gt;
-
-	&lt;/script&gt;
-	&lt;script type=&quot;text/javascript&quot; src=&quot;js/index.js&quot;&gt;&lt;/script&gt;
-&lt;/html&gt;
-
-</code></pre>
-</li>
-</ol>
-<p>EasyUI的使用可以参考EasyUI官网：</p>
-<p>https://www.jeasyui.com/</p>
-<h1 id="layui">Layui</h1>
-<p>layui（谐音：类UI) 是一款采用自身模块规范编写的前端 UI 框架，遵循原生 HTML/CSS/JS 的书写与组织形式，门槛极低，拿来即用。其外在极简，却又不失饱满的内在，体积轻盈，组件丰盈，从核心代码到 API 的每一处细节都经过精心雕琢，非常适合界面的快速开发。layui 首个版本发布于2016年金秋，她区别于那些基于 MVVM 底层的 UI 框架，却并非逆道而行，而是信奉返璞归真之道。准确地说，她更多是为服务端程序员量身定做，你无需涉足各种前端工具的复杂配置，只需面对浏览器本身，让一切你所需要的元素与交互，从这里信手拈来。</p>
-<p>Layui的扁平化风格相比EasyUI更加美观</p>
-<p>Layui提供的组件:</p>
-<figure data-type="image" tabindex="2"><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1567838515702.png" alt="1567838515702"></figure>
-<p>LayUI具体使用：</p>
-<p>html代码：</p>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-	&lt;head&gt;
-		&lt;meta charset=&quot;utf-8&quot; /&gt;
-		&lt;title&gt;&lt;/title&gt;
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;layui/css/layui.css&quot; /&gt;
-		&lt;script src=&quot;https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;
-		&lt;script type=&quot;text/javascript&quot; src=&quot;layui/layui.js&quot;&gt;&lt;/script&gt;
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/main.css&quot; /&gt;
-	&lt;/head&gt;
-	&lt;body&gt;
-
-		&lt;div class=&quot;out_div&quot;&gt;
-			&lt;ul class=&quot;layui-nav top_bgc&quot;&gt;
-				&lt;li class=&quot;layui-nav-item&quot;&gt;
-					&lt;span style=&quot;color: #009688;font-size: 22px;&quot;&gt;SMS聊天室&lt;/span&gt;
-				&lt;/li&gt;
-				&lt;li class=&quot;layui-nav-item float_li&quot;&gt;
-					&lt;a href=&quot;&quot;&gt;退出&lt;/a&gt;
-				&lt;/li&gt;
-				&lt;li class=&quot;layui-nav-item float_li&quot;&gt;
-					&lt;a href=&quot;&quot;&gt;&lt;img src=&quot;//t.cn/RCzsdCq&quot; class=&quot;layui-nav-img&quot;&gt;用户名&lt;/a&gt;
-					&lt;dl class=&quot;layui-nav-child&quot;&gt;
-						&lt;dd&gt;&lt;a href=&quot;modify.html&quot;&gt;修改信息&lt;/a&gt;&lt;/dd&gt;
-						&lt;dd&gt;&lt;a href=&quot;javascript:;&quot;&gt;安全管理&lt;/a&gt;&lt;/dd&gt;
-						&lt;dd&gt;&lt;a href=&quot;javascript:;&quot;&gt;退了&lt;/a&gt;&lt;/dd&gt;
-					&lt;/dl&gt;
-				&lt;/li&gt;
-			&lt;/ul&gt;
-
-			&lt;div class=&quot;layui-row&quot; style=&quot;height:94%;&quot;&gt;
-				&lt;div class=&quot;layui-col-md2 layout_west layoutAll&quot;&gt;
-					&lt;ul class=&quot;layui-nav layui-nav-tree&quot; lay-filter=&quot;test&quot; style=&quot;width: 100%;&quot;&gt;
-						&lt;!-- 侧边导航: &lt;ul class=&quot;layui-nav layui-nav-tree layui-nav-side&quot;&gt; --&gt;
-						&lt;li class=&quot;layui-nav-item layui-nav-itemed&quot;&gt;
-							&lt;a href=&quot;javascript:;&quot;&gt;消息管理&lt;/a&gt;
-							&lt;dl class=&quot;layui-nav-child&quot;&gt;
-								&lt;dd&gt;&lt;a href=&quot;msgall.html&quot;&gt;收件箱（原生js生成）&lt;/a&gt;&lt;/dd&gt;
-								&lt;dd&gt;&lt;a href=&quot;javascript:;&quot;&gt;收件箱（LayUI表格）&lt;/a&gt;&lt;/dd&gt;
-								&lt;dd&gt;&lt;a href=&quot;readmsg.html&quot;&gt;发件箱&lt;/a&gt;&lt;/dd&gt;
-								&lt;dd&gt;&lt;a href=&quot;newmsg.html&quot;&gt;写消息&lt;/a&gt;&lt;/dd&gt;
-							&lt;/dl&gt;
-						&lt;/li&gt;
-						&lt;li class=&quot;layui-nav-item&quot;&gt;
-							&lt;a href=&quot;javascript:;&quot;&gt;账户管理&lt;/a&gt;
-							&lt;dl class=&quot;layui-nav-child&quot;&gt;
-								&lt;dd&gt;&lt;a href=&quot;javascript:;&quot;&gt;收件箱（原生js生成）&lt;/a&gt;&lt;/dd&gt;
-								&lt;dd&gt;&lt;a href=&quot;javascript:;&quot;&gt;收件箱（LayUI表格）&lt;/a&gt;&lt;/dd&gt;
-								&lt;dd&gt;&lt;a href=&quot;&quot;&gt;发件箱&lt;/a&gt;&lt;/dd&gt;
-								&lt;dd&gt;&lt;a href=&quot;&quot;&gt;写消息&lt;/a&gt;&lt;/dd&gt;
-							&lt;/dl&gt;
-						&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/div&gt;
-				&lt;div id=&quot;content&quot; class=&quot;layui-col-md10 layout_east layoutAll content&quot;&gt;
-
-					&lt;br&gt;
-					&lt;br&gt;
-					&lt;p&gt;首页&amp;nbsp;/&amp;nbsp;消息管理&amp;nbsp;/&amp;nbsp;收件箱&lt;/p&gt;
-					&lt;table id=&quot;msgtab&quot; class=&quot;layui-table&quot; lay-filter=&quot;msgEvent&quot;&gt;&lt;/table&gt;
-				&lt;/div&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-
-	&lt;/body&gt;
-	&lt;script type=&quot;text/html&quot; id=&quot;barDemo&quot;&gt;
-		&lt;a class=&quot;layui-btn layui-btn-xs&quot; lay-event=&quot;edit&quot;&gt;回复&lt;/a&gt;
-		&lt;a class=&quot;layui-btn layui-btn-danger layui-btn-xs&quot; lay-event=&quot;del&quot;&gt;删除&lt;/a&gt;
-	&lt;/script&gt;
-	&lt;script type=&quot;text/html&quot; id=&quot;status_Tpl&quot;&gt;
-		{{#  if(d.status === 1){ }}
-    &lt;img src=&quot;img/sms_readed.png&quot; &gt;
-  {{#  } else { }}
-    &lt;img src=&quot;img/sms_unReaded.png&quot; &gt;
-  {{#  } }}
-&lt;/script&gt;
-&lt;script src=&quot;js/msgall.js&quot; type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;js/general.js&quot; type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
-&lt;/html&gt;
-
-</code></pre>
-<p>添加依赖的js(这里有点多，有些没用上，可以根据自己所需要进行添加)：</p>
-<pre><code class="language-js">//Demo
-layui.use('form', function(){
-  var form = layui.form;
-  
-  //监听提交
-  form.on('submit(formDemo)', function(data){
-    layer.msg(JSON.stringify(data.field));
-    return false;
-  });
-});
-
-layui.use('layedit', function(){
-  var layedit = layui.layedit;
-  layedit.build('textarea_new'); //建立编辑器
-});
-
-
-layui.use('upload', function(){
-  var upload = layui.upload;
-   
-  //执行实例
-  var uploadInst = upload.render({
-    elem: '#test1' //绑定元素
-    ,url: '/upload/' //上传接口
-    ,done: function(res){
-      //上传完毕回调
-    }
-    ,error: function(){
-      //请求异常回调
-    }
-  });
-});
-
-//注意：导航 依赖 element 模块，否则无法进行功能性操作
-layui.use('element', function() {
-	var element = layui.element;
-});
-
-
-
-layui.use('upload', function(){
-  var $ = layui.jquery
-  ,upload = layui.upload;
-  
-  //普通图片上传
-  var uploadInst = upload.render({
-    elem: '#test1'
-    ,url: '/upload/'
-    ,before: function(obj){
-      //预读本地文件示例，不支持ie8
-      obj.preview(function(index, file, result){
-        $('#demo1').attr('src', result); //图片链接（base64）
-      });
-    }
-    ,done: function(res){
-      //如果上传失败
-      if(res.code &gt; 0){
-        return layer.msg('上传失败');
-      }
-      //上传成功
-    }
-    ,error: function(){
-      //演示失败状态，并实现重传
-      var demoText = $('#demoText');
-      demoText.html('&lt;span style=&quot;color: #FF5722;&quot;&gt;上传失败&lt;/span&gt; &lt;a class=&quot;layui-btn layui-btn-xs demo-reload&quot;&gt;重试&lt;/a&gt;');
-      demoText.find('.demo-reload').on('click', function(){
-        uploadInst.upload();
-      });
-    }
-  });
-  
-  //多图片上传
-  upload.render({
-    elem: '#test2'
-    ,url: '/upload/'
-    ,multiple: true
-    ,before: function(obj){
-      //预读本地文件示例，不支持ie8
-      obj.preview(function(index, file, result){
-        $('#demo2').append('&lt;img src=&quot;'+ result +'&quot; alt=&quot;'+ file.name +'&quot; class=&quot;layui-upload-img&quot;&gt;')
-      });
-    }
-    ,done: function(res){
-      //上传完毕
-    }
-  });
-  
-  //指定允许上传的文件类型
-  upload.render({
-    elem: '#test3'
-    ,url: '/upload/'
-    ,accept: 'file' //普通文件
-    ,done: function(res){
-      console.log(res)
-    }
-  });
-  upload.render({ //允许上传的文件后缀
-    elem: '#test4'
-    ,url: '/upload/'
-    ,accept: 'file' //普通文件
-    ,exts: 'zip|rar|7z' //只允许上传压缩文件
-    ,done: function(res){
-      console.log(res)
-    }
-  });
-  upload.render({
-    elem: '#test5'
-    ,url: '/upload/'
-    ,accept: 'video' //视频
-    ,done: function(res){
-      console.log(res)
-    }
-  });
-  upload.render({
-    elem: '#test6'
-    ,url: '/upload/'
-    ,accept: 'audio' //音频
-    ,done: function(res){
-      console.log(res)
-    }
-  });
-  
-  //设定文件大小限制
-  upload.render({
-    elem: '#test7'
-    ,url: '/upload/'
-    ,size: 60 //限制文件大小，单位 KB
-    ,done: function(res){
-      console.log(res)
-    }
-  });
-  
-  //同时绑定多个元素，并将属性设定在元素上
-  upload.render({
-    elem: '.demoMore'
-    ,before: function(){
-      layer.tips('接口地址：'+ this.url, this.item, {tips: 1});
-    }
-    ,done: function(res, index, upload){
-      var item = this.item;
-      console.log(item); //获取当前触发上传的元素，layui 2.1.0 新增
-    }
-  })
-  
-  //选完文件后不自动上传
-  upload.render({
-    elem: '#test8'
-    ,url: '/upload/'
-    ,auto: false
-    //,multiple: true
-    ,bindAction: '#test9'
-    ,done: function(res){
-      console.log(res)
-    }
-  });
-  
-  //拖拽上传
-  upload.render({
-    elem: '#test10'
-    ,url: '/upload/'
-    ,done: function(res){
-      console.log(res)
-    }
-  });
-  
-  //多文件列表示例
-  var demoListView = $('#demoList')
-  ,uploadListIns = upload.render({
-    elem: '#testList'
-    ,url: '/upload/'
-    ,accept: 'file'
-    ,multiple: true
-    ,auto: false
-    ,bindAction: '#testListAction'
-    ,choose: function(obj){   
-      var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-      //读取本地文件
-      obj.preview(function(index, file, result){
-        var tr = $(['&lt;tr id=&quot;upload-'+ index +'&quot;&gt;'
-          ,'&lt;td&gt;'+ file.name +'&lt;/td&gt;'
-          ,'&lt;td&gt;'+ (file.size/1014).toFixed(1) +'kb&lt;/td&gt;'
-          ,'&lt;td&gt;等待上传&lt;/td&gt;'
-          ,'&lt;td&gt;'
-            ,'&lt;button class=&quot;layui-btn layui-btn-xs demo-reload layui-hide&quot;&gt;重传&lt;/button&gt;'
-            ,'&lt;button class=&quot;layui-btn layui-btn-xs layui-btn-danger demo-delete&quot;&gt;删除&lt;/button&gt;'
-          ,'&lt;/td&gt;'
-        ,'&lt;/tr&gt;'].join(''));
-        
-        //单个重传
-        tr.find('.demo-reload').on('click', function(){
-          obj.upload(index, file);
-        });
-        
-        //删除
-        tr.find('.demo-delete').on('click', function(){
-          delete files[index]; //删除对应的文件
-          tr.remove();
-          uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-        });
-        
-        demoListView.append(tr);
-      });
-    }
-    ,done: function(res, index, upload){
-      if(res.code == 0){ //上传成功
-        var tr = demoListView.find('tr#upload-'+ index)
-        ,tds = tr.children();
-        tds.eq(2).html('&lt;span style=&quot;color: #5FB878;&quot;&gt;上传成功&lt;/span&gt;');
-        tds.eq(3).html(''); //清空操作
-        return delete this.files[index]; //删除文件队列已经上传成功的文件
-      }
-      this.error(index, upload);
-    }
-    ,error: function(index, upload){
-      var tr = demoListView.find('tr#upload-'+ index)
-      ,tds = tr.children();
-      tds.eq(2).html('&lt;span style=&quot;color: #FF5722;&quot;&gt;上传失败&lt;/span&gt;');
-      tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
-    }
-  });
-  
-  //绑定原始文件域
-  upload.render({
-    elem: '#test20'
-    ,url: '/upload/'
-    ,done: function(res){
-      console.log(res)
-    }
-  });
-  
-});
-
-</code></pre>
-<p>json数据：</p>
-<pre><code class="language-json">{
-  &quot;code&quot;: 0,
-  &quot;message&quot;: &quot;&quot;, 
-  &quot;count&quot;: 100, 
-  &quot;data&quot;: 
-  [
-	  {&quot;id&quot;:1,&quot;status&quot;:1,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:2,&quot;status&quot;:0,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:3,&quot;status&quot;:1,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:4,&quot;status&quot;:0,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:5,&quot;status&quot;:0,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:6,&quot;status&quot;:0,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:7,&quot;status&quot;:0,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:8,&quot;status&quot;:1,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:9,&quot;status&quot;:1,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;},
-	  {&quot;id&quot;:10,&quot;status&quot;:0,&quot;title&quot;:&quot;题目一&quot;,&quot;time&quot;:&quot;2019.09.06&quot;}
-  ]
-}
-</code></pre>
-<p>js代码：</p>
-<pre><code class="language-javascript">layui.use('table', function() {
-	var table = layui.table;
-
-	//第一个实例
-	table.render({
-		elem: '#msgtab',
-		height: 512,
-		url: 'data/msg.json' //数据接口
-			,
-		page: true //开启分页
-			,
-		cols: [
-			[ //表头
-				{
-					field: 'id',
-					width: 80,
-					title: 'ID',
-					sort: true
-				}, {
-					field: 'status',
-					width: 100,
-					title: '状态',
-					templet: '#status_Tpl'
-				}, {
-					field: 'title',
-					width: 600,
-					title: '标题',
-					event: 'inmsg',
-					sort: true
-				}, {
-					field: 'operation',
-					width: 150,
-					toolbar: '#barDemo',
-					title: '操作'
-				}, {
-					field: 'time',
-					title: '时间',
-					minWidth: 150
-				}
-			]
-		]
-	});
-
-});
-
-
-layui.use('table', function() {
-	var table = layui.table;
-	//监听单元格事件
-	table.on('tool(msgEvent)', function(obj) {
-		var data = obj.data;
-		if (obj.event === 'inmsg') {
-			alert(data.id);
-			//ajax向服务器发送请求
-			// var ajax=XMLHttpRequest();
-		}
-		if (obj.event === 'del') {
-			layer.confirm('真的删除行么', function(index) {
-				obj.del();
-				layer.close(index);
-			});
-		} else if (obj.event === 'edit') {
-			
-		}
-	});
-	
-});
-
-
-
-</code></pre>
-<p>Layui官方（官方教程有很详细的使用教程）：</p>
-<p>https://www.layui.com/</p>
-<p>本周的总结就到这里</p>
 ]]></content>
     </entry>
 </feed>
