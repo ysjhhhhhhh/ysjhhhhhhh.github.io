@@ -1,0 +1,776 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mybatis | Gridea</title>
+<meta name="description" content="温故而知新" />
+<link rel="shortcut icon" href="https://ysjhhhhhhh.github.io/favicon.ico?v=1576138413093">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://ysjhhhhhhh.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://ysjhhhhhhh.github.io">
+  <img class="avatar" src="https://ysjhhhhhhh.github.io/images/avatar.png?v=1576138413093" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Mybatis
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-04-21
+              </span>
+              <span>
+                20 min read
+              </span>
+              
+                <a href="https://ysjhhhhhhh.github.io/tag/QNP_cGyqV" class="post-tag">
+                  # Gridea
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="data:image/jpeg;base64,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" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="mybatis">Mybatis</h1>
+<h2 id="mybatis简介">Mybatis简介</h2>
+<p>了解mybatis前先了解一下ORM 和 JPA的概念</p>
+<h3 id="orm">ORM</h3>
+<p>ORM（Object-Relationship-Mapping）：是对象关系映射的意思，它是一种思想，是指将数据库中的每一行数据用对象的形式表现出来。</p>
+<h3 id="jpa">JPA</h3>
+<p>JPA（Java-Persistence-API）：是Java持久化接口的意思，它是JavaEE关于ORM思想的一套标准接口，仅仅是一套接口，不是具体的实现。</p>
+<h3 id="什么是mybatis">什么是Mybatis?</h3>
+<blockquote>
+<p>MyBatis是一个实现了JPA规范的用来连接数据库并对其进行增删改查操作的开源框架 （就和传统的JDBC一样，就是个连接数据库的东西），其实，它底层就是一个JDBC封装的组件。MyBatis的前身是Ibatis，Ibatis创建与2002年最初为Apache下面的一个开源项目，2010迁移到google code下面并改名为MyBatis。</p>
+<p>MyBatis虽然实现了JPA但是它并不是一个完完全全的ORM组件，而是一个基于SQL开发的半ORM组件。</p>
+<p>而Hibernate是一个完完全全的ORM组件，它是完全基于对象来操作数据库中的记录，并不和MyBatis一样是一个假把式。</p>
+</blockquote>
+<h3 id="mybatis有什么优点">Mybatis有什么优点</h3>
+<blockquote>
+<p>简单易学，容易上手（相比于Hibernate） ---- 基于SQL编程<br>
+消除了JDBC大量冗余的代码，不需要手动开关连接<br>
+很好的与各种数据库兼容（因为MyBatis使用JDBC来连接数据库，所以只要JDBC支持的数据库MyBatis都支持，而JDB提供了可扩展性，所以只要这个数据库有针对Java的jar包就可以就可以与MyBatis兼容），开发人员不需要考虑数据库的差异性。<br>
+提供了很多第三方插件（分页插件 / 逆向工程）<br>
+能够与Spring很好的集成</p>
+</blockquote>
+<h2 id="mybatis环境搭建">MyBatis环境搭建</h2>
+<h3 id="maven项目下">Maven项目下</h3>
+<p>在pom.xml文件中添加依赖信息</p>
+<pre><code class="language-xml">&lt;!-- https://mvnrepository.com/artifact/org.mybatis/mybatis --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+      &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+      &lt;version&gt;x.x.x&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;!-- mybatis需要依赖jdbc --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;mysql&lt;/groupId&gt;
+      &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+      &lt;version&gt;5.1.47&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;!-- mybatis需要配置数据源，任选一种即可.如： --&gt;
+&lt;dependency&gt;
+      &lt;groupId&gt;com.mchange&lt;/groupId&gt;
+      &lt;artifactId&gt;c3p0&lt;/artifactId&gt;
+      &lt;version&gt;0.9.5.4&lt;/version&gt;
+    &lt;/dependency&gt;
+
+</code></pre>
+<h3 id="非maven项目下">非Maven项目下</h3>
+<p>引入相应的jar包</p>
+<blockquote>
+<ul>
+<li>mybatis-x.x.x.jar</li>
+<li>mysql-connector-java-5.1.47.jar</li>
+<li>c3p0-0.9.5.4.jar</li>
+</ul>
+</blockquote>
+<h3 id="配置jdbcproperties文件">配置jdbc.properties文件</h3>
+<pre><code class="language-properties">driverClass=com.mysql.jdbc.Driver
+jdbcUrl=jdbc:mysql://127.0.0.1:3306/test
+user=root
+password=root
+</code></pre>
+<h2 id="深入了解mybatis">深入了解MyBatis</h2>
+<h3 id="mybatis的配置文件和组件">MyBatis的配置文件和组件</h3>
+<h4 id="mybatis-configxml文件的配置">mybatis-config.xml文件的配置</h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+
+&lt;configuration&gt;
+    
+    &lt;!-- 引入外部配置文件 --&gt;
+    &lt;properties resource=&quot;&quot;&gt;&lt;/properties&gt;
+    
+    &lt;!-- typeAliases因为MyBatis配置中使用的类名是全限定类名，类名较长，可以配置别名 --&gt;
+    &lt;typeAliases&gt;
+    &lt;/typeAliases&gt;
+    
+    &lt;!-- MyBatis的环境配置，可以配置具体的事务管理和数据源 --&gt;
+    &lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;&gt;&lt;/transactionManager&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;${database.driver}&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;${database.url}&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;${database.username}&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;${database.password}&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+    
+    &lt;!-- 关联mapper映射 --&gt;
+    &lt;mappers&gt;
+        &lt;mapper resource=&quot;mybatis/mappers/StudentMapper.xml&quot;/&gt;
+    &lt;/mappers&gt;
+
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="sqlsessionfactory">SqlSessionFactory</h4>
+<p>SqlSessionFactory是MyBatis的关键对象,它是个单个数据库映射关系经过编译后的内存镜像.SqlSessionFactory对象的实例可以通过SqlSessionFactoryBuilder对象类获得,而SqlSessionFactoryBuilder则可以从XML配置文件或一个预先定制的Configuration的实例构建出SqlSessionFactory的实例.每一个MyBatis的应用程序都以一个SqlSessionFactory对象的实例为核心.同时SqlSessionFactory也是线程安全的,SqlSessionFactory一旦被创建,应该在应用执行期间都存在.在应用运行期间不要重复创建多次,建议使用单例模式.SqlSessionFactory是创建SqlSession的工厂.</p>
+<h4 id="sqlsession">SqlSession</h4>
+<p>SqlSession是MyBatis的关键对象,是执行持久化操作的独享,类似于JDBC中的Connection.它是应用程序与持久层之间执行交互操作的一个单线程对象,也是MyBatis执行持久化操作的关键对象.SqlSession对象完全包含以数据库为背景的所有执行SQL操作的方法,它的底层封装了JDBC连接,可以用SqlSession实例来直接执行被映射的SQL语句.每个线程都应该有它自己的SqlSession实例.SqlSession的实例不能被共享,同时SqlSession也是线程不安全的,绝对不能讲SqlSeesion实例的引用放在一个类的静态字段甚至是实例字段中.也绝不能将SqlSession实例的引用放在任何类型的管理范围中,比如Servlet当中的HttpSession对象中.使用完SqlSeesion之后关闭Session很重要,应该确保使用finally块来关闭它.</p>
+<h4 id="mapper">Mapper</h4>
+<p>Mapper接口和Mapper的xml文件是一一对应的。</p>
+<p>具体的sql语句写在Mapper.xml中的insert delete select update标签内，只需做好相应的映射。Mybatis就会自动创建具体的接口实现类实现具体的方法供我们调用</p>
+<p>绑定Mapper映射需要注意以下几点：</p>
+<blockquote>
+<ul>
+<li>mapper.xml配置的namespace要是对应的接口的全限定接口名</li>
+<li>mapper.xml配置的相应insert delete select update标签的id和接口中的方法名一一对应</li>
+<li>select标签一定要设置resultType属性的值为要返回的查询结果的类型，或者指定对应的resultMap结果集映射</li>
+</ul>
+</blockquote>
+<h3 id="具体的使用mybatis步骤">具体的使用Mybatis步骤</h3>
+<h4 id="先创建实体bean">先创建实体bean</h4>
+<h5 id="girl类">girl类</h5>
+<pre><code class="language-java">package com.lanou3g.bean;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class Girl {
+    private Integer id;
+    private String name;
+    private Integer king_id;
+}
+
+</code></pre>
+<h5 id="queen类">queen类</h5>
+<pre><code class="language-java">package com.lanou3g.bean;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class Queen {
+    private Integer id;
+    private String name;
+    private Integer king_id;
+}
+</code></pre>
+<h5 id="king类">king类</h5>
+<pre><code class="language-java">package com.lanou3g.bean;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
+public class King {
+    private Integer id;
+    private String name;
+    private Queen queen;
+    private List&lt;Girl&gt; girls;
+}
+
+</code></pre>
+<h4 id="新建一个mybatis-configxml配置文件并进行相应的配置">新建一个mybatis-config.xml配置文件并进行相应的配置</h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        &lt;!DOCTYPE configuration
+                PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+                &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    &lt;!-- 引入外部properties文件 --&gt;
+&lt;properties resource=&quot;jdbc.properties&quot;&gt;&lt;/properties&gt;
+&lt;typeAliases&gt;
+&lt;!-- 为指定包中的类起别名 --&gt;
+    &lt;package name=&quot;com.lanou3g.bean&quot;/&gt;
+&lt;/typeAliases&gt;
+&lt;environments default=&quot;development&quot;&gt;
+    &lt;environment id=&quot;development&quot;&gt;
+        &lt;transactionManager type=&quot;JDBC&quot;&gt;&lt;/transactionManager&gt;
+        &lt;dataSource type=&quot;POOLED&quot;&gt;
+            &lt;property name=&quot;driver&quot; value=&quot;${jdbc.driver}&quot;/&gt;
+            &lt;property name=&quot;url&quot; value=&quot;${jdbc.url}&quot;/&gt;
+            &lt;property name=&quot;username&quot; value=&quot;${jdbc.username}&quot;/&gt;
+            &lt;property name=&quot;password&quot; value=&quot;${jdbc.password}&quot;/&gt;
+        &lt;/dataSource&gt;
+    &lt;/environment&gt;
+&lt;/environments&gt;
+    
+&lt;!-- 关联mapper映射 --&gt;
+&lt;mappers&gt;
+    &lt;mapper resource=&quot;mybatis/mappers/StudentMapper.xml&quot;/&gt;
+&lt;/mappers&gt;
+
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="创建mapper接口">创建mapper接口</h4>
+<pre><code class="language-java">package com.lanou3g.dao;
+
+import com.lanou3g.bean.King;
+
+public interface KingDao {
+    King getKingById(Integer id);
+}
+
+</code></pre>
+<h4 id="创建mapperxml">创建mapper.xml</h4>
+<h5 id="mapperxml文件中resultmap">mapper.xml文件中resultMap</h5>
+<p>为什么使用resultMap：当查询出来的字段名和对象中的属性名不一致的情况就没办法使用resultType来默认映射</p>
+<blockquote>
+<p>每个具体的标签的column属性代表在数据库中查到的字段，最后映射结果的时候会映射到实体类中名为property对应字符的属性中（如：一个国王有一个王后和多个妃子）</p>
+<ul>
+<li>id 子标签是对应数据库中主键且自增的字段</li>
+<li>result 子标签对应普通字段</li>
+<li>association 子标签用来处理一对一关系映射（用来处理王后）</li>
+<li>collection 字标签用来处理一对多关系映射（用来处理妃子）</li>
+</ul>
+</blockquote>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.lanou3g.dao.KingDao&quot;&gt;
+
+    &lt;resultMap id=&quot;kingMap&quot; type=&quot;king&quot;&gt;
+        &lt;id column=&quot;kid&quot; property=&quot;id&quot;/&gt;
+        &lt;result column=&quot;kname&quot; property=&quot;name&quot;/&gt;
+        &lt;association property=&quot;queen&quot; javaType=&quot;queen&quot; columnPrefix=&quot;q_&quot;&gt;
+            &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+            &lt;result column=&quot;name&quot; property=&quot;name&quot;/&gt;
+            &lt;result column=&quot;king_id&quot; property=&quot;king_id&quot;/&gt;
+        &lt;/association&gt;
+        &lt;collection property=&quot;girls&quot; ofType=&quot;girl&quot; columnPrefix=&quot;g_&quot;&gt;
+            &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+            &lt;result column=&quot;name&quot; property=&quot;name&quot;/&gt;
+            &lt;result column=&quot;king_id&quot; property=&quot;king_id&quot;/&gt;
+        &lt;/collection&gt;
+    &lt;/resultMap&gt;
+
+    &lt;!-- 通过此查询语句查询出king的信息以及king的queen的信息和众多girl的信息 --&gt;
+    &lt;select id=&quot;getKingById&quot; resultMap=&quot;kingMap&quot;&gt;
+        select
+        king.id kid,
+        king.name kname,
+        q.id q_id,
+        q.`name` q_name,
+        q.king_id q_king_id,
+        g.id g_id,
+        g.`name` g_name,
+        g.king_id g_king_id
+        from king
+        LEFT JOIN queen q ON king.id = q.king_id
+        LEFT JOIN girl g on q.king_id = g.king_id
+        where g.king_id = #{id}
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h4 id="获取mybatis文件的输入流">获取mybatis文件的输入流</h4>
+<pre><code class="language-java">InputStream is = Resources.getResourceAsStream(&quot;mybatis-config.xml&quot;);
+</code></pre>
+<h4 id="获取sqlsessionfactory对象">获取SqlSessionFactory对象</h4>
+<pre><code class="language-java">SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is)
+</code></pre>
+<h4 id="获取sqlsession对象">获取SqlSession对象</h4>
+<pre><code class="language-java">//添加参数true设置事务自动提交，默认不会自动提交
+SqlSession sqlSession = sqlSessionFactory.openSession(true);
+</code></pre>
+<h4 id="获取mybatis自动生成的接口的具体实现类并执行方法接收返回值">获取mybatis自动生成的接口的具体实现类并执行方法，接收返回值。</h4>
+<pre><code class="language-java">King king = sqlSession.getMapper(KingDao.class).getKingById(1);
+</code></pre>
+<h3 id="和的作用和区别">#{}和${}的作用和区别</h3>
+<h4 id="作用">作用</h4>
+<p>通过#{}和${}取出调用方法时传入的参数，并将其应用在sql语句中</p>
+<h4 id="区别">区别</h4>
+<blockquote>
+<p>#{}是预编译处理，${}是字符串替换。</p>
+<p>（1）mybatis在处理#{}时，会将sql中的#{}替换为?号，调用PreparedStatement的set方法来赋值。</p>
+<p>（2）mybatis在处理<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow></mrow><mi mathvariant="normal">时</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">就</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">把</mi></mrow><annotation encoding="application/x-tex">{}时，就是把</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mord"></span><span class="mord cjk_fallback">时</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">就</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">把</span></span></span></span>{}替换成变量的值。</p>
+<p>（3）使用#{}可以有效的防止SQL注入，提高系统安全性。原因在于：预编译机制。</p>
+<p>预编译是提前对SQL语句进行预编译，而其后注入的参数将不会再进行SQL编译。我们知道，SQL注入是发生在编译的过程中，因为恶意注入了某些特殊字符，最后被编译成了恶意的执行操作。而预编译机制则可以很好的防止SQL注入。预编译完成之后，SQL的结构已经固定，即便用户输入非法参数，也不会对SQL的结构产生影响，从而避免了潜在的安全风险。</p>
+</blockquote>
+<h3 id="动态sql如何使用">动态sql如何使用</h3>
+<h5 id="什么是动态sql">什么是动态sql</h5>
+<blockquote>
+<p>动态SQL是MyBatis的强大特性之一，MyBatis3采用了功能强大的基于OGNL的表达式来完成动态SQL。</p>
+</blockquote>
+<h5 id="动态sql的作用">动态sql的作用</h5>
+<blockquote>
+<p>MyBatis的动态SQL主要就是为了解决手动拼接SQL的麻烦。</p>
+</blockquote>
+<h5 id="动态sql有哪些标签">动态sql有哪些标签</h5>
+<figure data-type="image" tabindex="1"><img src="https://images2017.cnblogs.com/blog/1240732/201711/1240732-20171101153219685-1084206827.png" alt=""></figure>
+<h6 id="if标签的使用">if标签的使用</h6>
+<pre><code class="language-xml">&lt;select id=&quot;queryStudentById&quot; resultType=&quot;com.lanou3g.bean.Student&quot; &gt;
+        select * from stu 
+        where name = #{name}
+    	&lt;if test=&quot;sex!=null&quot;&gt;
+            and sex = #{sex}
+        &lt;/if&gt;
+&lt;/select&gt;
+</code></pre>
+<h6 id="choose标签的使用">choose标签的使用</h6>
+<pre><code class="language-xml">select * from stu where 1=1
+      &lt;choose&gt;
+           &lt;when test=&quot;name !=null and name !=''&quot;&gt;
+                       and name = #{username}
+           &lt;/when&gt;
+           &lt;when test=&quot;sex !=null and sex !=''&quot;&gt;
+                       and sex= #{sex}
+           &lt;/when&gt;
+           &lt;otherwise&gt;
+                   
+           &lt;/otherwise&gt;
+      &lt;/choose&gt;
+</code></pre>
+<h6 id="where标签的使用">where标签的使用</h6>
+<pre><code class="language-xml">select * from stu
+&lt;where&gt;
+     &lt;if test=&quot;name !=null and name !=''&quot;&gt;
+           and username = #{username}
+     &lt;/if&gt;
+     &lt;if test=&quot;sex !=null and sex !=''&quot;&gt;
+           and sex= #{sex}
+     &lt;/if&gt;
+&lt;/where&gt;
+</code></pre>
+<h6 id="foreach标签的使用">foreach标签的使用</h6>
+<pre><code class="language-xml">select * from stu where id in
+      &lt;foreach item=&quot;id&quot; index=&quot;index&quot; collection=&quot;list&quot; 
+                      open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot;&gt;
+             #{id}
+      &lt;/foreach&gt;
+</code></pre>
+<h3 id="批量插入">批量插入</h3>
+<h4 id="通过foreach子标签">通过<foreach>子标签</h4>
+<pre><code class="language-xml">&lt;!-- 传入的要是list --&gt;
+&lt;insert id=&quot;insertStudentBatch1&quot;&gt;
+        insert into student (sno,sname,ssex,sage)
+        values
+        &lt;foreach collection=&quot;list&quot; item=&quot;stu&quot; separator=&quot;,&quot;&gt;
+            (#{stu.sno},#{stu.sname},#{stu.ssex},#{stu.sage})
+        &lt;/foreach&gt;
+    &lt;/insert&gt;
+</code></pre>
+<p>可能会出现sql语句过大插入失败的结果</p>
+<h4 id="通过设置executortypebatch属性">通过设置ExecutorType.BATCH属性</h4>
+<pre><code class="language-java">SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, true);
+</code></pre>
+<p>每次只插入一条</p>
+<pre><code class="language-xml">&lt;insert id=&quot;insertStudentBatch2&quot;&gt;
+        insert into student (sno,sname,ssex,sage)
+        value (#{sno},#{sname},#{ssex},#{sage})
+&lt;/insert&gt;
+</code></pre>
+<p>循环插入</p>
+<pre><code class="language-java">    private static void insert2() throws Exception{
+        InputStream is = Resources.getResourceAsStream(&quot;mybatis-config.xml&quot;);
+
+        SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
+
+        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(is);
+
+//        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, true);
+
+        StudentDao mapper = sqlSession.getMapper(StudentDao.class);
+
+        List&lt;Student&gt; stuList = App.getStuList();
+
+        int total = 10;
+
+        int count = 0 ;
+
+        List&lt;BatchResult&gt; br = new ArrayList&lt;&gt;();
+
+        for (Student student: stuList) {
+            mapper.insertStudentBatch2(student);
+            count++;
+            System.out.println(&quot;count:&quot;+count);
+            if (count%total==0){
+                List&lt;BatchResult&gt; batchResults = sqlSession.flushStatements();
+                br.addAll(batchResults);
+            }
+        }
+
+        List&lt;BatchResult&gt; batchResults = sqlSession.flushStatements();
+        br.addAll(batchResults);
+
+        int a = 0;
+        for (BatchResult b:br
+             ) {
+            System.out.println(222);
+            int[] c = b.getUpdateCounts();
+            for (int cc: c
+            ) {
+                System.out.println(cc);
+                a+=cc;
+            }
+        }
+
+        System.out.println(&quot;影响行数为：&quot; + a);
+    }
+</code></pre>
+<p>可以通过sqlSession.flushStatements();刷新将数据插入到数据库</p>
+<h3 id="缓存">缓存</h3>
+<h4 id="一级缓存本地缓存">一级缓存（本地缓存）</h4>
+<p>一级缓存默认开启，范围是同一个SqlSession</p>
+<p>同一个SqlSession内执行同样一条查询语句时先访问缓存，如果命中缓存则不再去数据库中查询</p>
+<p>关闭一级缓存，设置localCacheScope为STATEMENT就可以了</p>
+<h4 id="二级缓存">二级缓存</h4>
+<p>二级缓存可以跨SqlSession</p>
+<p>开启二级缓存的方法</p>
+<p>在mybatis配置文件中加入</p>
+<pre><code class="language-xml">&lt;settings&gt; 
+    &lt;!-- 开启全局二级缓存 --&gt;  
+    &lt;setting name=&quot;cacheEnabled&quot; value=&quot;true&quot;/&gt; 
+&lt;/settings&gt; 
+</code></pre>
+<p>在mapper映射文件中加入</p>
+<pre><code class="language-xml">&lt;mapper namespace=&quot;com.lanou3g.dao.KingDao&quot;&gt;
+&lt;cache /&gt;
+&lt;/mapper&gt;
+</code></pre>
+<p>关闭指定语句不适用二级缓存</p>
+<pre><code class="language-xml">&lt;select id=&quot;queryStudentById&quot; resultType=&quot;com.lanou3g.bean.Student&quot; useCache=&quot;false&quot;&gt;
+        select * from stu 
+        where name = #{name}
+&lt;/select&gt;
+</code></pre>
+<p>注意事项</p>
+<p>因为缓存要做到持久化就必须存入物理硬盘，因此对应的类要实现可序列化接口</p>
+<pre><code class="language-java">public class Student implements Serializable { }
+</code></pre>
+<h1 id="spring-和mybatis整合">Spring 和MyBatis整合</h1>
+<h2 id="加入整合jar包">加入整合jar包</h2>
+<pre><code class="language-xml">&lt;!-- mybatis-spring整合包 --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+    &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+    &lt;version&gt;2.0.1&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;!-- Spring和数据源相关依赖 --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+    &lt;version&gt;5.2.0.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;5.2.0.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+</code></pre>
+<h2 id="对应的applicationcontextxml配置">对应的applicationContext.xml配置</h2>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;
+       xmlns:mybatis=&quot;http://mybatis.org/schema/mybatis-spring&quot;
+       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://mybatis.org/schema/mybatis-spring
+      http://mybatis.org/schema/mybatis-spring.xsd
+      http://www.springframework.org/schema/aop
+      https://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
+
+
+
+    &lt;aop:aspectj-autoproxy  expose-proxy=&quot;true&quot; proxy-target-class=&quot;true&quot;/&gt;
+
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;/&gt;
+
+    &lt;bean id=&quot;sqlSessionFactoryBean&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;!-- 注入数据源 --&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+        &lt;!-- 设置mybatis核心配置文件路径（可选） --&gt;
+        &lt;property name=&quot;configLocation&quot; value=&quot;mybatis-config.xml&quot; /&gt;
+        &lt;!-- 配置mybatis xml映射文件位置（如果Mapper是用注解配置的，这里就不用设置此属性了） --&gt;
+&lt;!--        &lt;property name=&quot;mapperLocations&quot; value=&quot;classpath:/mabatis/mappers/*&quot; /&gt;--&gt;
+    &lt;/bean&gt;
+    
+    &lt;mybatis:scan base-package=&quot;com.lanou3g.mapper&quot;/&gt;
+
+    &lt;context:component-scan base-package=&quot;com.lanou3g&quot; resource-pattern=&quot;com.lanou3g.mapper&quot;/&gt;
+
+
+&lt;/beans&gt;
+</code></pre>
+<h2 id="添加事务">添加事务</h2>
+<pre><code class="language-xml">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;service&quot; class=&quot;com.lanou3g.service.MyService&quot;/&gt;
+
+    &lt;tx:advice id=&quot;myadc&quot; transaction-manager=&quot;transactionManager&quot;&gt;
+        &lt;tx:attributes&gt;
+            &lt;tx:method name=&quot;*&quot; rollback-for=&quot;Exception&quot; /&gt;
+        &lt;/tx:attributes&gt;
+    &lt;/tx:advice&gt;
+
+    &lt;aop:config&gt;
+        &lt;aop:pointcut id=&quot;myCut&quot; expression=&quot;execution(* com.lanou3g.service.*.*(..))&quot;/&gt;
+        &lt;aop:advisor advice-ref=&quot;myadc&quot; pointcut-ref=&quot;myCut&quot;/&gt;
+    &lt;/aop:config&gt;
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#mybatis">Mybatis</a>
+<ul>
+<li><a href="#mybatis%E7%AE%80%E4%BB%8B">Mybatis简介</a>
+<ul>
+<li><a href="#orm">ORM</a></li>
+<li><a href="#jpa">JPA</a></li>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AFmybatis">什么是Mybatis?</a></li>
+<li><a href="#mybatis%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%82%B9">Mybatis有什么优点</a></li>
+</ul>
+</li>
+<li><a href="#mybatis%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">MyBatis环境搭建</a>
+<ul>
+<li><a href="#maven%E9%A1%B9%E7%9B%AE%E4%B8%8B">Maven项目下</a></li>
+<li><a href="#%E9%9D%9Emaven%E9%A1%B9%E7%9B%AE%E4%B8%8B">非Maven项目下</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AEjdbcproperties%E6%96%87%E4%BB%B6">配置jdbc.properties文件</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mybatis">深入了解MyBatis</a>
+<ul>
+<li><a href="#mybatis%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%92%8C%E7%BB%84%E4%BB%B6">MyBatis的配置文件和组件</a>
+<ul>
+<li><a href="#mybatis-configxml%E6%96%87%E4%BB%B6%E7%9A%84%E9%85%8D%E7%BD%AE">mybatis-config.xml文件的配置</a></li>
+<li><a href="#sqlsessionfactory">SqlSessionFactory</a></li>
+<li><a href="#sqlsession">SqlSession</a></li>
+<li><a href="#mapper">Mapper</a></li>
+</ul>
+</li>
+<li><a href="#%E5%85%B7%E4%BD%93%E7%9A%84%E4%BD%BF%E7%94%A8mybatis%E6%AD%A5%E9%AA%A4">具体的使用Mybatis步骤</a>
+<ul>
+<li><a href="#%E5%85%88%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BD%93bean">先创建实体bean</a>
+<ul>
+<li><a href="#girl%E7%B1%BB">girl类</a></li>
+<li><a href="#queen%E7%B1%BB">queen类</a></li>
+<li><a href="#king%E7%B1%BB">king类</a></li>
+</ul>
+</li>
+<li><a href="#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AAmybatis-configxml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%B9%B6%E8%BF%9B%E8%A1%8C%E7%9B%B8%E5%BA%94%E7%9A%84%E9%85%8D%E7%BD%AE">新建一个mybatis-config.xml配置文件并进行相应的配置</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BAmapper%E6%8E%A5%E5%8F%A3">创建mapper接口</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BAmapperxml">创建mapper.xml</a>
+<ul>
+<li><a href="#mapperxml%E6%96%87%E4%BB%B6%E4%B8%ADresultmap">mapper.xml文件中resultMap</a></li>
+</ul>
+</li>
+<li><a href="#%E8%8E%B7%E5%8F%96mybatis%E6%96%87%E4%BB%B6%E7%9A%84%E8%BE%93%E5%85%A5%E6%B5%81">获取mybatis文件的输入流</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96sqlsessionfactory%E5%AF%B9%E8%B1%A1">获取SqlSessionFactory对象</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96sqlsession%E5%AF%B9%E8%B1%A1">获取SqlSession对象</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96mybatis%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%9A%84%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%E7%B1%BB%E5%B9%B6%E6%89%A7%E8%A1%8C%E6%96%B9%E6%B3%95%E6%8E%A5%E6%94%B6%E8%BF%94%E5%9B%9E%E5%80%BC">获取mybatis自动生成的接口的具体实现类并执行方法，接收返回值。</a></li>
+</ul>
+</li>
+<li><a href="#%E5%92%8C%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%8C%BA%E5%88%AB">#{}和${}的作用和区别</a>
+<ul>
+<li><a href="#%E4%BD%9C%E7%94%A8">作用</a></li>
+<li><a href="#%E5%8C%BA%E5%88%AB">区别</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8A%A8%E6%80%81sql%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8">动态sql如何使用</a><br>
+*
+<ul>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8A%A8%E6%80%81sql">什么是动态sql</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81sql%E7%9A%84%E4%BD%9C%E7%94%A8">动态sql的作用</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81sql%E6%9C%89%E5%93%AA%E4%BA%9B%E6%A0%87%E7%AD%BE">动态sql有哪些标签</a>
+<ul>
+<li><a href="#if%E6%A0%87%E7%AD%BE%E7%9A%84%E4%BD%BF%E7%94%A8">if标签的使用</a></li>
+<li><a href="#choose%E6%A0%87%E7%AD%BE%E7%9A%84%E4%BD%BF%E7%94%A8">choose标签的使用</a></li>
+<li><a href="#where%E6%A0%87%E7%AD%BE%E7%9A%84%E4%BD%BF%E7%94%A8">where标签的使用</a></li>
+<li><a href="#foreach%E6%A0%87%E7%AD%BE%E7%9A%84%E4%BD%BF%E7%94%A8">foreach标签的使用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5">批量插入</a>
+<ul>
+<li><a href="#%E9%80%9A%E8%BF%87foreach%E5%AD%90%E6%A0%87%E7%AD%BE">通过<foreach>子标签</a></li>
+<li><a href="#%E9%80%9A%E8%BF%87%E8%AE%BE%E7%BD%AEexecutortypebatch%E5%B1%9E%E6%80%A7">通过设置ExecutorType.BATCH属性</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BC%93%E5%AD%98">缓存</a>
+<ul>
+<li><a href="#%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98">一级缓存（本地缓存）</a></li>
+<li><a href="#%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98">二级缓存</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-%E5%92%8Cmybatis%E6%95%B4%E5%90%88">Spring 和MyBatis整合</a>
+<ul>
+<li><a href="#%E5%8A%A0%E5%85%A5%E6%95%B4%E5%90%88jar%E5%8C%85">加入整合jar包</a></li>
+<li><a href="#%E5%AF%B9%E5%BA%94%E7%9A%84applicationcontextxml%E9%85%8D%E7%BD%AE">对应的applicationContext.xml配置</a></li>
+<li><a href="#%E6%B7%BB%E5%8A%A0%E4%BA%8B%E5%8A%A1">添加事务</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://ysjhhhhhhh.github.io/post/spring-kuang-jia">
+              <h3 class="post-title">
+                Spring框架
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://ysjhhhhhhh.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

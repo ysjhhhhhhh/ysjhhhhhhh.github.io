@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-12T08:00:49.056Z</updated>
+    <updated>2019-12-12T08:14:20.087Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,528 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Mybatis]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/mybatis</id>
+        <link href="https://ysjhhhhhhh.github.io/post/mybatis">
+        </link>
+        <updated>2018-04-21T05:12:11.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="mybatis">Mybatis</h1>
+<h2 id="mybatis简介">Mybatis简介</h2>
+<p>了解mybatis前先了解一下ORM 和 JPA的概念</p>
+<h3 id="orm">ORM</h3>
+<p>ORM（Object-Relationship-Mapping）：是对象关系映射的意思，它是一种思想，是指将数据库中的每一行数据用对象的形式表现出来。</p>
+<h3 id="jpa">JPA</h3>
+<p>JPA（Java-Persistence-API）：是Java持久化接口的意思，它是JavaEE关于ORM思想的一套标准接口，仅仅是一套接口，不是具体的实现。</p>
+<h3 id="什么是mybatis">什么是Mybatis?</h3>
+<blockquote>
+<p>MyBatis是一个实现了JPA规范的用来连接数据库并对其进行增删改查操作的开源框架 （就和传统的JDBC一样，就是个连接数据库的东西），其实，它底层就是一个JDBC封装的组件。MyBatis的前身是Ibatis，Ibatis创建与2002年最初为Apache下面的一个开源项目，2010迁移到google code下面并改名为MyBatis。</p>
+<p>MyBatis虽然实现了JPA但是它并不是一个完完全全的ORM组件，而是一个基于SQL开发的半ORM组件。</p>
+<p>而Hibernate是一个完完全全的ORM组件，它是完全基于对象来操作数据库中的记录，并不和MyBatis一样是一个假把式。</p>
+</blockquote>
+<h3 id="mybatis有什么优点">Mybatis有什么优点</h3>
+<blockquote>
+<p>简单易学，容易上手（相比于Hibernate） ---- 基于SQL编程<br>
+消除了JDBC大量冗余的代码，不需要手动开关连接<br>
+很好的与各种数据库兼容（因为MyBatis使用JDBC来连接数据库，所以只要JDBC支持的数据库MyBatis都支持，而JDB提供了可扩展性，所以只要这个数据库有针对Java的jar包就可以就可以与MyBatis兼容），开发人员不需要考虑数据库的差异性。<br>
+提供了很多第三方插件（分页插件 / 逆向工程）<br>
+能够与Spring很好的集成</p>
+</blockquote>
+<h2 id="mybatis环境搭建">MyBatis环境搭建</h2>
+<h3 id="maven项目下">Maven项目下</h3>
+<p>在pom.xml文件中添加依赖信息</p>
+<pre><code class="language-xml">&lt;!-- https://mvnrepository.com/artifact/org.mybatis/mybatis --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+      &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+      &lt;version&gt;x.x.x&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;!-- mybatis需要依赖jdbc --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;mysql&lt;/groupId&gt;
+      &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+      &lt;version&gt;5.1.47&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;!-- mybatis需要配置数据源，任选一种即可.如： --&gt;
+&lt;dependency&gt;
+      &lt;groupId&gt;com.mchange&lt;/groupId&gt;
+      &lt;artifactId&gt;c3p0&lt;/artifactId&gt;
+      &lt;version&gt;0.9.5.4&lt;/version&gt;
+    &lt;/dependency&gt;
+
+</code></pre>
+<h3 id="非maven项目下">非Maven项目下</h3>
+<p>引入相应的jar包</p>
+<blockquote>
+<ul>
+<li>mybatis-x.x.x.jar</li>
+<li>mysql-connector-java-5.1.47.jar</li>
+<li>c3p0-0.9.5.4.jar</li>
+</ul>
+</blockquote>
+<h3 id="配置jdbcproperties文件">配置jdbc.properties文件</h3>
+<pre><code class="language-properties">driverClass=com.mysql.jdbc.Driver
+jdbcUrl=jdbc:mysql://127.0.0.1:3306/test
+user=root
+password=root
+</code></pre>
+<h2 id="深入了解mybatis">深入了解MyBatis</h2>
+<h3 id="mybatis的配置文件和组件">MyBatis的配置文件和组件</h3>
+<h4 id="mybatis-configxml文件的配置">mybatis-config.xml文件的配置</h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+
+&lt;configuration&gt;
+    
+    &lt;!-- 引入外部配置文件 --&gt;
+    &lt;properties resource=&quot;&quot;&gt;&lt;/properties&gt;
+    
+    &lt;!-- typeAliases因为MyBatis配置中使用的类名是全限定类名，类名较长，可以配置别名 --&gt;
+    &lt;typeAliases&gt;
+    &lt;/typeAliases&gt;
+    
+    &lt;!-- MyBatis的环境配置，可以配置具体的事务管理和数据源 --&gt;
+    &lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;&gt;&lt;/transactionManager&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;${database.driver}&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;${database.url}&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;${database.username}&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;${database.password}&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+    
+    &lt;!-- 关联mapper映射 --&gt;
+    &lt;mappers&gt;
+        &lt;mapper resource=&quot;mybatis/mappers/StudentMapper.xml&quot;/&gt;
+    &lt;/mappers&gt;
+
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="sqlsessionfactory">SqlSessionFactory</h4>
+<p>SqlSessionFactory是MyBatis的关键对象,它是个单个数据库映射关系经过编译后的内存镜像.SqlSessionFactory对象的实例可以通过SqlSessionFactoryBuilder对象类获得,而SqlSessionFactoryBuilder则可以从XML配置文件或一个预先定制的Configuration的实例构建出SqlSessionFactory的实例.每一个MyBatis的应用程序都以一个SqlSessionFactory对象的实例为核心.同时SqlSessionFactory也是线程安全的,SqlSessionFactory一旦被创建,应该在应用执行期间都存在.在应用运行期间不要重复创建多次,建议使用单例模式.SqlSessionFactory是创建SqlSession的工厂.</p>
+<h4 id="sqlsession">SqlSession</h4>
+<p>SqlSession是MyBatis的关键对象,是执行持久化操作的独享,类似于JDBC中的Connection.它是应用程序与持久层之间执行交互操作的一个单线程对象,也是MyBatis执行持久化操作的关键对象.SqlSession对象完全包含以数据库为背景的所有执行SQL操作的方法,它的底层封装了JDBC连接,可以用SqlSession实例来直接执行被映射的SQL语句.每个线程都应该有它自己的SqlSession实例.SqlSession的实例不能被共享,同时SqlSession也是线程不安全的,绝对不能讲SqlSeesion实例的引用放在一个类的静态字段甚至是实例字段中.也绝不能将SqlSession实例的引用放在任何类型的管理范围中,比如Servlet当中的HttpSession对象中.使用完SqlSeesion之后关闭Session很重要,应该确保使用finally块来关闭它.</p>
+<h4 id="mapper">Mapper</h4>
+<p>Mapper接口和Mapper的xml文件是一一对应的。</p>
+<p>具体的sql语句写在Mapper.xml中的insert delete select update标签内，只需做好相应的映射。Mybatis就会自动创建具体的接口实现类实现具体的方法供我们调用</p>
+<p>绑定Mapper映射需要注意以下几点：</p>
+<blockquote>
+<ul>
+<li>mapper.xml配置的namespace要是对应的接口的全限定接口名</li>
+<li>mapper.xml配置的相应insert delete select update标签的id和接口中的方法名一一对应</li>
+<li>select标签一定要设置resultType属性的值为要返回的查询结果的类型，或者指定对应的resultMap结果集映射</li>
+</ul>
+</blockquote>
+<h3 id="具体的使用mybatis步骤">具体的使用Mybatis步骤</h3>
+<h4 id="先创建实体bean">先创建实体bean</h4>
+<h5 id="girl类">girl类</h5>
+<pre><code class="language-java">package com.lanou3g.bean;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class Girl {
+    private Integer id;
+    private String name;
+    private Integer king_id;
+}
+
+</code></pre>
+<h5 id="queen类">queen类</h5>
+<pre><code class="language-java">package com.lanou3g.bean;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class Queen {
+    private Integer id;
+    private String name;
+    private Integer king_id;
+}
+</code></pre>
+<h5 id="king类">king类</h5>
+<pre><code class="language-java">package com.lanou3g.bean;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
+public class King {
+    private Integer id;
+    private String name;
+    private Queen queen;
+    private List&lt;Girl&gt; girls;
+}
+
+</code></pre>
+<h4 id="新建一个mybatis-configxml配置文件并进行相应的配置">新建一个mybatis-config.xml配置文件并进行相应的配置</h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        &lt;!DOCTYPE configuration
+                PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+                &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    &lt;!-- 引入外部properties文件 --&gt;
+&lt;properties resource=&quot;jdbc.properties&quot;&gt;&lt;/properties&gt;
+&lt;typeAliases&gt;
+&lt;!-- 为指定包中的类起别名 --&gt;
+    &lt;package name=&quot;com.lanou3g.bean&quot;/&gt;
+&lt;/typeAliases&gt;
+&lt;environments default=&quot;development&quot;&gt;
+    &lt;environment id=&quot;development&quot;&gt;
+        &lt;transactionManager type=&quot;JDBC&quot;&gt;&lt;/transactionManager&gt;
+        &lt;dataSource type=&quot;POOLED&quot;&gt;
+            &lt;property name=&quot;driver&quot; value=&quot;${jdbc.driver}&quot;/&gt;
+            &lt;property name=&quot;url&quot; value=&quot;${jdbc.url}&quot;/&gt;
+            &lt;property name=&quot;username&quot; value=&quot;${jdbc.username}&quot;/&gt;
+            &lt;property name=&quot;password&quot; value=&quot;${jdbc.password}&quot;/&gt;
+        &lt;/dataSource&gt;
+    &lt;/environment&gt;
+&lt;/environments&gt;
+    
+&lt;!-- 关联mapper映射 --&gt;
+&lt;mappers&gt;
+    &lt;mapper resource=&quot;mybatis/mappers/StudentMapper.xml&quot;/&gt;
+&lt;/mappers&gt;
+
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="创建mapper接口">创建mapper接口</h4>
+<pre><code class="language-java">package com.lanou3g.dao;
+
+import com.lanou3g.bean.King;
+
+public interface KingDao {
+    King getKingById(Integer id);
+}
+
+</code></pre>
+<h4 id="创建mapperxml">创建mapper.xml</h4>
+<h5 id="mapperxml文件中resultmap">mapper.xml文件中resultMap</h5>
+<p>为什么使用resultMap：当查询出来的字段名和对象中的属性名不一致的情况就没办法使用resultType来默认映射</p>
+<blockquote>
+<p>每个具体的标签的column属性代表在数据库中查到的字段，最后映射结果的时候会映射到实体类中名为property对应字符的属性中（如：一个国王有一个王后和多个妃子）</p>
+<ul>
+<li>id 子标签是对应数据库中主键且自增的字段</li>
+<li>result 子标签对应普通字段</li>
+<li>association 子标签用来处理一对一关系映射（用来处理王后）</li>
+<li>collection 字标签用来处理一对多关系映射（用来处理妃子）</li>
+</ul>
+</blockquote>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.lanou3g.dao.KingDao&quot;&gt;
+
+    &lt;resultMap id=&quot;kingMap&quot; type=&quot;king&quot;&gt;
+        &lt;id column=&quot;kid&quot; property=&quot;id&quot;/&gt;
+        &lt;result column=&quot;kname&quot; property=&quot;name&quot;/&gt;
+        &lt;association property=&quot;queen&quot; javaType=&quot;queen&quot; columnPrefix=&quot;q_&quot;&gt;
+            &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+            &lt;result column=&quot;name&quot; property=&quot;name&quot;/&gt;
+            &lt;result column=&quot;king_id&quot; property=&quot;king_id&quot;/&gt;
+        &lt;/association&gt;
+        &lt;collection property=&quot;girls&quot; ofType=&quot;girl&quot; columnPrefix=&quot;g_&quot;&gt;
+            &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+            &lt;result column=&quot;name&quot; property=&quot;name&quot;/&gt;
+            &lt;result column=&quot;king_id&quot; property=&quot;king_id&quot;/&gt;
+        &lt;/collection&gt;
+    &lt;/resultMap&gt;
+
+    &lt;!-- 通过此查询语句查询出king的信息以及king的queen的信息和众多girl的信息 --&gt;
+    &lt;select id=&quot;getKingById&quot; resultMap=&quot;kingMap&quot;&gt;
+        select
+        king.id kid,
+        king.name kname,
+        q.id q_id,
+        q.`name` q_name,
+        q.king_id q_king_id,
+        g.id g_id,
+        g.`name` g_name,
+        g.king_id g_king_id
+        from king
+        LEFT JOIN queen q ON king.id = q.king_id
+        LEFT JOIN girl g on q.king_id = g.king_id
+        where g.king_id = #{id}
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h4 id="获取mybatis文件的输入流">获取mybatis文件的输入流</h4>
+<pre><code class="language-java">InputStream is = Resources.getResourceAsStream(&quot;mybatis-config.xml&quot;);
+</code></pre>
+<h4 id="获取sqlsessionfactory对象">获取SqlSessionFactory对象</h4>
+<pre><code class="language-java">SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is)
+</code></pre>
+<h4 id="获取sqlsession对象">获取SqlSession对象</h4>
+<pre><code class="language-java">//添加参数true设置事务自动提交，默认不会自动提交
+SqlSession sqlSession = sqlSessionFactory.openSession(true);
+</code></pre>
+<h4 id="获取mybatis自动生成的接口的具体实现类并执行方法接收返回值">获取mybatis自动生成的接口的具体实现类并执行方法，接收返回值。</h4>
+<pre><code class="language-java">King king = sqlSession.getMapper(KingDao.class).getKingById(1);
+</code></pre>
+<h3 id="和的作用和区别">#{}和${}的作用和区别</h3>
+<h4 id="作用">作用</h4>
+<p>通过#{}和${}取出调用方法时传入的参数，并将其应用在sql语句中</p>
+<h4 id="区别">区别</h4>
+<blockquote>
+<p>#{}是预编译处理，${}是字符串替换。</p>
+<p>（1）mybatis在处理#{}时，会将sql中的#{}替换为?号，调用PreparedStatement的set方法来赋值。</p>
+<p>（2）mybatis在处理<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow></mrow><mi mathvariant="normal">时</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">就</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">把</mi></mrow><annotation encoding="application/x-tex">{}时，就是把</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mord"></span><span class="mord cjk_fallback">时</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">就</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">把</span></span></span></span>{}替换成变量的值。</p>
+<p>（3）使用#{}可以有效的防止SQL注入，提高系统安全性。原因在于：预编译机制。</p>
+<p>预编译是提前对SQL语句进行预编译，而其后注入的参数将不会再进行SQL编译。我们知道，SQL注入是发生在编译的过程中，因为恶意注入了某些特殊字符，最后被编译成了恶意的执行操作。而预编译机制则可以很好的防止SQL注入。预编译完成之后，SQL的结构已经固定，即便用户输入非法参数，也不会对SQL的结构产生影响，从而避免了潜在的安全风险。</p>
+</blockquote>
+<h3 id="动态sql如何使用">动态sql如何使用</h3>
+<h5 id="什么是动态sql">什么是动态sql</h5>
+<blockquote>
+<p>动态SQL是MyBatis的强大特性之一，MyBatis3采用了功能强大的基于OGNL的表达式来完成动态SQL。</p>
+</blockquote>
+<h5 id="动态sql的作用">动态sql的作用</h5>
+<blockquote>
+<p>MyBatis的动态SQL主要就是为了解决手动拼接SQL的麻烦。</p>
+</blockquote>
+<h5 id="动态sql有哪些标签">动态sql有哪些标签</h5>
+<figure data-type="image" tabindex="1"><img src="https://images2017.cnblogs.com/blog/1240732/201711/1240732-20171101153219685-1084206827.png" alt=""></figure>
+<h6 id="if标签的使用">if标签的使用</h6>
+<pre><code class="language-xml">&lt;select id=&quot;queryStudentById&quot; resultType=&quot;com.lanou3g.bean.Student&quot; &gt;
+        select * from stu 
+        where name = #{name}
+    	&lt;if test=&quot;sex!=null&quot;&gt;
+            and sex = #{sex}
+        &lt;/if&gt;
+&lt;/select&gt;
+</code></pre>
+<h6 id="choose标签的使用">choose标签的使用</h6>
+<pre><code class="language-xml">select * from stu where 1=1
+      &lt;choose&gt;
+           &lt;when test=&quot;name !=null and name !=''&quot;&gt;
+                       and name = #{username}
+           &lt;/when&gt;
+           &lt;when test=&quot;sex !=null and sex !=''&quot;&gt;
+                       and sex= #{sex}
+           &lt;/when&gt;
+           &lt;otherwise&gt;
+                   
+           &lt;/otherwise&gt;
+      &lt;/choose&gt;
+</code></pre>
+<h6 id="where标签的使用">where标签的使用</h6>
+<pre><code class="language-xml">select * from stu
+&lt;where&gt;
+     &lt;if test=&quot;name !=null and name !=''&quot;&gt;
+           and username = #{username}
+     &lt;/if&gt;
+     &lt;if test=&quot;sex !=null and sex !=''&quot;&gt;
+           and sex= #{sex}
+     &lt;/if&gt;
+&lt;/where&gt;
+</code></pre>
+<h6 id="foreach标签的使用">foreach标签的使用</h6>
+<pre><code class="language-xml">select * from stu where id in
+      &lt;foreach item=&quot;id&quot; index=&quot;index&quot; collection=&quot;list&quot; 
+                      open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot;&gt;
+             #{id}
+      &lt;/foreach&gt;
+</code></pre>
+<h3 id="批量插入">批量插入</h3>
+<h4 id="通过foreach子标签">通过<foreach>子标签</h4>
+<pre><code class="language-xml">&lt;!-- 传入的要是list --&gt;
+&lt;insert id=&quot;insertStudentBatch1&quot;&gt;
+        insert into student (sno,sname,ssex,sage)
+        values
+        &lt;foreach collection=&quot;list&quot; item=&quot;stu&quot; separator=&quot;,&quot;&gt;
+            (#{stu.sno},#{stu.sname},#{stu.ssex},#{stu.sage})
+        &lt;/foreach&gt;
+    &lt;/insert&gt;
+</code></pre>
+<p>可能会出现sql语句过大插入失败的结果</p>
+<h4 id="通过设置executortypebatch属性">通过设置ExecutorType.BATCH属性</h4>
+<pre><code class="language-java">SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, true);
+</code></pre>
+<p>每次只插入一条</p>
+<pre><code class="language-xml">&lt;insert id=&quot;insertStudentBatch2&quot;&gt;
+        insert into student (sno,sname,ssex,sage)
+        value (#{sno},#{sname},#{ssex},#{sage})
+&lt;/insert&gt;
+</code></pre>
+<p>循环插入</p>
+<pre><code class="language-java">    private static void insert2() throws Exception{
+        InputStream is = Resources.getResourceAsStream(&quot;mybatis-config.xml&quot;);
+
+        SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
+
+        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(is);
+
+//        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, true);
+
+        StudentDao mapper = sqlSession.getMapper(StudentDao.class);
+
+        List&lt;Student&gt; stuList = App.getStuList();
+
+        int total = 10;
+
+        int count = 0 ;
+
+        List&lt;BatchResult&gt; br = new ArrayList&lt;&gt;();
+
+        for (Student student: stuList) {
+            mapper.insertStudentBatch2(student);
+            count++;
+            System.out.println(&quot;count:&quot;+count);
+            if (count%total==0){
+                List&lt;BatchResult&gt; batchResults = sqlSession.flushStatements();
+                br.addAll(batchResults);
+            }
+        }
+
+        List&lt;BatchResult&gt; batchResults = sqlSession.flushStatements();
+        br.addAll(batchResults);
+
+        int a = 0;
+        for (BatchResult b:br
+             ) {
+            System.out.println(222);
+            int[] c = b.getUpdateCounts();
+            for (int cc: c
+            ) {
+                System.out.println(cc);
+                a+=cc;
+            }
+        }
+
+        System.out.println(&quot;影响行数为：&quot; + a);
+    }
+</code></pre>
+<p>可以通过sqlSession.flushStatements();刷新将数据插入到数据库</p>
+<h3 id="缓存">缓存</h3>
+<h4 id="一级缓存本地缓存">一级缓存（本地缓存）</h4>
+<p>一级缓存默认开启，范围是同一个SqlSession</p>
+<p>同一个SqlSession内执行同样一条查询语句时先访问缓存，如果命中缓存则不再去数据库中查询</p>
+<p>关闭一级缓存，设置localCacheScope为STATEMENT就可以了</p>
+<h4 id="二级缓存">二级缓存</h4>
+<p>二级缓存可以跨SqlSession</p>
+<p>开启二级缓存的方法</p>
+<p>在mybatis配置文件中加入</p>
+<pre><code class="language-xml">&lt;settings&gt; 
+    &lt;!-- 开启全局二级缓存 --&gt;  
+    &lt;setting name=&quot;cacheEnabled&quot; value=&quot;true&quot;/&gt; 
+&lt;/settings&gt; 
+</code></pre>
+<p>在mapper映射文件中加入</p>
+<pre><code class="language-xml">&lt;mapper namespace=&quot;com.lanou3g.dao.KingDao&quot;&gt;
+&lt;cache /&gt;
+&lt;/mapper&gt;
+</code></pre>
+<p>关闭指定语句不适用二级缓存</p>
+<pre><code class="language-xml">&lt;select id=&quot;queryStudentById&quot; resultType=&quot;com.lanou3g.bean.Student&quot; useCache=&quot;false&quot;&gt;
+        select * from stu 
+        where name = #{name}
+&lt;/select&gt;
+</code></pre>
+<p>注意事项</p>
+<p>因为缓存要做到持久化就必须存入物理硬盘，因此对应的类要实现可序列化接口</p>
+<pre><code class="language-java">public class Student implements Serializable { }
+</code></pre>
+<h1 id="spring-和mybatis整合">Spring 和MyBatis整合</h1>
+<h2 id="加入整合jar包">加入整合jar包</h2>
+<pre><code class="language-xml">&lt;!-- mybatis-spring整合包 --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+    &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+    &lt;version&gt;2.0.1&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;!-- Spring和数据源相关依赖 --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+    &lt;version&gt;5.2.0.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;5.2.0.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+</code></pre>
+<h2 id="对应的applicationcontextxml配置">对应的applicationContext.xml配置</h2>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;
+       xmlns:mybatis=&quot;http://mybatis.org/schema/mybatis-spring&quot;
+       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://mybatis.org/schema/mybatis-spring
+      http://mybatis.org/schema/mybatis-spring.xsd
+      http://www.springframework.org/schema/aop
+      https://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
+
+
+
+    &lt;aop:aspectj-autoproxy  expose-proxy=&quot;true&quot; proxy-target-class=&quot;true&quot;/&gt;
+
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;/&gt;
+
+    &lt;bean id=&quot;sqlSessionFactoryBean&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;!-- 注入数据源 --&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+        &lt;!-- 设置mybatis核心配置文件路径（可选） --&gt;
+        &lt;property name=&quot;configLocation&quot; value=&quot;mybatis-config.xml&quot; /&gt;
+        &lt;!-- 配置mybatis xml映射文件位置（如果Mapper是用注解配置的，这里就不用设置此属性了） --&gt;
+&lt;!--        &lt;property name=&quot;mapperLocations&quot; value=&quot;classpath:/mabatis/mappers/*&quot; /&gt;--&gt;
+    &lt;/bean&gt;
+    
+    &lt;mybatis:scan base-package=&quot;com.lanou3g.mapper&quot;/&gt;
+
+    &lt;context:component-scan base-package=&quot;com.lanou3g&quot; resource-pattern=&quot;com.lanou3g.mapper&quot;/&gt;
+
+
+&lt;/beans&gt;
+</code></pre>
+<h2 id="添加事务">添加事务</h2>
+<pre><code class="language-xml">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;service&quot; class=&quot;com.lanou3g.service.MyService&quot;/&gt;
+
+    &lt;tx:advice id=&quot;myadc&quot; transaction-manager=&quot;transactionManager&quot;&gt;
+        &lt;tx:attributes&gt;
+            &lt;tx:method name=&quot;*&quot; rollback-for=&quot;Exception&quot; /&gt;
+        &lt;/tx:attributes&gt;
+    &lt;/tx:advice&gt;
+
+    &lt;aop:config&gt;
+        &lt;aop:pointcut id=&quot;myCut&quot; expression=&quot;execution(* com.lanou3g.service.*.*(..))&quot;/&gt;
+        &lt;aop:advisor advice-ref=&quot;myadc&quot; pointcut-ref=&quot;myCut&quot;/&gt;
+    &lt;/aop:config&gt;
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Spring框架]]></title>
         <id>https://ysjhhhhhhh.github.io/post/spring-kuang-jia</id>
@@ -4272,55 +4794,6 @@ initParam</p>
 &lt;c:forEach&gt;
 </code></pre>
 <p>​</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[数据分页]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/shu-ju-fen-ye</id>
-        <link href="https://ysjhhhhhhh.github.io/post/shu-ju-fen-ye">
-        </link>
-        <updated>2018-03-25T12:35:14.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="核心参数">核心参数</h2>
-<ul>
-<li>总数据条数
-<ul>
-<li>来源： 后台自己从数据库中查询而来</li>
-</ul>
-</li>
-<li>每页展示条数(pageSize)
-<ul>
-<li>来源：从前端页面传递过来</li>
-</ul>
-</li>
-<li>总页数（计算得知）
-<ul>
-<li>来源： 根据总条数和每页展示数量计算得来</li>
-</ul>
-</li>
-<li>当前展示的页码（currentPage)
-<ul>
-<li>来源：从前端页面传递过来</li>
-</ul>
-</li>
-<li>每页要展示的数据本身
-<ul>
-<li>来源：后台自己从数据库中查询而来</li>
-</ul>
-</li>
-</ul>
-<h2 id="物理分页">物理分页</h2>
-<h3 id="概述">概述</h3>
-<p>所谓的物理分页其实就是直接通过数据库来实现返回一部分数据。每次只从数据库中查询一页的数据。与之相对应的还有逻辑分页。</p>
-<h3 id="mysql中实现语句">Mysql中实现语句</h3>
-<pre><code class="language-sql">    SELECT * FROM `shop` LIMIT (currentPage-1)*pageSize, pageSize;
-</code></pre>
-<h2 id="逻辑分页">逻辑分页</h2>
-<p>所谓的逻辑分页其实就是通过内存来进行分页。具体来说，首次查询数据时，将所有数据都取出放到内存中，展示其他页的数据时，在内存中实现数据的截取，展示。</p>
-<h2 id="两种分页的对比">两种分页的对比</h2>
-<ol>
-<li>物理分页节约内存空间，效率相比逻辑分页理论上效率低一些。试用场景：数据量大的时候。</li>
-<li>逻辑分页占用空间大，理论上分页性能高一些。试用场景：数据量小，访问用户多。要处理缓存数据同步的问题。</li>
-</ol>
 ]]></content>
     </entry>
 </feed>
