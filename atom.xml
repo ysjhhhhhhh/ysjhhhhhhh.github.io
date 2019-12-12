@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-12T08:20:16.932Z</updated>
+    <updated>2019-12-12T08:33:55.507Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,71 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Git]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/git</id>
+        <link href="https://ysjhhhhhhh.github.io/post/git">
+        </link>
+        <updated>2018-05-09T08:32:08.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="git是什么">Git是什么</h1>
+<p>Git(读音为/gɪt/。)是一个开源的分布式版本控制系统，可以有效、高速地处理从很小到非常大的项目版本管理。 [1]  Git 是 [Linus Torvalds](https://baike.baidu.com/item/Linus Torvalds/9336769) 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。</p>
+<h1 id="为什么要用git">为什么要用Git</h1>
+<p>当我们在企业中开发程序时，往往不是一个人而是一个团队共同协作。我们需要有一个工具来将各个不同成员所开发的代码做一个共享和同步。这是第一个原因。另外，当我们不小心将代码误删除、或者我们自己电脑故障无法打开时，需要有一个地方来备份我们的代码，以便很方便的恢复。上述的几种场景Git都可以很轻松的解决。</p>
+<h1 id="什么场景下要用git">什么场景下要用Git</h1>
+<p>团队中多人协作开发、跨国多地协作开发项目时。</p>
+<h1 id="如何使用git">如何使用Git</h1>
+<h2 id="git下载-安装">Git下载、安装</h2>
+<p>官方下载地址： https://git-scm.com/download/win</p>
+<h2 id="git的工作区-暂存区-本地仓库-远程仓库">Git的工作区、暂存区、本地仓库、远程仓库</h2>
+<h3 id="工作区">工作区</h3>
+<p>就是我们在电脑里能看到的目录，我们平常直接编写的代码就在工作区。</p>
+<h3 id="暂存区">暂存区</h3>
+<p>英文叫stage, 或index。一般存放在 &quot;.git目录下&quot; 下的index文件（.git/index）中，所以我们把暂存区有时也叫作索引（index）。</p>
+<h3 id="本地仓库">本地仓库</h3>
+<p>工作区有一个隐藏目录.git，这个目录就是Git的版本库。</p>
+<p>本地仓库用来存储代码历次修改信息的仓库。类似于SVN的远程仓库。里面存储了代码提交内容，提交人，提交备注，代码分支信息。</p>
+<h3 id="远程仓库">远程仓库</h3>
+<ul>
+<li>公司内部搭建的远程仓库</li>
+<li>Github、Gitee</li>
+</ul>
+<h3 id="工作区-暂存区-本地仓库之间的关系">工作区、暂存区、本地仓库之间的关系</h3>
+<figure data-type="image" tabindex="1"><img src="https://ysjhhhhhhh.github.io/post-images/1576139559687.jpg" alt=""></figure>
+<p>图中左侧为工作区，右侧为版本库。在版本库中标记为 &quot;index&quot; 的区域是暂存区（stage, index），标记为 &quot;master&quot; 的是 master 分支所代表的目录树。</p>
+<p>图中我们可以看出此时 &quot;HEAD&quot; 实际是指向 master 分支的一个&quot;游标&quot;。所以图示的命令中出现 HEAD 的地方可以用 master 来替换。</p>
+<p>图中的 objects 标识的区域为 Git 的对象库，实际位于 &quot;.git/objects&quot; 目录下，里面包含了创建的各种对象及内容。</p>
+<p>当对工作区修改（或新增）的文件执行 &quot;git add&quot; 命令时，暂存区的目录树被更新，同时工作区修改（或新增）的文件内容被写入到对象库中的一个新的对象中，而该对象的ID被记录在暂存区的文件索引中。</p>
+<p>当执行提交操作（git commit）时，暂存区的目录树写到版本库（对象库）中，master 分支会做相应的更新。即 master 指向的目录树就是提交时暂存区的目录树。</p>
+<p>当执行 &quot;git reset HEAD&quot; 命令时，暂存区的目录树会被重写，被 master 分支指向的目录树所替换，但是工作区不受影响。</p>
+<p>当执行 &quot;git rm --cached <file>&quot; 命令时，会直接从暂存区删除文件，工作区则不做出改变。</p>
+<p>当执行 &quot;git checkout .&quot; 或者 &quot;git checkout -- <file>&quot; 命令时，会用暂存区全部或指定的文件替换工作区的文件。这个操作很危险，会清除工作区中未添加到暂存区的改动。</p>
+<p>当执行 &quot;git checkout HEAD .&quot; 或者 &quot;git checkout HEAD <file>&quot; 命令时，会用 HEAD 指向的 master 分支中的全部或者部分文件替换暂存区和以及工作区中的文件。这个命令也是极具危险性的，因为不但会清除工作区中未提交的改动，也会清除暂存区中未提交的改动。</p>
+<h2 id="git命令行的使用">Git命令行的使用</h2>
+<ul>
+<li>git init:  初始化git本地仓库</li>
+<li>git status:  查看当前分支状态</li>
+<li>git add: 将修改添加到工作区（暂存区）</li>
+<li>git commit: 将修改提交到本地仓库</li>
+<li>git log: 查看历次提交记录</li>
+<li>git remote: 操作远程仓库</li>
+</ul>
+<h2 id="git第三方客户端使用">Git第三方客户端使用</h2>
+<p>安装完git以后，官方其实自带了两个客户端，一个是纯命令行的Git Bash.exe另一个是图形界面工具Git GUI.exe，只不过官方自带的图形界面工具使用并不友好。我们常用的第三方客户端工具</p>
+<ul>
+<li>
+<p>TortoiseGit</p>
+</li>
+<li>
+<p>IDEA</p>
+</li>
+<li>
+<p>Eclipse</p>
+</li>
+</ul>
+<h2 id="在ide中使用">在IDE中使用</h2>
+<p>我们常用的eclipse和IDEA集成开发环境已经默认都集成maven插件， 在平常的开发工程中，我们可以通过IDE很方便的随时完成代码提交。配置过程比较简单，这里不再赘述。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[SpringMVC]]></title>
         <id>https://ysjhhhhhhh.github.io/post/springmvc</id>
@@ -3843,95 +3908,6 @@ HttpSessionActivationListener  ： 钝化活化处理</p>
 <p>销毁： 关闭服务器或者从服务器中移除项目的时候。</p>
 </li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[文件上传]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/wen-jian-shang-chuan</id>
-        <link href="https://ysjhhhhhhh.github.io/post/wen-jian-shang-chuan">
-        </link>
-        <updated>2018-03-27T11:44:24.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="前端页面">前端页面</h2>
-<h3 id="必要条件">必要条件</h3>
-<ol>
-<li>需要有一个form表单</li>
-<li>form表单需要设置以下几个属性：
-<ol>
-<li>action:  提交数据的目的地</li>
-<li>method: 设置post</li>
-<li>enctype: 设置成multipart/form-data</li>
-</ol>
-</li>
-<li>form里需要至少有一个file域： &lt;input type=&quot;file&quot; name=&quot;xxx&quot; /&gt;</li>
-</ol>
-<h2 id="后端技术">后端技术</h2>
-<p>所谓文件上传其实就是用流的方式，将文件从客户的电脑上通过网页中的表单， 以二进制流的方式，流到服务器的过程。</p>
-<p>文件下载就是反过来， 将文件从服务器上通过二进制流的方式流到客户电脑上。</p>
-<h3 id="servlet30上传方式">Servlet3.0上传方式</h3>
-<h4 id="servlet30上传的核心-一个注解-一个接口">Servlet3.0上传的核心： 一个注解、一个接口</h4>
-<p>注解：</p>
-<p>@MultipartConfig： 开启Servlet文件上传功能</p>
-<p>接口：</p>
-<p>javax.servlet.http.Part：  封装了上传的文件相关的所有信息</p>
-<h4 id="具体操作步骤">具体操作步骤</h4>
-<ol>
-<li>新建处理文件上传的Servlet，然后重写doPost方法</li>
-<li>给Servlet添加@MultipartConfig注解，开启文件上传功能</li>
-<li>Part part = request.getPart(&quot;input type='type' name的值&quot;);</li>
-<li>part对象有两个作用：
-<ol>
-<li>可以获取到上传文件的所有信息，比如：文件名、大小、类型、文件流数据</li>
-<li>可以直接将文件写到服务器   part.write(&quot;文件保存的路径&quot;);</li>
-</ol>
-</li>
-</ol>
-<h3 id="apache-commons-fileupload-上传方式">Apache Commons Fileupload 上传方式</h3>
-<h4 id="用fileupload上传的核心就是一个接口-两个类">用fileupload上传的核心就是：一个接口、两个类</h4>
-<p>接口： FileItem</p>
-<p>封装了我们表单中的每个域的数据（可能是普通文本数据，也可能是上传的文件）</p>
-<p>类：</p>
-<p>DiskFileItemFactory：  用于创建文件上传对象的工厂</p>
-<p>ServletFileupload： 文件上传对象</p>
-<h4 id="具体操作步骤-2">具体操作步骤</h4>
-<ol>
-<li>
-<p>需要添加依赖： commons-fileupload.jar、commons-io.jar</p>
-</li>
-<li>
-<p>新建处理文件上传的Servlet，然后重写doPost方法</p>
-</li>
-<li>
-<p>调用ServletFileupload对象的静态方法，判断请求是否是一个文件上传请求</p>
-<pre><code class="language-java">if(!ServletFileupload.isMultipartContent(request)) {
-    // 如果不是multipart请求，代表不是一个有效的文件上传请求， 下面的步骤都可以省略了
-}
-</code></pre>
-</li>
-<li>
-<p>创建文件上传工厂对象：</p>
-<pre><code class="language-java">DiskFileItemFactory factory = new DiskFileItemFactory();
-// factory.set.... 可以设置相关参数
-</code></pre>
-</li>
-<li>
-<p>创建文件上传对象</p>
-<pre><code class="language-java">ServletFileupload upload = new ServletFileupload(factory);
-// upload.set.... 可以设置相关参数
-</code></pre>
-</li>
-<li>
-<p>用文件上传对象解析请求对象，然后获取解析后的所有FileItem</p>
-<pre><code class="language-java">List&lt;FileItem&gt; fileItems = upload.parseRequest(request);
-</code></pre>
-</li>
-<li>
-<p>迭代处理每个FileItem</p>
-<ol>
-<li>文本信息的FileItem获取后进行相关的业务操作</li>
-<li>文件类型的FileItem获取后，调用FileItem.write将文件写到服务器某个目录下。</li>
-</ol>
-</li>
-</ol>
 ]]></content>
     </entry>
 </feed>
