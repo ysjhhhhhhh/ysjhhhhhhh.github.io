@@ -1,0 +1,558 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SpringMVC | Gridea</title>
+<meta name="description" content="温故而知新" />
+<link rel="shortcut icon" href="https://ysjhhhhhhh.github.io/favicon.ico?v=1576138808946">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://ysjhhhhhhh.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://ysjhhhhhhh.github.io">
+  <img class="avatar" src="https://ysjhhhhhhh.github.io/images/avatar.png?v=1576138808946" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              SpringMVC
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-04-30
+              </span>
+              <span>
+                10 min read
+              </span>
+              
+                <a href="https://ysjhhhhhhh.github.io/tag/QNP_cGyqV" class="post-tag">
+                  # Gridea
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQq0qmehf7nSRCiPkm9o96CHzBEv5jgfj9NWu5HycQ8YwWbD_Tj" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="springmvc">SpringMVC</h1>
+<h2 id="springmvc-2">SpringMVC</h2>
+<h3 id="什么是springmvc">什么是SpringMVC</h3>
+<blockquote>
+<p>SpringMVC是一种基于Java的实现MVC设计模式的请求驱动类型的轻量级Web框架，使用了MVC架构模式的思想，将web层进行职责解耦，基于请求驱动指的就是使用请求-响应模型，框架的目的就是帮助我们简化开发。</p>
+</blockquote>
+<h3 id="springmvc的优点">SpringMVC的优点</h3>
+<blockquote>
+<p>1.简单、容易上手；<br>
+2.性能优异：jsp+servlet&gt;Struts=SpringMVC&gt;Struts2；<br>
+3.灵活、易于扩展；<br>
+4.易于和Spring容器整合；</p>
+</blockquote>
+<h3 id="springmvc依赖">SpringMVC依赖</h3>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+    &lt;version&gt;5.2.0.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h3 id="springmvc配置文件">SpringMVC配置文件</h3>
+<h4 id="servletwebapplicationcontextxml-和-rootwebapplicationcontextxml">ServletWebApplicationContext.xml 和 RootWebApplicationContext.xml</h4>
+<figure data-type="image" tabindex="1"><img src="https://docs.spring.io/spring/docs/5.2.0.RELEASE/spring-framework-reference/images/mvc-context-hierarchy.png" alt=""></figure>
+<blockquote>
+<p>dispatcher-servlet.xml 要比 applicationContext.xml后初始化，因此在dispatcher-servlet.xml中可以引用applicationContext.xml中配置的bean，反之不行</p>
+</blockquote>
+<h4 id="dispatcher-servlet">Dispatcher-servlet</h4>
+<blockquote>
+<p>DispatcherServlet是前置控制器，配置在web.xml文件中的。拦截匹配的请求，Servlet拦截匹配规则要自己定义，把拦截下来的请求，依据相应的规则分发到目标Controller来处理，是配置spring MVC的第一步。</p>
+<p>DispatcherServlet是前端控制器设计模式的实现，提供Spring Web MVC的集中访问点，而且负责职责的分派，而且与Spring IoC容器无缝集成，从而可以获得Spring的所有好处。</p>
+</blockquote>
+<h3 id="springmvc中的组件">SpringMVC中的组件</h3>
+<h4 id="视图解析器">视图解析器</h4>
+<p>作用：将controller中方法的返回值解析成一个页面</p>
+<p>配置视图解析器的方法：</p>
+<p>(在dispatcher-servlet.xml中加入)</p>
+<pre><code class="language-xml">&lt;mvc:view-resolvers&gt;
+        &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+            &lt;!-- 将返回的字符串的前面拼上‘/’ --&gt;
+            &lt;property name=&quot;prefix&quot; value=&quot;/&quot;/&gt;
+            &lt;!-- 将返回的字符串的前面拼上‘.jsp’ --&gt;
+            &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot;/&gt;
+        &lt;/bean&gt;
+&lt;/mvc:view-resolvers&gt;
+</code></pre>
+<h4 id="参数传递">参数传递</h4>
+<p>Controller中接收页面传递的数据通过：</p>
+<blockquote>
+<h5 id="requestparam请求参数">@RequestParam	请求参数</h5>
+<h5 id="requestheader请求头参数">@RequestHeader	请求头参数</h5>
+<h5 id="requestattributerequest作用域参数">@RequestAttribute	request作用域参数</h5>
+<h5 id="sessionattributesession作用域参数">@SessionAttribute	session作用域参数</h5>
+<h5 id="cookievaluecookie中的数据">@CookieValue	cookie中的数据</h5>
+</blockquote>
+<pre><code class="language-java">//自动绑定到对象上
+    @RequestMapping(&quot;/student&quot;)
+    public String tostu(Student student, Model model){
+        model.addAttribute(&quot;student&quot;,student);
+        return &quot;student&quot;;
+    }
+
+    //获取请求头中的参数
+    @RequestMapping(&quot;/reqparam&quot;)
+    public String toreqparam(@RequestHeader(&quot;user-agent&quot;) String userAgent, Model model){
+        model.addAttribute(&quot;tou&quot;,userAgent);
+        return &quot;reqparam&quot;;
+    }
+
+    //获取cookie中的数据
+    @RequestMapping(&quot;/tocookie&quot;)
+    public String tocookie(@CookieValue(&quot;JSESSIONID&quot;) String JSESSIONID, Model model){
+        model.addAttribute(&quot;cookieinfo&quot;,JSESSIONID);
+        return &quot;cookie&quot;;
+    }
+</code></pre>
+<p>从controller中向页面传递数据</p>
+<p>Model</p>
+<pre><code class="language-java">//获取Model然后将参数添加进Model中传递到前端
+    @RequestMapping(&quot;/reqparam&quot;)
+    public String toreqparam(@RequestHeader(&quot;user-agent&quot;) String userAgent, Model model){
+        model.addAttribute(&quot;tou&quot;,userAgent);
+        return &quot;reqparam&quot;;
+    }
+</code></pre>
+<p>ModelAndView</p>
+<pre><code class="language-java">//使用ModelAndView，如：
+@RequestMapping(&quot;/userLogin&quot;)
+    public ModelAndView userLogin(@RequestParam String username, @RequestParam String password, ModelMap model, HttpSession session){
+
+        ModelAndView mav;
+
+        User user = userService.UserLogin(username, password);
+
+        if (user==null){
+            model.addAttribute(&quot;errorInfo&quot;,&quot;登录失败，账号或密码错误!&quot;);
+
+            mav = new ModelAndView(&quot;forward:login.jsp&quot;,model);
+
+
+            return mav;
+        }else{
+            UserAndRole userAndRole = userService.selectUserAndRoleById(user.getId());
+            List&lt;Menu&gt; menuListByRoleName = userService.getMenuListByRoleName(userAndRole.getRoleName());
+            session.setAttribute(&quot;userId&quot;,user.getId());
+            session.setAttribute(&quot;userName&quot;,user.getUserName());
+            session.setAttribute(&quot;roleName&quot;,userAndRole.getRoleName());
+            session.setAttribute(&quot;menuList&quot;,menuListByRoleName);
+            session.setAttribute(&quot;user&quot;,user);
+
+
+            mav = new ModelAndView(&quot;index&quot;).addAllObjects(model);
+        return mav;
+
+        }
+
+    }
+</code></pre>
+<h4 id="视图控制器">视图控制器</h4>
+<p>作用：</p>
+<blockquote>
+<p>当在使用springmvc时，且想要进入某个页面不经过controller时，可以使用视图控制器来进行页面访问。</p>
+</blockquote>
+<p>用法</p>
+<p>在dispatcher-servlet.xml中配置视图控制器</p>
+<pre><code class="language-xml">&lt;!-- path是拦截的请求路径，view-name是进入的页面 --&gt;
+&lt;mvc:view-controller path=&quot;&quot; view-name=&quot;&quot;/&gt;
+</code></pre>
+<h4 id="处理静态资源">处理静态资源</h4>
+<p>由于dispatcher-servlet会拦截除jsp外的所有请求，因此对静态资源的访问也会被拦截，此时我们就需要配置静态资源放行，来放行对应的静态资源。放行静态资源的方法为：</p>
+<pre><code class="language-xml">&lt;!--  在dispatcher-servlet.xml中配置以下标签放行静态资源 --&gt;
+&lt;mvc:resources mapping=&quot;/static/**&quot; location=&quot;/static/&quot;/&gt;
+</code></pre>
+<h4 id="springmvc中请求重定向和请求转发">SpringMVC中请求重定向和请求转发</h4>
+<p>在controller中重定向的方法</p>
+<pre><code class="language-java">@RequestMapping(&quot;/aaa&quot;)
+    public String aaa(@RequestParam Integer userId, @RequestParam Integer permissionStatus, HttpServletResponse resp) throws IOException {
+
+        //重定向
+        return &quot;redirect:login.jsp&quot;
+
+    }
+</code></pre>
+<p>在controller中请求转发的方法</p>
+<pre><code class="language-java">@RequestMapping(&quot;/bbb&quot;)
+    public String bbb(@RequestParam Integer userId, @RequestParam Integer permissionStatus, HttpServletResponse resp) throws IOException {
+
+        //重定向
+        return &quot;forward:login.jsp&quot;
+
+    }
+</code></pre>
+<p>注意：</p>
+<blockquote>
+<p>通过加redirect 和 forward 请求转发和重定向 不会经过视图解析器 ，因此需要加入.jsp之类的后缀</p>
+</blockquote>
+<h3 id="处理springmvc中的乱码">处理SpringMVC中的乱码</h3>
+<p>在web.xml中配置SpringMVC中带的处理字符乱码的filter</p>
+<pre><code class="language-xml">&lt;filter&gt;
+    &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;encoding&lt;/param-name&gt;
+      &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+  &lt;/filter&gt;
+  &lt;filter-mapping&gt;
+    &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/filter-mapping&gt;
+</code></pre>
+<h3 id="高级请求映射">高级请求映射</h3>
+<h4 id="匹配请求地址上的参数">匹配请求地址上的参数</h4>
+<pre><code class="language-java">@RequestMapping(&quot;/hello/01/{info}&quot;)
+    public String hello001(@PathVariable String info, Model model){
+
+        model.addAttribute(&quot;info&quot;, info);
+
+        return &quot;info&quot;;
+    }
+</code></pre>
+<h4 id="匹配以helloaaa开头的可以匹配零个或多个字符">匹配以/hello/aaa/开头的(*可以匹配零个或多个字符)</h4>
+<pre><code class="language-java">@RequestMapping(&quot;/hello/aaa/*&quot;)
+    public String hello003(Model model){
+
+        model.addAttribute(&quot;info&quot;, &quot;匹配到*的&quot;);
+
+        return &quot;info&quot;;
+    }
+</code></pre>
+<h4 id="匹配到以helloaaa开头的只能匹配一个字符">匹配到以/hello/aaa/开头的（？只能匹配一个字符）</h4>
+<pre><code class="language-java">@RequestMapping(&quot;/hello/aaa/?&quot;)
+    public String hello002(Model model){
+
+        model.addAttribute(&quot;info&quot;, &quot;匹配到？的&quot;);
+
+        return &quot;info&quot;;
+    }
+</code></pre>
+<h4 id="匹配到以helloaaa开头的可以匹配多个路径">匹配到以/hello/aaa/开头的（**可以匹配多个路径）</h4>
+<pre><code class="language-java">@RequestMapping(&quot;/hello/aaa/**&quot;)
+    public String hello004(Model model){
+
+        model.addAttribute(&quot;info&quot;, &quot;匹配到**的&quot;);
+
+        return &quot;info&quot;;
+    }
+</code></pre>
+<h4 id="根据正则表达式匹配并且可以获取其中的参数">根据正则表达式匹配，并且可以获取其中的参数</h4>
+<pre><code class="language-java">@RequestMapping(&quot;/hello/aaa/{name:[a-z-]+}-{version:\\d\\.\\d\\.\\d}{ext:\\.[a-z]+}&quot;)
+public String hello005(@PathVariable String name,@PathVariable String version,@PathVariable String ext,Model model){    
+    model.addAttribute(&quot;info&quot;, name+version+ext);    
+    return &quot;info&quot;;
+}
+</code></pre>
+<h3 id="文件上传">文件上传</h3>
+<h4 id="25方式">2.5方式</h4>
+<ol>
+<li>导包</li>
+</ol>
+<pre><code class="language-xml">&lt;dependency&gt;
+      &lt;groupId&gt;commons-fileupload&lt;/groupId&gt;
+      &lt;artifactId&gt;commons-fileupload&lt;/artifactId&gt;
+      &lt;version&gt;1.4&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;commons-io&lt;/groupId&gt;
+      &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
+      &lt;version&gt;2.6&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+<ol start="2">
+<li>配置bean</li>
+</ol>
+<pre><code class="language-xml">&lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;/&gt;
+</code></pre>
+<h4 id="30方式">3.0方式</h4>
+<ol>
+<li>
+<p>配置bean</p>
+<pre><code class="language-xml">&lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.support.StandardServletMultipartResolver&quot;/&gt;
+</code></pre>
+</li>
+<li>
+<p>添加注解</p>
+</li>
+</ol>
+<pre><code class="language-xml">&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+      &lt;param-value&gt;/WEB-INF/dispatcher-servlet.xml&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    
+    
+    &lt;!-- 相当于不使用springmvc时的文件上传添加注解的效果 --&gt;
+    &lt;multipart-config/&gt;
+    
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+</code></pre>
+<h4 id="使用">使用</h4>
+<pre><code class="language-java">@RequestMapping(&quot;/upload&quot;)
+    public String upload1(@RequestParam MultipartFile file, Model model, HttpServletRequest req){
+
+        String filename= file.getOriginalFilename();
+
+        String filePath = null;
+
+                try {
+                    filePath = WebUtils.getRealPath(req.getServletContext(),&quot;/upload/&quot;+filename);
+//                    System.out.println(filePath);
+                    if (filePath!= null){
+                        file.transferTo(new File(filePath));
+                    }
+                }catch (Exception e){
+
+                }
+
+        model.addAttribute(&quot;filename&quot;,filename);
+                model.addAttribute(&quot;filepath&quot;,&quot;http://localhost:8080/upload/&quot;+filename);
+        return &quot;fileuploadsuccess&quot;;
+    }
+</code></pre>
+<h3 id="restfull服务">RESTfull服务</h3>
+<blockquote>
+<p>我们可以通过以下两种方式提供RESTFull的服务</p>
+<ul>
+<li>用<code>@RestController</code>注解替换Controller类上的<code>@Controller</code>注解，这样该类里面所有的RequestMapping方法都会强制输出返回的内容本身给调用方</li>
+<li>在需要提供RESTFull的RequestMapping方法上添加<code>@ResonpseBody</code>注解，这样会强制此方法输出返回的内容本身给调用方。</li>
+</ul>
+<p>此外，SpringMVC还给我们提供了专用的RESTFull相关注解<code>GetMapping</code>、<code>PostMapping</code>、<code>PutMapping</code>、<code>DeleteMapping</code>、<code>PatchMapping</code>用于简化<code>@RequestMapping</code>注解， 比如<code>@GetMapping</code>注解就相当于<code>@RequestMapping(method=RequestMethod.GET)</code></p>
+</blockquote>
+<h3 id="拦截器">拦截器</h3>
+<p>使用拦截器步骤：</p>
+<ol>
+<li>
+<p>新建拦截器类并实现HandlerInterceptor接口</p>
+<pre><code class="language-java">package com.lanou3g.springmvc.interceptor;
+
+import org.springframework.lang.Nullable;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * @author Administrator
+ */
+public class MyTestInterceptor implements HandlerInterceptor {
+
+    //handler执行前
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println(&quot;方法被拦截&quot;);
+        return false;
+    }
+
+    //handler执行后
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
+    }
+
+    
+    //请求完成之后，返回到客户端之前
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
+    }
+}
+</code></pre>
+</li>
+</ol>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#springmvc">SpringMVC</a>
+<ul>
+<li><a href="#springmvc-2">SpringMVC</a>
+<ul>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AFspringmvc">什么是SpringMVC</a></li>
+<li><a href="#springmvc%E7%9A%84%E4%BC%98%E7%82%B9">SpringMVC的优点</a></li>
+<li><a href="#springmvc%E4%BE%9D%E8%B5%96">SpringMVC依赖</a></li>
+<li><a href="#springmvc%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">SpringMVC配置文件</a>
+<ul>
+<li><a href="#servletwebapplicationcontextxml-%E5%92%8C-rootwebapplicationcontextxml">ServletWebApplicationContext.xml 和 RootWebApplicationContext.xml</a></li>
+<li><a href="#dispatcher-servlet">Dispatcher-servlet</a></li>
+</ul>
+</li>
+<li><a href="#springmvc%E4%B8%AD%E7%9A%84%E7%BB%84%E4%BB%B6">SpringMVC中的组件</a>
+<ul>
+<li><a href="#%E8%A7%86%E5%9B%BE%E8%A7%A3%E6%9E%90%E5%99%A8">视图解析器</a></li>
+<li><a href="#%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92">参数传递</a>
+<ul>
+<li><a href="#requestparam%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0">@RequestParam	请求参数</a></li>
+<li><a href="#requestheader%E8%AF%B7%E6%B1%82%E5%A4%B4%E5%8F%82%E6%95%B0">@RequestHeader	请求头参数</a></li>
+<li><a href="#requestattributerequest%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%8F%82%E6%95%B0">@RequestAttribute	request作用域参数</a></li>
+<li><a href="#sessionattributesession%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%8F%82%E6%95%B0">@SessionAttribute	session作用域参数</a></li>
+<li><a href="#cookievaluecookie%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE">@CookieValue	cookie中的数据</a></li>
+</ul>
+</li>
+<li><a href="#%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8">视图控制器</a></li>
+<li><a href="#%E5%A4%84%E7%90%86%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90">处理静态资源</a></li>
+<li><a href="#springmvc%E4%B8%AD%E8%AF%B7%E6%B1%82%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91">SpringMVC中请求重定向和请求转发</a></li>
+</ul>
+</li>
+<li><a href="#%E5%A4%84%E7%90%86springmvc%E4%B8%AD%E7%9A%84%E4%B9%B1%E7%A0%81">处理SpringMVC中的乱码</a></li>
+<li><a href="#%E9%AB%98%E7%BA%A7%E8%AF%B7%E6%B1%82%E6%98%A0%E5%B0%84">高级请求映射</a>
+<ul>
+<li><a href="#%E5%8C%B9%E9%85%8D%E8%AF%B7%E6%B1%82%E5%9C%B0%E5%9D%80%E4%B8%8A%E7%9A%84%E5%8F%82%E6%95%B0">匹配请求地址上的参数</a></li>
+<li><a href="#%E5%8C%B9%E9%85%8D%E4%BB%A5helloaaa%E5%BC%80%E5%A4%B4%E7%9A%84%E5%8F%AF%E4%BB%A5%E5%8C%B9%E9%85%8D%E9%9B%B6%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA%E5%AD%97%E7%AC%A6">匹配以/hello/aaa/开头的(*可以匹配零个或多个字符)</a></li>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%88%B0%E4%BB%A5helloaaa%E5%BC%80%E5%A4%B4%E7%9A%84%E5%8F%AA%E8%83%BD%E5%8C%B9%E9%85%8D%E4%B8%80%E4%B8%AA%E5%AD%97%E7%AC%A6">匹配到以/hello/aaa/开头的（？只能匹配一个字符）</a></li>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%88%B0%E4%BB%A5helloaaa%E5%BC%80%E5%A4%B4%E7%9A%84%E5%8F%AF%E4%BB%A5%E5%8C%B9%E9%85%8D%E5%A4%9A%E4%B8%AA%E8%B7%AF%E5%BE%84">匹配到以/hello/aaa/开头的（**可以匹配多个路径）</a></li>
+<li><a href="#%E6%A0%B9%E6%8D%AE%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D%E5%B9%B6%E4%B8%94%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%85%B6%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0">根据正则表达式匹配，并且可以获取其中的参数</a></li>
+</ul>
+</li>
+<li><a href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">文件上传</a>
+<ul>
+<li><a href="#25%E6%96%B9%E5%BC%8F">2.5方式</a></li>
+<li><a href="#30%E6%96%B9%E5%BC%8F">3.0方式</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8">使用</a></li>
+</ul>
+</li>
+<li><a href="#restfull%E6%9C%8D%E5%8A%A1">RESTfull服务</a></li>
+<li><a href="#%E6%8B%A6%E6%88%AA%E5%99%A8">拦截器</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://ysjhhhhhhh.github.io/post/mybatis">
+              <h3 class="post-title">
+                Mybatis
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://ysjhhhhhhh.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
