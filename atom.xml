@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-12T09:16:05.721Z</updated>
+    <updated>2019-12-12T09:37:33.785Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,658 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Dubbo框架]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/dubbo-kuang-jia</id>
+        <link href="https://ysjhhhhhhh.github.io/post/dubbo-kuang-jia">
+        </link>
+        <updated>2018-06-15T11:32:43.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="dubbo介绍">Dubbo介绍</h2>
+<h3 id="互联网架构演变过程">互联网架构演变过程</h3>
+<figure data-type="image" tabindex="1"><img src="http://dubbo.apache.org/docs/zh-cn/user/sources/images/dubbo-architecture-roadmap.jpg" alt=""></figure>
+<h4 id="单一应用架构">单一应用架构</h4>
+<p>当网站流量很小时，只需一个应用，将所有功能都部署在一起，以减少部署节点和成本。此时，用于简化增删改查工作量的数据访问框架(ORM)是关键。</p>
+<h4 id="垂直应用架构">垂直应用架构</h4>
+<p>当访问量逐渐增大，单一应用增加机器带来的加速度越来越小，将应用拆成互不相干的几个应用，以提升效率。此时，用于加速前端页面开发的Web框架(MVC)是关键。</p>
+<h4 id="分布式服务架构">分布式服务架构</h4>
+<p>当垂直应用越来越多，应用之间交互不可避免，将核心业务抽取出来，作为独立的服务，逐渐形成稳定的服务中心，使前端应用能更快速的响应多变的市场需求。此时，用于提高业务复用及整合的分布式服务框架(RPC)是关键。</p>
+<h4 id="流动计算架构">流动计算架构</h4>
+<p>当服务越来越多，容量的评估，小服务资源的浪费等问题逐渐显现，此时需增加一个调度中心基于访问压力实时管理集群容量，提高集群利用率。此时，用于提高机器利用率的资源调度和治理中心(SOA)是关键。</p>
+<h3 id="dubbo解决了什么问题">Dubbo解决了什么问题</h3>
+<p>在大规模服务化之前，应用可能只是通过 RMI 或 Hessian 等工具，简单的暴露和引用远程服务，通过配置服务的URL地址进行调用，通过 F5 等硬件进行负载均衡。</p>
+<p><strong>当服务越来越多时，服务 URL 配置管理变得非常困难，F5 硬件负载均衡器的单点压力也越来越大。</strong> 此时需要一个服务注册中心，动态地注册和发现服务，使服务的位置透明。并通过在消费方获取服务提供方地址列表，实现软负载均衡和 Failover，降低对 F5 硬件负载均衡器的依赖，也能减少部分成本。</p>
+<p><strong>当进一步发展，服务间依赖关系变得错踪复杂，甚至分不清哪个应用要在哪个应用之前启动，架构师都不能完整的描述应用的架构关系。</strong> 这时，需要自动画出应用间的依赖关系图，以帮助架构师理清理关系。</p>
+<p><strong>接着，服务的调用量越来越大，服务的容量问题就暴露出来，这个服务需要多少机器支撑？什么时候该加机器？</strong> 为了解决这些问题，第一步，要将服务现在每天的调用量，响应时间，都统计出来，作为容量规划的参考指标。其次，要可以动态调整权重，在线上，将某台机器的权重一直加大，并在加大的过程中记录响应时间的变化，直到响应时间到达阈值，记录此时的访问量，再以此访问量乘以机器数反推总容量。</p>
+<p>除了服务注册中心之外， Dubbo还帮我们解决了服务远程调用的问题。 之前我们需要显示通过HttpClient、OkHttp、RestTemplate。。这些技术去通过Http协议调用远程服务，其间还要手动处理序列化、反序列化问题。而Dubbo将这些细节屏蔽了，对于我们开发者来说，调用远程的服务就像调用本地服务一样方便。</p>
+<blockquote>
+<p>总的来说， Dubbo主要帮我们解决了分布式应用中的服务注册发现和RPC（Remote Procedure Call）远程调用这两个核心问题。</p>
+</blockquote>
+<h2 id="快速开始">快速开始</h2>
+<p>因为服务提供者和服务消费者都需要引入共同的服务接口。所以在Dubbo的最佳实践上要求我们将服务接口抽出来作为单独的一个模块，供服务提供者、消费者引用。这样Dubbo应用就包含三部分：共同的api接口、服务提供者、服务消费者三部分（其中服务提供者和消费者都需要依赖API接口）</p>
+<figure data-type="image" tabindex="2"><img src="https://ysjhhhhhhh.github.io/post-images/1576143347940.png" alt=""></figure>
+<ol>
+<li>
+<p>引入依赖</p>
+<p>依赖主要包含： Spring、Dubbo</p>
+<pre><code class="language-xml">&lt;properties&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+    &lt;spring.version&gt;5.2.1.RELEASE&lt;/spring.version&gt;
+    &lt;dubbo.version&gt;2.7.3&lt;/dubbo.version&gt;
+&lt;/properties&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+    &lt;version&gt;${spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+    &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+    &lt;version&gt;${dubbo.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+<li>
+<p>编写核心API接口</p>
+<p>新建一个单独的maven module(如<code>dubbo-service-api</code>)，在里面添加需要远程访问的接口</p>
+<pre><code class="language-java">public interface ICalcService {
+
+    int plus(int num1, int num2);
+
+    int minus(int num1, int num2);
+
+}
+</code></pre>
+</li>
+<li>
+<p>开发服务提供者</p>
+<p>​	新建单独的服务提供者模块 (如<code>dubbo-service-provider</code>)</p>
+<ol>
+<li>
+<p>开发API接口实现逻辑</p>
+<pre><code class="language-java">public class CalcServiceImpl implements ICalcService {
+    public int plus(int num1, int num2) {
+        int result = num1 + num2;
+        System.out.println(num1 + &quot; + &quot; + num2 + &quot; = &quot; + result);
+        return result;
+    }
+
+    public int minus(int num1, int num2) {
+        int result = num1 - num2;
+        System.out.println(num1 + &quot; - &quot; + num2 + &quot; = &quot; + result);
+        return result;
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>通过Dubbo注册中心暴露服务（发布服务到注册中心）</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:dubbo=&quot;http://dubbo.apache.org/schema/dubbo&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://dubbo.apache.org/schema/dubbo
+        http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;&gt;
+
+    &lt;!-- 给dubbo应用命名 --&gt;
+    &lt;dubbo:application name=&quot;hello-dubbo&quot;&gt;
+        &lt;dubbo:parameter key=&quot;qos.enable&quot; value=&quot;false&quot; /&gt;
+    &lt;/dubbo:application&gt;
+
+    &lt;!-- 配置Dubbo服务注册中心（这里使用的是基于multicast协议的注册中心） --&gt;
+    &lt;dubbo:registry address=&quot;multicast://224.5.6.7:1234&quot; /&gt;
+    &lt;dubbo:protocol name=&quot;dubbo&quot; port=&quot;20880&quot; /&gt;
+    
+    &lt;!-- 对外暴露服务 --&gt;
+    &lt;dubbo:service interface=&quot;com.lanou3g.dubbo.service.ICalcService&quot; ref=&quot;calcService&quot; /&gt;
+
+    &lt;bean id=&quot;calcService&quot; class=&quot;com.lanou3g.dubbo.service.impl.CalcServiceImpl&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre>
+</li>
+<li>
+<p>启动服务提供者</p>
+<pre><code class="language-java">public class ProviderApplication {
+    public static void main(String[] args) throws IOException {
+
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+        ctx.start();
+        ctx.registerShutdownHook();
+
+        System.out.println(&quot;Provider启动完成&quot;);
+
+        // 阻塞当前应用，直到输入任意字符后才退出
+        System.in.read();
+    }
+}
+</code></pre>
+</li>
+</ol>
+</li>
+<li>
+<p>开发服务消费者</p>
+<p>​	新建一个单独的服务消费者模块(如<code>dubbo-service-consumer</code>)</p>
+<ol>
+<li>
+<p>通过Dubbo注册中心引用远程服务</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+       xmlns:dubbo=&quot;http://dubbo.apache.org/schema/dubbo&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://dubbo.apache.org/schema/dubbo
+        http://dubbo.apache.org/schema/dubbo/dubbo.xsd&quot;&gt;
+
+    &lt;!-- 给dubbo应用命名 --&gt;
+    &lt;dubbo:application name=&quot;hello-dubbo&quot;&gt;
+        &lt;dubbo:parameter key=&quot;qos.enable&quot; value=&quot;false&quot; /&gt;
+    &lt;/dubbo:application&gt;
+
+    &lt;!-- 配置Dubbo服务注册中心（这里使用的是基于multicast协议的注册中心） --&gt;
+    &lt;dubbo:registry address=&quot;multicast://224.5.6.7:1234?unicast=false&quot; /&gt;
+
+    &lt;!-- 指定Dubbo底层在远程调用服务时通过什么协议，哪个端口调用 --&gt;
+    &lt;dubbo:protocol name=&quot;dubbo&quot; port=&quot;20880&quot; /&gt;
+
+    &lt;dubbo:reference id=&quot;calcService&quot; interface=&quot;com.lanou3g.dubbo.service.ICalcService&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre>
+</li>
+</ol>
+</li>
+<li>
+<p>通过公共的API接口调用服务方法，完成远程接口调用</p>
+<pre><code class="language-java">   public class ConsumerApplication {
+       public static void main(String[] args) {
+           ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);
+           ctx.registerShutdownHook();
+           ctx.start();
+   
+           // 通过公共接口像调用本地方法一样调用远程服务
+   		ICalcService calcService = ctx.getBean(&quot;calcService&quot;, ICalcService.class);
+           int result = calcService.plus(11, 89);
+           System.out.println(&quot;调用远程服务计算结果：&quot; + result);
+       }
+   }
+</code></pre>
+</li>
+</ol>
+<h2 id="深入dubbo知识点">深入Dubbo知识点</h2>
+<h3 id="dubbo的架构图">Dubbo的架构图</h3>
+<figure data-type="image" tabindex="3"><img src="http://dubbo.apache.org/docs/zh-cn/user/sources/images/dubbo-architecture.jpg" alt=""></figure>
+<ol start="0">
+<li>服务容器负责启动，加载，运行服务提供者。</li>
+<li>服务提供者在启动时，向注册中心注册自己提供的服务。</li>
+<li>服务消费者在启动时，向注册中心订阅自己所需的服务。</li>
+<li>注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。</li>
+<li>服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。</li>
+<li>服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。</li>
+</ol>
+<h3 id="dubbo中的角色">Dubbo中的角色</h3>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>角色说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Provider</code></td>
+<td>暴露服务的服务提供方</td>
+</tr>
+<tr>
+<td><code>Consumer</code></td>
+<td>调用远程服务的服务消费方</td>
+</tr>
+<tr>
+<td><code>Registry</code></td>
+<td>服务注册与发现的注册中心</td>
+</tr>
+<tr>
+<td><code>Monitor</code></td>
+<td>统计服务的调用次数和调用时间的监控中心</td>
+</tr>
+<tr>
+<td><code>Container</code></td>
+<td>服务运行容器</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dubbo支持的服务注册中心">Dubbo支持的服务注册中心</h3>
+<h4 id="基于zookeeper的注册中心">基于Zookeeper的注册中心</h4>
+<ol>
+<li>
+<p>需要启动zookeeper服务</p>
+<p>下载、启动zookeeper服务</p>
+</li>
+<li>
+<p>在dubbo的应用中修改注册中心配置为zookeeper方式</p>
+<pre><code class="language-xml">&lt;!-- 服务提供方和消费方都添加如下配置 --&gt;
+&lt;!-- 配置基于zookeeper的服务注册中心  --&gt;
+&lt;!--&lt;dubbo:registry address=&quot;zookeeper://127.0.0.1:2181&quot; client=&quot;curator&quot; /&gt;--&gt;
+</code></pre>
+</li>
+<li>
+<p>在dubbo应用中需要添加zookeeper客户端依赖</p>
+<pre><code class="language-xml">&lt;!-- zookeeper客户端 —— curator依赖 --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.netflix.curator&lt;/groupId&gt;
+    &lt;artifactId&gt;curator-framework&lt;/artifactId&gt;
+    &lt;version&gt;1.1.10&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.curator&lt;/groupId&gt;
+    &lt;artifactId&gt;curator-recipes&lt;/artifactId&gt;
+    &lt;version&gt;4.0.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+</ol>
+<h4 id="基于redis的注册中心">基于Redis的注册中心</h4>
+<ol>
+<li>
+<p>启动redis服务</p>
+</li>
+<li>
+<p>修改注册中心配置为redis</p>
+<pre><code class="language-xml">&lt;!-- 配置基于redis的服务注册中心 --&gt;
+&lt;dubbo:registry address=&quot;redis://localhost:6379&quot; /&gt;
+</code></pre>
+<blockquote>
+<p>注意： 如果说Redis需要口令验证，则不能作为Dubbo的注册中心</p>
+</blockquote>
+</li>
+<li>
+<p>添加redis客户端依赖到工程中（服务提供者、消费者都需要）</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;
+    &lt;version&gt;2.7.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+    &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+    &lt;version&gt;3.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+</ol>
+<h4 id="基于multicast组播的注册中心">基于Multicast组播的注册中心</h4>
+<blockquote>
+<p>参见快速开始配置</p>
+</blockquote>
+<h2 id="dubbo支持的配置方式">Dubbo支持的配置方式</h2>
+<p>Dubbo支持以下几种方式的配置方式：</p>
+<ul>
+<li>基于SpringBean的XML配置</li>
+<li>基于注解的配置</li>
+<li>基于Properties属性文件的配置</li>
+<li>基于硬编码的配置</li>
+<li>支持加载存储在外部配置中心中的配置（如存储在zookeeper中的dubbo.properties配置）</li>
+</ul>
+<h3 id="dubbo支持的rpc通讯协议">Dubbo支持的RPC通讯协议</h3>
+<p>Dubbo支持以下几种服务远程调用的通讯协议：</p>
+<ul>
+<li>dubbo(默认)</li>
+<li>rest</li>
+<li>http</li>
+<li>redis</li>
+<li>webservice</li>
+<li>......</li>
+</ul>
+<h2 id="springboot整合dubbo">SpringBoot整合Dubbo</h2>
+<p>现在SpringBoot技术非常流行，可以极大程度上让我们从管理项目依赖和配置的工作中解放出来，更专注于核心业务实现（更傻瓜），Dubbo官方也提供了对SpringBoot的支持。</p>
+<p>使用步骤如下：</p>
+<h3 id="第一步在parent中定义所有依赖">第一步：在parent中定义所有依赖</h3>
+<p>在企业开发中的建议做法，便于统一管理整个工程中所有模块的依赖和版本。如果你不想这样做，这步可以省略，直接在各个module中添加需要的依赖也是可以滴。</p>
+<ul>
+<li>pom.xml</li>
+</ul>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.lanou3g&lt;/groupId&gt;
+    &lt;artifactId&gt;dubbo-springboot-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;!-- 引入SpringBoot --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;2.2.1.RELEASE&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+
+            &lt;!-- dubbo springboot依赖 --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+                &lt;artifactId&gt;dubbo-spring-boot-starter&lt;/artifactId&gt;
+                &lt;version&gt;2.7.3&lt;/version&gt;
+            &lt;/dependency&gt;
+
+            &lt;!-- redis注册中心依赖 --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+                &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;
+                &lt;version&gt;2.7.0&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+                &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+                &lt;version&gt;3.1.0&lt;/version&gt;
+            &lt;/dependency&gt;
+
+            &lt;!-- zookeeper注册中心依赖 --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.netflix.curator&lt;/groupId&gt;
+                &lt;artifactId&gt;curator-framework&lt;/artifactId&gt;
+                &lt;version&gt;1.1.10&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.apache.curator&lt;/groupId&gt;
+                &lt;artifactId&gt;curator-recipes&lt;/artifactId&gt;
+                &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.lanou3g&lt;/groupId&gt;
+                &lt;artifactId&gt;dubbo-springboot-api&lt;/artifactId&gt;
+                &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+&lt;/project&gt;
+</code></pre>
+<h3 id="第二步定义公共的服务api接口模块">第二步：定义公共的服务API接口模块</h3>
+<p>该模块不需要添加什么依赖， 主要是定义各个服务的接口文件。以便让服务提供者和消费者依赖和复用。</p>
+<ul>
+<li>pom.xml</li>
+</ul>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.lanou3g&lt;/groupId&gt;
+    &lt;artifactId&gt;dubbo-springboot-api&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+&lt;/project&gt;
+</code></pre>
+<ul>
+<li>服务接口示例：</li>
+</ul>
+<p>IHelloService.java</p>
+<pre><code class="language-java">package com.lanou3g.dubbo.service;
+
+public interface IHelloService {
+    String hello();
+    String hello(String name);
+}
+</code></pre>
+<h3 id="第三步开发服务提供者模块">第三步：开发服务提供者模块</h3>
+<p>该模块提供了服务接口的具体实现逻辑，并且通过Dubbo的服务注册中心将服务暴露出去。</p>
+<ul>
+<li>pom.xml</li>
+</ul>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;dubbo-springboot-parent&lt;/artifactId&gt;
+        &lt;groupId&gt;com.lanou3g&lt;/groupId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+        &lt;relativePath&gt;../dubbo-springboot-parent/pom.xml&lt;/relativePath&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;dubbo-springboot-provider&lt;/artifactId&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo-spring-boot-starter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!-- redis注册中心依赖 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+            &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 如果注册中心是zookeeper换成此依赖 --&gt;
+        &lt;!--&lt;dependency&gt;
+            &lt;groupId&gt;com.netflix.curator&lt;/groupId&gt;
+            &lt;artifactId&gt;curator-framework&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.curator&lt;/groupId&gt;
+            &lt;artifactId&gt;curator-recipes&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+		--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lanou3g&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo-springboot-api&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+<ul>
+<li>服务实现示例代码</li>
+</ul>
+<p>HelloService.java</p>
+<pre><code class="language-java">package com.lanou3g.provider.service;
+
+import com.lanou3g.dubbo.service.IHelloService;
+import org.apache.dubbo.config.annotation.Service;
+
+// 通过此注解将服务注册到Dubbo的服务注册中心（注意包名是dubbo而不是spring的）
+// 该注解还支持添加服务的版本、所属组等参数，都是可选的
+@Service
+public class HelloService implements IHelloService {
+    @Override
+    public String hello() {
+        String msg = &quot;Hello Dubbo&quot;;
+        System.out.println(msg);
+        return msg;
+    }
+
+    @Override
+    public String hello(String name) {
+        String msg = &quot;Hello, &quot; + name;
+        System.out.println(msg);
+        return msg;
+    }
+}
+</code></pre>
+<ul>
+<li>配置Dubbo的注册中心、应用名等参数</li>
+</ul>
+<p>application.yml</p>
+<pre><code class="language-yml">dubbo:
+  application:
+    name: hello-dubbo-springboot
+    qos-enable: false
+
+  registry:
+    address: redis://localhost:6379
+</code></pre>
+<ul>
+<li>启动类</li>
+</ul>
+<p>ProviderApplication.java</p>
+<pre><code class="language-java">package com.lanou3g;
+
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+// 服务提供方一定要添加此注解，开启Dubbo的注解扫描（扫描我们配置的@Service注解）
+@EnableDubbo(scanBasePackages = &quot;com.lanou3g.provider.service&quot;)
+public class ProvicerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ProvicerApplication.class, args);
+    }
+}
+
+</code></pre>
+<h3 id="第四步开发服务消费者模块">第四步：开发服务消费者模块</h3>
+<p>该模块同样依赖公共的服务接口模块，通过接口类型，结合Dubbo的服务中心和RPC可以像调用本地Service方法一样调用远程的服务接口实现。</p>
+<ul>
+<li>
+<p>pom依赖</p>
+<p>和服务提供者一样，参见上面服务提供者pom文件</p>
+</li>
+<li>
+<p>配置Dubbo的注册中心、应用名等参数</p>
+<p>application.yml</p>
+<pre><code class="language-yml">dubbo:
+  application:
+    name: hello-dubbo-springboot
+    qos-enable: false
+
+  registry:
+    address: redis://localhost:6379
+</code></pre>
+</li>
+<li>
+<p>在需要调用远程服务的地方通过Dubbo引入远程服务（这里直接在Application类中通过生命周期方法调用）</p>
+<p>ConsumerApplication.java</p>
+<pre><code class="language-java">package com.lanou3g;
+
+import com.lanou3g.dubbo.service.IHelloService;
+import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import javax.annotation.PostConstruct;
+
+@SpringBootApplication
+public class ConsumerApplication {
+    
+    // 通过Dubbo提供的Reference注解引用远程服务
+    // 如果服务提供者暴露服务时配置的版本、所属组等参数，这里引用时也需要加上，所有参数匹配才能调用
+    @Reference
+    private IHelloService helloService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(ConsumerApplication.class, args);
+    }
+
+    @PostConstruct
+    public void invokeService() {
+        String result = helloService.hello();
+        System.out.println(&quot;远程服务hello()调用结果: &quot; + result);
+
+        result = helloService.hello(&quot;John&quot;);
+        System.out.println(&quot;远程服务hello(name)调用结果: &quot; + result);
+    }
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="dubbo监控工具dubboadmin">Dubbo监控工具DubboAdmin</h2>
+<ol>
+<li>
+<p>下载安装</p>
+</li>
+<li>
+<p>修改配置</p>
+<p>主要修改dubbo注册中心地址为你现在使用的注册中心地址：</p>
+<pre><code class="language-proper">dubbo.registry.address=zookeeper://teacher.lanou.com:2181?client=curator
+# dubbo.registry.address=multicast://224.5.6.7:1234?unicast=false
+# dubbo.registry.address=redis://127.0.0.1:6379
+</code></pre>
+</li>
+<li>
+<p>重新打包</p>
+<pre><code>mvn clean package
+</code></pre>
+</li>
+<li>
+<p>启动</p>
+<pre><code>java -jar dubbo-admin-0.0.1-SNAPSHOT.jar
+</code></pre>
+</li>
+<li>
+<p>使用方法</p>
+<p>登录时，用户名和密码都是root</p>
+<p>界面效果：</p>
+</li>
+</ol>
+<figure data-type="image" tabindex="4"><img src="https://ysjhhhhhhh.github.io/post-images/1576143409450.png" alt=""></figure>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="问题一找不到服务提供者">问题一：找不到服务提供者</h3>
+<p>问题描述：</p>
+<p>​		使用multicast注册中心时，一直报 <code>No provider available for the service xxxx Service1</code></p>
+<p>问题原因：</p>
+<p>​		dubbo的服务消费方在服务注册中心中无法找到匹配的服务提供者，导致服务无法调用</p>
+<p>问题解决：</p>
+<ol>
+<li>
+<p>检查服务提供者、消费者配置是否和快速开始或者官方multicast示例中一致</p>
+</li>
+<li>
+<p>如果服务提供者和消费者处于同一台服务器上，或者一个服务提供者有多个服务消费者，在消费者这方需要关闭multicast的单播模式，改为广播模式，否则消费者可能无法接收到服务提供者发出的服务注册消息。</p>
+<pre><code class="language-xml">&lt;dubbo:registry address=&quot;multicast://224.5.6.7:1234?unicast=false&quot; /&gt;
+</code></pre>
+<p>或</p>
+<pre><code class="language-xml">&lt;dubbo:registry protocol=&quot;multicast&quot; address=&quot;224.5.6.7:1234&quot;&gt;
+    &lt;dubbo:parameter key=&quot;unicast&quot; value=&quot;false&quot; /&gt;
+&lt;/dubbo:registry&gt;
+</code></pre>
+<p>参见：<a href="http://dubbo.apache.org/zh-cn/docs/user/references/registry/multicast.html">官方说明</a></p>
+</li>
+<li>
+<p>如果上面两步都排除掉了，依然无法解决。 使用终极大法，将你的网线拔掉，或者网络断掉，然后重启服务提供者、消费者，你会发现已经解决了。之后你再插上网线也不会再有问题，就是这么神奇~</p>
+</li>
+</ol>
+<h3 id="问题二启动消费者时有qos-server无法启动的警告">问题二：启动消费者时，有qos server无法启动的警告</h3>
+<p>问题描述：</p>
+<pre><code>警告:  [DUBBO] Fail to start qos server: , dubbo version: 2.7.3, current host: 10.10.13.127
+java.net.BindException: Address already in use: bind
+</code></pre>
+<p>问题原因：</p>
+<pre><code>通常这种情况发生在消费者和提供者运行在同一台服务器上，因为dubbo应用在启动时默认会启动一个心跳服务运行在22222端口，当一台服务器运行多个dubbo应用时，就会端口冲突。
+</code></pre>
+<p>问题解决：</p>
+<p>​	在开发过程中可以直接将qos心跳服务停掉</p>
+<pre><code class="language-xml">&lt;dubbo:application name=&quot;hello-dubbo&quot;&gt;
+    &lt;!-- 关闭qos心跳服务 --&gt;
+    &lt;dubbo:parameter key=&quot;qos.enable&quot; value=&quot;false&quot; /&gt;
+&lt;/dubbo:application&gt;
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Solr]]></title>
         <id>https://ysjhhhhhhh.github.io/post/solr</id>
@@ -3703,285 +4355,6 @@ layui.use('table', function() {
 <p>Layui官方（官方教程有很详细的使用教程）：</p>
 <p>https://www.layui.com/</p>
 <p>本周的总结就到这里</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Ajax]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/ajax</id>
-        <link href="https://ysjhhhhhhh.github.io/post/ajax">
-        </link>
-        <updated>2018-03-31T09:38:57.000Z</updated>
-        <content type="html"><![CDATA[<p>[TOC]</p>
-<h2 id="ajax">Ajax</h2>
-<ul>
-<li>是什么?</li>
-</ul>
-<blockquote>
-<p>“Asynchronous Javascript And XML”（异步JavaScript和XML），</p>
-</blockquote>
-<blockquote>
-<p>并不是新的技术，只是把原有的技术，整合到一起而已。</p>
-</blockquote>
-<pre><code>1.使用CSS和XHTML来表示。
-2.使用DOM模型来交互和动态显示。
-3.使用XMLHttpRequest来和服务器进行异步通信。
-4.使用javascript来绑定和调用。
-</code></pre>
-<ul>
-<li>有什么用?</li>
-</ul>
-<blockquote>
-<p>咱们的网页如果想要刷新局部内容。 那么需要重新载入整个网页。用户体验不是很好。  就是为了解决局部刷新的问题。 保持其他部分不动，只刷新某些地方。</p>
-</blockquote>
-<h3 id="数据请求-get">数据请求 Get</h3>
-<h4 id="创建ajax请求对象">创建ajax请求对象</h4>
-<pre><code class="language-javascript">function  ajaxFunction(){
-	    var xmlHttp;
-	    try{ // Firefox, Chrome, Opera 8.0+, Safari
-	        xmlHttp=new XMLHttpRequest();
-	    }
-	    catch (e){
-	        try{// Internet Explorer（高版本）
-	            xmlHttp=new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;);
-	        }
-	        catch (e){
-	            try{// Internet Explorer（低版本）
-	                xmlHttp=new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
-	            }
-	            catch (e){}
-	        }
-	    }
-	    return xmlHttp;
-	}
-</code></pre>
-<h4 id="发送请求">发送请求</h4>
-<pre><code class="language-javascript">//执行get请求
-function get() {
-
-    //1. 创建xmlhttprequest 对象
-    var request = ajaxFunction();
-
-    //2. 发送请求。
-    /*	
-	 *	参数一： 请求类型  GET or  POST
-	 *	参数二： 请求的路径
-	 *	参数三： 是否异步， true  or false
-	 */
-    request.open(&quot;GET&quot; ,&quot;TestServlet&quot; ,true );
-    request.send();
-}
-
-
-
-// 如果发送请求的同时，还想获取数据，那么代码如下
-
-//执行get请求
-function get() {
-
-    //1. 创建xmlhttprequest 对象
-    var request = ajaxFunction();
-
-    //2. 设置请求参数
-    request.open(&quot;GET&quot; ,&quot;TestServlet?name=aa&amp;age=18&quot; ,true );
-
-    //3. 获取响应数据 注册监听的意思。  一会准备的状态发生了改变，那么就执行 = 号右边的方法
-    request.onreadystatechange = function(){
-        // readyState的值一共有5个状态，参见下表
-        // readyState == 4 表示请求已经完成， 再判断状态码是否是200，200表示服务端正常响应(没有报错)
-        if(request.readyState == 4 &amp;&amp; request.status == 200){
-            //弹出响应的信息
-            alert(request.responseText);
-        }
-    }
-    
-    // 4. 发送请求
-    request.send();
-}
-</code></pre>
-<h3 id="xmlhttprequest-readystate状态表">XMLHttpRequest readyState状态表</h3>
-<table>
-<thead>
-<tr>
-<th>值</th>
-<th>状态</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>0</code></td>
-<td><code>UNSENT</code></td>
-<td>代理被创建，但尚未调用 open() 方法。</td>
-</tr>
-<tr>
-<td><code>1</code></td>
-<td><code>OPENED</code></td>
-<td><code>open()</code> 方法已经被调用。</td>
-</tr>
-<tr>
-<td><code>2</code></td>
-<td><code>HEADERS_RECEIVED</code></td>
-<td><code>send()</code> 方法已经被调用，并且头部和状态已经可获得。</td>
-</tr>
-<tr>
-<td><code>3</code></td>
-<td><code>LOADING</code></td>
-<td>请求中； <code>responseText</code> 属性已经包含部分数据。</td>
-</tr>
-<tr>
-<td><code>4</code></td>
-<td><code>DONE</code></td>
-<td>请求完成。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="数据请求-post">数据请求 Post</h3>
-<pre><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt;
-	//1. 创建对象
-	// 和get请求一样
-	
-	function post() {
-		//1. 创建请求对象
-		var request = ajaxFunction();
-		
-		// 2. 设置请求地址、参数、类型(post、get)
-		request.open(&quot;post&quot;, &quot;StudentServlet&quot;, true);
-		
-		//3. 获取响应数据 注册监听的意思。  一会准备的状态发生了改变，那么就执行 = 号右边的方法
-	    request.onreadystatechange = function(){
-	        //前半段表示 已经能够正常处理。  再判断状态码是否是200
-	        if(request.readyState == 4 &amp;&amp; request.status == 200){
-	            //弹出响应的信息
-	            console.log(&quot;请求完成&quot;);
-	            var h1 = document.getElementById(&quot;h1&quot;);
-	        	h1.innerHTML = request.responseText;
-	        }
-	    }
-		
-	 	// 4. 如果使用的是post方式带数据，那么 这里要添加头， 说明提交的数据类型是一个经过url编码的form表单数据
-		request.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);
-		
-		// 5. 发送请求
-    	// 如果是GET请求，参数写在这里是无效的
-		request.send(&quot;id=555&quot;);
-	}
-
-&lt;/script&gt;
-</code></pre>
-<h2 id="jquery-ajax">JQuery Ajax</h2>
-<h3 id="底层ajax写法">底层ajax写法</h3>
-<pre><code class="language-javascript">// 语法：$.ajax(url, [settings]);
-
-$.ajax(&quot;TestServlet&quot;, {
-    type: &quot;GET&quot;,
-    data: {
-        action: &quot;json&quot;,
-        uname: &quot;zhangsan&quot;
-    },
-    dataType: &quot;json&quot;,
-    success: function(data, status_text){
-        console.log(data);
-        console.log(&quot;status_text: &quot; + status_text);
-    },
-    error: function(xhr, textStatus, errorThrow) {
-        console.log(&quot;请求失败&quot;);
-    }
-});
-</code></pre>
-<blockquote>
-<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">.</mi><mi>a</mi><mi>j</mi><mi>a</mi><mi>x</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">其</mi><mi mathvariant="normal">他</mi><mi mathvariant="normal">所</mi><mi mathvariant="normal">有</mi><mi>a</mi><mi>j</mi><mi>a</mi><mi>x</mi><mi mathvariant="normal">相</mi><mi mathvariant="normal">关</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">底</mi><mi mathvariant="normal">层</mi><mi mathvariant="normal">实</mi><mi mathvariant="normal">现</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">其</mi><mi mathvariant="normal">他</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">都</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">在</mi><mi mathvariant="normal">它</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">基</mi><mi mathvariant="normal">础</mi><mi mathvariant="normal">上</mi><mi mathvariant="normal">给</mi><mi mathvariant="normal">我</mi><mi mathvariant="normal">们</mi><mi mathvariant="normal">封</mi><mi mathvariant="normal">装</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">更</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">便</mi><mi mathvariant="normal">使</mi><mi mathvariant="normal">用</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">关</mi><mi mathvariant="normal">于</mi></mrow><annotation encoding="application/x-tex">.ajax方法是其他所有ajax相关方法的底层实现，其他方法都是在它的基础上给我们封装的更方便使用的方法。 关于</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord">.</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">其</span><span class="mord cjk_fallback">他</span><span class="mord cjk_fallback">所</span><span class="mord cjk_fallback">有</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mord cjk_fallback">相</span><span class="mord cjk_fallback">关</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">底</span><span class="mord cjk_fallback">层</span><span class="mord cjk_fallback">实</span><span class="mord cjk_fallback">现</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">其</span><span class="mord cjk_fallback">他</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">都</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">在</span><span class="mord cjk_fallback">它</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">基</span><span class="mord cjk_fallback">础</span><span class="mord cjk_fallback">上</span><span class="mord cjk_fallback">给</span><span class="mord cjk_fallback">我</span><span class="mord cjk_fallback">们</span><span class="mord cjk_fallback">封</span><span class="mord cjk_fallback">装</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">更</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">便</span><span class="mord cjk_fallback">使</span><span class="mord cjk_fallback">用</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">。</span><span class="mord cjk_fallback">关</span><span class="mord cjk_fallback">于</span></span></span></span>.ajax的详细介绍参见 <a href="http://jquery.cuishifeng.cn/jQuery.Ajax.html">http://jquery.cuishifeng.cn/jQuery.Ajax.html</a></p>
-</blockquote>
-<h3 id="get请求">get请求</h3>
-<pre><code class="language-javascript">/*
- * 参数：
- *  url: 请求地址
- *  data: 待发送 Key/value 参数
- *  fn: 请求成功后回调函数
- *  type: 返回内容格式，xml, html, script, json, text, _default
- */
-
-$.get( &quot;url&quot;,{pid:pid} ,function(data,status_text){
-    console.log(data);
-    console.log(&quot;status_text: &quot; + status_text);
-},&quot;json&quot; );	// 指定请求返回的格式是json，jquery会帮我们把服务端返回的json字符串转换成js的json对象
-</code></pre>
-<h3 id="post请求">post请求</h3>
-<pre><code class="language-javascript">/*
- * 参数：
- *  url: 请求地址
- *  data: 待发送 Key/value 参数
- *  fn: 请求成功后回调函数
- *  type: 返回内容格式，xml, html, script, json, text, _default
- */
-
-$.post( &quot;url&quot;,{pid:pid} ,function(data,status){
-    console.log(data);
-    console.log(&quot;status_text: &quot; + status_text);
-},&quot;json&quot; );	// 指定请求返回的格式是json，jquery会帮我们把服务端返回的json字符串转换成js的json对象
-</code></pre>
-<h3 id="获取json数据专用方法">获取JSON数据专用方法</h3>
-<pre><code class="language-javascript">$.getJSON(&quot;url&quot;, {id:1, name: &quot;zhangsan&quot;} function(json){
-  console.log(json);
-});
-</code></pre>
-<h2 id="服务器和客户端数据传输的方式">服务器和客户端数据传输的方式</h2>
-<h3 id="xml">xml</h3>
-<p>因为无效数据占比太大，阅读困难。基本已经被json格式淘汰掉了</p>
-<pre><code class="language-xml">  	&lt;list&gt;
-        &lt;city&gt;
-        &lt;id&gt;1&lt;id&gt;
-        &lt;pid&gt;1&lt;/pid&gt;
-        &lt;cname&gt;深圳&lt;/cname&gt;
-        &lt;/city&gt;
-        &lt;city &gt;
-        &lt;id&gt;2&lt;id&gt;
-        &lt;pid&gt;1&lt;/pid&gt;
-        &lt;cname&gt;东莞&lt;/cname&gt;
-        &lt;/city&gt;
-    &lt;/list&gt;
-</code></pre>
-<h3 id="json">json</h3>
-<p>阅读性更好 、 占用空间更小。</p>
-<pre><code class="language-json">[{city:{id:1, pid:1, cname:&quot;深圳&quot;}}, {city:{id:2, pid:1, cname:&quot;东莞&quot;}}]
-</code></pre>
-<h4 id="前端json操作">前端json操作</h4>
-<pre><code class="language-js">JSON.parse(jsonStr); // 将JSON字符串转成js对象
-JSON.stringify(obj);  // 将js对象转成JSON字符串
-</code></pre>
-<h4 id="后台json操作库">后台json操作库</h4>
-<ul>
-<li>
-<p>fastjson库</p>
-<p>JSON.toJSONString();	// 将JavaBean encode成 json string<br>
-JSON.parseObject();		// 将json对象decode成javabean<br>
-JSON.parseArray();		// 将json数组decode成java List或 JSONArray类型</p>
-</li>
-<li>
-<p>Gson库</p>
-</li>
-<li>
-<p>Jackson库</p>
-</li>
-<li>
-<p>...</p>
-</li>
-</ul>
-<h2 id="总结">总结</h2>
-<h3 id="ajax-2">Ajax</h3>
-<ul>
-<li>创建异步请求对象的方法</li>
-<li>发起异步GET请求的步骤</li>
-<li>发起异步POST请求的步骤</li>
-<li>异步POST请求与GET请求的对比</li>
-</ul>
-<h3 id="jquery">JQuery</h3>
-<ul>
-<li>$.ajax()</li>
-<li>$.get()</li>
-<li>$.post()</li>
-<li>$.getJSON()</li>
-<li>jQuery中各个ajax方法之间的区别和联系</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
