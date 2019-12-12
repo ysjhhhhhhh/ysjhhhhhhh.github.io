@@ -1,0 +1,679 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>监控工具 | Gridea</title>
+<meta name="description" content="温故而知新" />
+<link rel="shortcut icon" href="https://ysjhhhhhhh.github.io/favicon.ico?v=1576151969709">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://ysjhhhhhhh.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://ysjhhhhhhh.github.io">
+  <img class="avatar" src="https://ysjhhhhhhh.github.io/images/avatar.png?v=1576151969709" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              监控工具
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-06-20
+              </span>
+              <span>
+                12 min read
+              </span>
+              
+                <a href="https://ysjhhhhhhh.github.io/tag/QNP_cGyqV" class="post-tag">
+                  # Gridea
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3824238765,1402697675&amp;fm=26&amp;gp=0.jpg" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>[TOC]</p>
+<h1 id="监控工具">监控工具</h1>
+<h2 id="springboot-actuator">SpringBoot Actuator</h2>
+<p>SpringBoot Actuactor是SpringBoot提供的一个监控工具，通过他我们可以看到应用运行工程中的很多有用的信息：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">ID</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Enabled by default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">auditevents</td>
+<td style="text-align:left">Exposes audit events information for the current application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">beans</td>
+<td style="text-align:left">Displays a complete list of all the Spring beans in your application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">conditions</td>
+<td style="text-align:left">Shows the conditions that were evaluated on configuration and auto-configuration classes and the reasons why they did or did not match.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">configprops</td>
+<td style="text-align:left">Displays a collated list of all <code class="literal">@ConfigurationProperties</code>.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">env</td>
+<td style="text-align:left">Exposes properties from Spring’s <code class="literal">ConfigurableEnvironment</code>.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">flyway</td>
+<td style="text-align:left">Shows any Flyway database migrations that have been applied.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">health</td>
+<td style="text-align:left">Shows application health information.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">httptrace</td>
+<td style="text-align:left">Displays HTTP trace information (by default, the last 100 HTTP request-response exchanges).</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">info</td>
+<td style="text-align:left">Displays arbitrary application info.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">loggers</td>
+<td style="text-align:left">Shows and modifies the configuration of loggers in the application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">liquibase</td>
+<td style="text-align:left">Shows any Liquibase database migrations that have been applied.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">metrics</td>
+<td style="text-align:left">Shows ‘metrics’ information for the current application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">mappings</td>
+<td style="text-align:left">Displays a collated list of all <code class="literal">@RequestMapping paths</code>.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">scheduledtasks</td>
+<td style="text-align:left">Displays the scheduled tasks in your application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">sessions</td>
+<td style="text-align:left">Allows retrieval and deletion of user sessions from a Spring Session-backed session store. Not available when using Spring Session’s support for reactive web applications.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">shutdown</td>
+<td style="text-align:left">Lets the application be gracefully shutdown.</td>
+<td style="text-align:left">No</td>
+</tr>
+<tr>
+<td style="text-align:left">threaddump</td>
+<td style="text-align:left">Performs a thread dump.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+</tbody>
+</table>
+<p><font color="orange">如果应用是一个Web应用（指引入了SpringMVC、Spring WebFlux或者Jersey），就可以用下面这些监控端点</font></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">ID</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Enabled by default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">heapdump</td>
+<td style="text-align:left">Returns an hprof heap dump file.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">jolokia</td>
+<td style="text-align:left">Exposes JMX beans over HTTP (when Jolokia is on the classpath, not available for WebFlux).</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">logfile</td>
+<td style="text-align:left">Returns the contents of the logfile (if logging.file or logging.path properties have been set). Supports the use of the HTTP Range header to retrieve part of the log file’s content.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">prometheus</td>
+<td style="text-align:left">Exposes metrics in a format that can be scraped by a Prometheus server.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+</tbody>
+</table>
+<p>除了上面列出来的，其他第三方模块还会提供一些特有的监控端点，如zuul提供的/routes</p>
+<h3 id="使用方法">使用方法</h3>
+<ol>
+<li>引入依赖</li>
+</ol>
+<pre><code class="language-xml">dependencies
+    dependency
+    	groupIdorg.springframework.bootgroupId
+    	artifactIdspring-boot-starter-actuatorartifactId
+    dependency
+dependencies
+</code></pre>
+<ol start="2">
+<li>配置监控端点访问属性（可选）</li>
+</ol>
+<pre><code class="language-yml">server
+  port 8080
+
+management
+  security
+    enabled false  #关掉安全认证
+  port 8898  #管理端口调整成8898,独立的端口可以做安全控制
+  context-path monitor  #actuator的访问路径(默认是)
+</code></pre>
+<p>默认actuator的访问路径就是应用的根路径，端口与应用一致。我们可以通过management相关属性修改。上面的配置将actuator的访问端口改成了8898，与主应用程序独立，并且将context-path配置为monitor，这样访问路径就变成了：httplocalhost8898monitor</p>
+<ol start="3">
+<li>查看各个端点的结果<br>
+在actuator的访问根路径后加上端点名就可以访问对应监控端点的内容，如：httplocalhost8098monitorbeans</li>
+</ol>
+<h3 id="打开关闭指定监控端点">打开关闭指定监控端点</h3>
+<p>endpoints.id.enabled<br>
+如：endpoints.beans.enabled=true<br>
+在新版本中改成：<br>
+management.endpoint.id.enabled<br>
+如：management.endpoint.beans.enabled=false</p>
+<h3 id="设置默认关闭显示开启需要的">设置默认关闭，显示开启需要的</h3>
+<p>上面提到SpringBoot默认是开启了除shutdown之外的所有监控端点(actuator)，如果我们只需要其中一个或两个该怎么配置呢？不会要手动一个一个在配置中关闭吧？当然不是，SpringBoot给我们提供了专门的配置</p>
+<pre><code>endpoints.enabled=false #修改默认行为，把所有actuator的默认开启行为改成默认关闭
+endpoints.info.enabled=true #我们再把自己需要的actuator开启就可以了
+</code></pre>
+<p>在springboot 2.0.4中改为：</p>
+<pre><code>management.endpoints.enabled-by-default=false   #修改默认行为，把所有actuator的默认开启行为改成默认关闭
+management.endpoint.info.enabled=true   #我们再把自己需要的actuator开启就可以了
+</code></pre>
+<h3 id="spring-boot-admin">Spring Boot Admin</h3>
+<p>Spring Boot Admin是开源社区提供的一款针对Spring Boot Actuator endpoints的GUI工具，可以提供更友好的体验。SBA应用包含服务端和客户端，服务端只负责展示客户端上报上来的数据，客户端没有GUI界面，主要负责把所在service中开启的各个actuator endpoints的数据上报到SBA服务端。Spring Boot Admin支持两种工作方式：</p>
+<ul>
+<li>通过官方服务端和客户端</li>
+<li>通过服务发现组件(如：Eureka)<br>
+下面我们来分别介绍这两种工作方式的配置方法</li>
+</ul>
+<h4 id="通过官方客户端配置">通过官方客户端配置</h4>
+<h5 id="服务端配置">服务端配置</h5>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+    groupIdde.codecentricgroupId
+    artifactIdspring-boot-admin-serverartifactId
+    version1.5.6version
+dependency
+dependency
+    groupIdde.codecentricgroupId
+    artifactIdspring-boot-admin-server-uiartifactId
+    version1.5.6version
+dependency
+</code></pre>
+<ol start="2">
+<li>在启动类上配置</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableAdminServer
+public class SpringBootAdminApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootAdminApplication.class, args);
+    }
+}
+</code></pre>
+<p>除此之外，服务端不需要额外的配置，如果想改端口可以设置server.port，不设置默认就是8080</p>
+<ol start="3">
+<li>访问 httphostport 就可以打开admin ui主页了<br>
+<img src="http://www.itmind.net/assets/images/2018/springboot/admin2.png" alt="Spring Boot Admin首页"><br>
+监控多个服务的管理首页<br>
+<img src="http://www.itmind.net/assets/images/2018/springboot/admin4.png" alt="监控多服务的管理首页"><br>
+首页会展示被监控的各个服务，点击详情可以查看某个服务的具体监控信息<br>
+<img src="http://www.itmind.net/assets/images/2018/springboot/admin3.png" alt="详情页"></li>
+</ol>
+<h5 id="客户端配置">客户端配置</h5>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+    groupIdde.codecentricgroupId
+    artifactIdspring-boot-admin-starter-clientartifactId
+    version1.5.6version
+dependency
+</code></pre>
+<ol start="2">
+<li>配置</li>
+</ol>
+<pre><code class="language-yml">spring
+  boot
+    admin
+      url httplocalhost8080  #指向SBA服务端主页的地址，用于向服务端注册
+management
+  security
+    enabled false  #这里为了配置简便，直接关闭掉安全策略
+</code></pre>
+<h5 id="遇到的问题">遇到的问题</h5>
+<ol>
+<li>SpringBootAdmin默认获取的是外网的域名（我家联通宽带，获取到的域名是：pc0.zz.ha.cn），导致无法与客户端通讯<br>
+解答： 在客户端添加management.address属性即可解决</li>
+</ol>
+<h4 id="通过eurake方式工作">通过Eurake方式工作</h4>
+<p>通过服务发现的方式工作，即把SBA Server和Client都接入服务注册中心，SBA Server会自动从服务注册中心拉取服务列表，然后扫描所有服务列表对应的监控端点，收集数据</p>
+<h5 id="服务端配置-2">服务端配置</h5>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+  groupIdorg.springframework.cloudgroupId
+  artifactIdspring-cloud-starter-eurekaartifactId
+dependency
+</code></pre>
+<ol start="2">
+<li>在启动类上配置</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableDiscoveryClient
+@EnableAdminServer
+public class SpringBootAdminApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(SpringBootAdminApplication.class, args);
+  }
+}
+</code></pre>
+<ol start="3">
+<li>配置eureka</li>
+</ol>
+<pre><code class="language-yml">eureka  
+  instance
+    leaseRenewalIntervalInSeconds 10
+  client
+    registryFetchIntervalSeconds 5
+    serviceUrl
+      defaultZone ${EUREKA_SERVICE_URLhttplocalhost8761}eureka
+
+</code></pre>
+<h5 id="客户端配置-2">客户端配置</h5>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+    groupIdorg.springframework.cloudgroupId
+    artifactIdspring-cloud-starter-netflix-eureka-clientartifactId
+dependency
+</code></pre>
+<ol start="2">
+<li>配置eureka</li>
+</ol>
+<pre><code class="language-yml">eureka  
+  instance
+    leaseRenewalIntervalInSeconds 10
+  client
+    registryFetchIntervalSeconds 5
+    serviceUrl
+      defaultZone ${EUREKA_SERVICE_URLhttplocalhost8761}eureka
+</code></pre>
+<ol start="3">
+<li>配置监控端点安全策略</li>
+</ol>
+<pre><code class="language-yml">management
+  security
+    enabled false 
+</code></pre>
+<h5 id="遇到的问题-2">遇到的问题</h5>
+<ol>
+<li>用eureka服务发现方式工作时，如果配置了management.context-path后会有问题：</li>
+</ol>
+<pre><code>Error {timestamp1545821563706,status404,errorNot Found,messageNo message available,pathinfo}
+</code></pre>
+<p>解答：这是因为SpringBootAdmin Server无法从Eureka中获取到此配置，默认会访问client监控端点时context-path是，可以通过在客户端eureka配置中通过添加meta-data解决：</p>
+<pre><code class="language-yml">eureka
+  client
+    serviceUrl
+      defaultZone httppeer18781eureka
+    registry-fetch-interval-seconds 5
+  instance
+    prefer-ip-address true #配置Eureka
+    instance-id ${spring.application.name}${spring.application.instance_id${server.port}}
+    metadata-map 
+      management
+        context-path monitor
+        port 8898
+</code></pre>
+<p>上面两种方式配置都比较简单，如果项目中已经引入了eureka服务注册中心， 可以采用这种方式，客户端基本上没有什么额外的配置<br>
+另外，Spring Boot Admin还支持很多的配置参数，如果有需要可以查看<a href="httpcodecentric.github.iospring-boot-admin1.5.6">官方说明</a></p>
+<h4 id="邮件预警">邮件预警</h4>
+<p>Spring Boot Admin将微服务中所有应用信息在后台进行了展示，非常方便我们对微服务整体的监控和治理。但是我们的运营人员也不可能一天24小时盯着监控后台，因此如果服务有异常的时候，有对应的邮件告警就太好了，其实Spring Boot Admin也给出了支持。</p>
+<ol>
+<li>添加依赖</li>
+</ol>
+<pre><code class="language-xml">dependency
+  groupIdorg.springframework.bootgroupId
+  artifactIdspring-boot-starter-mailartifactId
+dependency
+</code></pre>
+<ol start="2">
+<li>配置文件</li>
+</ol>
+<pre><code class="language-yml">spring
+  mail
+    host smtp.qq.com
+    username xxxxx@qq.com
+    password xxxx
+    properties
+      mail
+        smtp
+          auth true
+          starttls
+            enable true
+            required true
+  boot
+    admin
+      notify
+        mail
+          from xxxx@qq.com
+          to xxxx@qq.com
+# httpcodecentric.github.iospring-boot-admin1.5.6#mail-notifications
+</code></pre>
+<p>配置完成后，重新启动项目spring-boot-admin-server，这样Admin Server就具备了邮件告警的功能，默认情况下Admin Server对Eureka中的服务上下线都进行了监控，当服务上下线的时候我们就会收到如下邮件：<br>
+<img src="http://www.itmind.net/assets/images/2018/springboot/admin5.png" alt="Spring Boot Admin Email"><br>
+当然这只是最基本的邮件监控，在实际的使用过程中，需要根据我们的情况对邮件告警内容进行自定义，比如监控堆内存的使用情况，当到达一定比例的时候进行告警等。</p>
+<h2 id="hystrix-dashboard">Hystrix Dashboard</h2>
+<p>Hystrix Dashboard是Hystrix给我们提供的实时查看单机熔断情况的工具。需要配合SpringBoot Actuator使用。</p>
+<h3 id="hystrix-dashboard使用方法">Hystrix Dashboard使用方法</h3>
+<p>Hystrix Dashboard就是一个独立的图表工具，与业务没有任何关联。我们可以单独创建一个工程，引入dashboard的包</p>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+    groupIdorg.springframework.cloudgroupId
+    artifactIdspring-cloud-starter-hystrix-dashboardartifactId
+dependency
+</code></pre>
+<ol start="2">
+<li>在Application启动类中开启dashboard功能</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableHystrixDashboard
+public class DashboardApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DashboardApplication.class, args);
+    }
+}
+</code></pre>
+<ol start="3">
+<li>浏览器中访问：http://localhost:8090/hystrix 就可以打开dashboard首页了</li>
+</ol>
+<figure data-type="image" tabindex="1"><img src="http://www.itmind.net/assets/images/2017/springcloud/hystrix-dashboard-1.jpg" alt="Hystrix Dashboard首页图"></figure>
+<p>hystrix dashboard支持查看单个host的hystrix.stream、turbine.stream、turbine.streamcluster=xxx三种类型的流数据</p>
+<p>我们为了演示Hystrix dashboard效果可以输入单host数据流地址，(如：http://localhost:8081/hystrix.stream)，就可以看到监控界面<br>
+<img src="http://www.itmind.net/assets/images/2017/springcloud/hystrix-dashboard-2.jpg" alt="Hystrix单Host监控界面"></p>
+<p>关于监控界面上每个指标的含义，官方的wiki上有张图给出了详细说明<br>
+<img src="http://www.itmind.net/assets/images/2017/springcloud/hystrix-dashboard-3.png" alt="Hystrix Dashboard各项指标说明图"></p>
+<p>更多关于Hystrix Dashboard的说明请参见：<a href="httpsgithub.comNetflix-Skunkworkshystrix-dashboardwiki">Hystrix Dashboard官方wiki</a></p>
+<h2 id="turbine">Turbine</h2>
+<p>在复杂的分布式系统中，相同服务的节点经常需要部署上百甚至上千个，很多时候，运维人员希望能够把相同服务的节点状态以一个整体集群的形式展现出来，这样可以更好的把握整个系统的状态。 为此，Netflix提供了一个开源项目（Turbine）来提供把多个hystrix.stream的内容聚合为一个数据源供Dashboard展示。</p>
+<h3 id="turbine与dashboard-hystrix-eventstream的关系">Turbine与Dashboard、Hystrix EventStream的关系</h3>
+<figure data-type="image" tabindex="2"><img src="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/dashboard-direct-vs-turbine-640.png" alt="Turbine与Dashboard关系图"></figure>
+<h3 id="turbine的使用方法">Turbine的使用方法</h3>
+<ol>
+<li>引入Turbine依赖</li>
+</ol>
+<pre><code class="language-xml">dependencies
+    dependency
+        groupIdorg.springframework.cloudgroupId
+        artifactIdspring-cloud-starter-turbineartifactId
+    dependency
+	dependency
+		groupIdorg.springframework.cloudgroupId
+		artifactIdspring-cloud-starter-hystrix-dashboardartifactId
+	dependency
+dependencies
+</code></pre>
+<p>添加Hystrix dashboard依赖的原因是因为Turbine只是一个数据聚合工具，实际使用中可以把Hystrix dashboard工具整合到Turbine工程中，这样就可以在同一个工程中整合数据，查看监控界面，部署起来也方便。</p>
+<ol start="2">
+<li>配置Turbine要监控的服务</li>
+</ol>
+<pre><code class="language-yml">server
+  port 8095
+
+spring
+  application
+    name myturbine
+
+turbine
+  app-config print-client,print-client2  
+  cluster-name-expression 'default'  
+  aggregator
+    cluster-config default 
+
+## Turbine需要从Eureka中获取服务列表，然后遍历每个服务每个节点上的hystrix.stream数据，然后汇聚到一起
+eureka
+  instance
+    hostname peer1
+    prefer-ip-address true 
+    instance-id ${spring.application.name}${spring.application.instance_id${server.port}}
+  client
+    service-url
+      defaultZone http${eureka.instance.hostname}8781eureka
+    registry-fetch-interval-seconds 10
+</code></pre>
+<ul>
+<li><code>turbine.appConfig</code> ：配置Eureka中的serviceId列表，表明监控哪些服务</li>
+<li><code>turbine.aggregator.clusterConfig</code> ：指定聚合哪些集群，多个使用”,”分割，默认为default。可使用http...turbine.streamcluster={clusterConfig之一}访问</li>
+<li><code>turbine.clusterNameExpression</code> ： 1. clusterNameExpression指定集群名称，默认表达式appName；此时：turbine.aggregator.clusterConfig需要配置想要监控的应用名称；2. 当clusterNameExpression default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default；3. 当clusterNameExpression metadata[‘cluster’]时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster ABC，则需要配置，同时turbine.aggregator.clusterConfig ABC</li>
+</ul>
+<ol start="3">
+<li>在Application启动类中开启Turbine功能</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableTurbine
+public class TurbineApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TurbineApplication.class, args);
+    }
+}
+</code></pre>
+<ol start="4">
+<li>访问turbine.stream<br>
+在浏览器中访问httplocalhost8095turbine.stream 就可以看到配置到Turbine上的所有微服务产生的流式事件数据</li>
+<li>在Hystrix Dashboard中查看所有、指定微服务的实时熔断监控。<br>
+将上述地址输入到Hystrix Dashboard中即可查看所有微服务的监控情况，或者加上cluster=[clusterName] 参数，只看某个微服务的情况<br>
+<img src="https://github.com/Netflix/Turbine/wiki/images/NetflixDash.jpg" alt="Turbine多服务熔断监控数据聚合后效果图"></li>
+<li></li>
+</ol>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E7%9B%91%E6%8E%A7%E5%B7%A5%E5%85%B7">监控工具</a>
+<ul>
+<li><a href="#springboot-actuator">SpringBoot Actuator</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">使用方法</a></li>
+<li><a href="#%E6%89%93%E5%BC%80%E5%85%B3%E9%97%AD%E6%8C%87%E5%AE%9A%E7%9B%91%E6%8E%A7%E7%AB%AF%E7%82%B9">打开关闭指定监控端点</a></li>
+<li><a href="#%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E5%85%B3%E9%97%AD%E6%98%BE%E7%A4%BA%E5%BC%80%E5%90%AF%E9%9C%80%E8%A6%81%E7%9A%84">设置默认关闭，显示开启需要的</a></li>
+<li><a href="#spring-boot-admin">Spring Boot Admin</a>
+<ul>
+<li><a href="#%E9%80%9A%E8%BF%87%E5%AE%98%E6%96%B9%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE">通过官方客户端配置</a>
+<ul>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE">服务端配置</a></li>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE">客户端配置</a></li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98">遇到的问题</a></li>
+</ul>
+</li>
+<li><a href="#%E9%80%9A%E8%BF%87eurake%E6%96%B9%E5%BC%8F%E5%B7%A5%E4%BD%9C">通过Eurake方式工作</a>
+<ul>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE-2">服务端配置</a></li>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE-2">客户端配置</a></li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98-2">遇到的问题</a></li>
+</ul>
+</li>
+<li><a href="#%E9%82%AE%E4%BB%B6%E9%A2%84%E8%AD%A6">邮件预警</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#hystrix-dashboard">Hystrix Dashboard</a>
+<ul>
+<li><a href="#hystrix-dashboard%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">Hystrix Dashboard使用方法</a></li>
+</ul>
+</li>
+<li><a href="#turbine">Turbine</a>
+<ul>
+<li><a href="#turbine%E4%B8%8Edashboard-hystrix-eventstream%E7%9A%84%E5%85%B3%E7%B3%BB">Turbine与Dashboard、Hystrix EventStream的关系</a></li>
+<li><a href="#turbine%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">Turbine的使用方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://ysjhhhhhhh.github.io/post/netflix-xi-lie">
+              <h3 class="post-title">
+                Netflix系列
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://ysjhhhhhhh.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

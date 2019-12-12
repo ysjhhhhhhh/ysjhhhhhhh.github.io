@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-12T11:42:04.250Z</updated>
+    <updated>2019-12-12T11:59:38.725Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,483 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[监控工具]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/jian-kong-gong-ju</id>
+        <link href="https://ysjhhhhhhh.github.io/post/jian-kong-gong-ju">
+        </link>
+        <updated>2018-06-20T08:45:10.000Z</updated>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<h1 id="监控工具">监控工具</h1>
+<h2 id="springboot-actuator">SpringBoot Actuator</h2>
+<p>SpringBoot Actuactor是SpringBoot提供的一个监控工具，通过他我们可以看到应用运行工程中的很多有用的信息：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">ID</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Enabled by default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">auditevents</td>
+<td style="text-align:left">Exposes audit events information for the current application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">beans</td>
+<td style="text-align:left">Displays a complete list of all the Spring beans in your application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">conditions</td>
+<td style="text-align:left">Shows the conditions that were evaluated on configuration and auto-configuration classes and the reasons why they did or did not match.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">configprops</td>
+<td style="text-align:left">Displays a collated list of all <code class="literal">@ConfigurationProperties</code>.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">env</td>
+<td style="text-align:left">Exposes properties from Spring’s <code class="literal">ConfigurableEnvironment</code>.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">flyway</td>
+<td style="text-align:left">Shows any Flyway database migrations that have been applied.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">health</td>
+<td style="text-align:left">Shows application health information.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">httptrace</td>
+<td style="text-align:left">Displays HTTP trace information (by default, the last 100 HTTP request-response exchanges).</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">info</td>
+<td style="text-align:left">Displays arbitrary application info.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">loggers</td>
+<td style="text-align:left">Shows and modifies the configuration of loggers in the application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">liquibase</td>
+<td style="text-align:left">Shows any Liquibase database migrations that have been applied.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">metrics</td>
+<td style="text-align:left">Shows ‘metrics’ information for the current application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">mappings</td>
+<td style="text-align:left">Displays a collated list of all <code class="literal">@RequestMapping paths</code>.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">scheduledtasks</td>
+<td style="text-align:left">Displays the scheduled tasks in your application.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">sessions</td>
+<td style="text-align:left">Allows retrieval and deletion of user sessions from a Spring Session-backed session store. Not available when using Spring Session’s support for reactive web applications.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">shutdown</td>
+<td style="text-align:left">Lets the application be gracefully shutdown.</td>
+<td style="text-align:left">No</td>
+</tr>
+<tr>
+<td style="text-align:left">threaddump</td>
+<td style="text-align:left">Performs a thread dump.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+</tbody>
+</table>
+<p><font color="orange">如果应用是一个Web应用（指引入了SpringMVC、Spring WebFlux或者Jersey），就可以用下面这些监控端点</font></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">ID</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Enabled by default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">heapdump</td>
+<td style="text-align:left">Returns an hprof heap dump file.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">jolokia</td>
+<td style="text-align:left">Exposes JMX beans over HTTP (when Jolokia is on the classpath, not available for WebFlux).</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">logfile</td>
+<td style="text-align:left">Returns the contents of the logfile (if logging.file or logging.path properties have been set). Supports the use of the HTTP Range header to retrieve part of the log file’s content.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">prometheus</td>
+<td style="text-align:left">Exposes metrics in a format that can be scraped by a Prometheus server.</td>
+<td style="text-align:left">Yes</td>
+</tr>
+</tbody>
+</table>
+<p>除了上面列出来的，其他第三方模块还会提供一些特有的监控端点，如zuul提供的/routes</p>
+<h3 id="使用方法">使用方法</h3>
+<ol>
+<li>引入依赖</li>
+</ol>
+<pre><code class="language-xml">dependencies
+    dependency
+    	groupIdorg.springframework.bootgroupId
+    	artifactIdspring-boot-starter-actuatorartifactId
+    dependency
+dependencies
+</code></pre>
+<ol start="2">
+<li>配置监控端点访问属性（可选）</li>
+</ol>
+<pre><code class="language-yml">server
+  port 8080
+
+management
+  security
+    enabled false  #关掉安全认证
+  port 8898  #管理端口调整成8898,独立的端口可以做安全控制
+  context-path monitor  #actuator的访问路径(默认是)
+</code></pre>
+<p>默认actuator的访问路径就是应用的根路径，端口与应用一致。我们可以通过management相关属性修改。上面的配置将actuator的访问端口改成了8898，与主应用程序独立，并且将context-path配置为monitor，这样访问路径就变成了：httplocalhost8898monitor</p>
+<ol start="3">
+<li>查看各个端点的结果<br>
+在actuator的访问根路径后加上端点名就可以访问对应监控端点的内容，如：httplocalhost8098monitorbeans</li>
+</ol>
+<h3 id="打开关闭指定监控端点">打开关闭指定监控端点</h3>
+<p>endpoints.id.enabled<br>
+如：endpoints.beans.enabled=true<br>
+在新版本中改成：<br>
+management.endpoint.id.enabled<br>
+如：management.endpoint.beans.enabled=false</p>
+<h3 id="设置默认关闭显示开启需要的">设置默认关闭，显示开启需要的</h3>
+<p>上面提到SpringBoot默认是开启了除shutdown之外的所有监控端点(actuator)，如果我们只需要其中一个或两个该怎么配置呢？不会要手动一个一个在配置中关闭吧？当然不是，SpringBoot给我们提供了专门的配置</p>
+<pre><code>endpoints.enabled=false #修改默认行为，把所有actuator的默认开启行为改成默认关闭
+endpoints.info.enabled=true #我们再把自己需要的actuator开启就可以了
+</code></pre>
+<p>在springboot 2.0.4中改为：</p>
+<pre><code>management.endpoints.enabled-by-default=false   #修改默认行为，把所有actuator的默认开启行为改成默认关闭
+management.endpoint.info.enabled=true   #我们再把自己需要的actuator开启就可以了
+</code></pre>
+<h3 id="spring-boot-admin">Spring Boot Admin</h3>
+<p>Spring Boot Admin是开源社区提供的一款针对Spring Boot Actuator endpoints的GUI工具，可以提供更友好的体验。SBA应用包含服务端和客户端，服务端只负责展示客户端上报上来的数据，客户端没有GUI界面，主要负责把所在service中开启的各个actuator endpoints的数据上报到SBA服务端。Spring Boot Admin支持两种工作方式：</p>
+<ul>
+<li>通过官方服务端和客户端</li>
+<li>通过服务发现组件(如：Eureka)<br>
+下面我们来分别介绍这两种工作方式的配置方法</li>
+</ul>
+<h4 id="通过官方客户端配置">通过官方客户端配置</h4>
+<h5 id="服务端配置">服务端配置</h5>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+    groupIdde.codecentricgroupId
+    artifactIdspring-boot-admin-serverartifactId
+    version1.5.6version
+dependency
+dependency
+    groupIdde.codecentricgroupId
+    artifactIdspring-boot-admin-server-uiartifactId
+    version1.5.6version
+dependency
+</code></pre>
+<ol start="2">
+<li>在启动类上配置</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableAdminServer
+public class SpringBootAdminApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootAdminApplication.class, args);
+    }
+}
+</code></pre>
+<p>除此之外，服务端不需要额外的配置，如果想改端口可以设置server.port，不设置默认就是8080</p>
+<ol start="3">
+<li>访问 httphostport 就可以打开admin ui主页了<br>
+<img src="http://www.itmind.net/assets/images/2018/springboot/admin2.png" alt="Spring Boot Admin首页"><br>
+监控多个服务的管理首页<br>
+<img src="http://www.itmind.net/assets/images/2018/springboot/admin4.png" alt="监控多服务的管理首页"><br>
+首页会展示被监控的各个服务，点击详情可以查看某个服务的具体监控信息<br>
+<img src="http://www.itmind.net/assets/images/2018/springboot/admin3.png" alt="详情页"></li>
+</ol>
+<h5 id="客户端配置">客户端配置</h5>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+    groupIdde.codecentricgroupId
+    artifactIdspring-boot-admin-starter-clientartifactId
+    version1.5.6version
+dependency
+</code></pre>
+<ol start="2">
+<li>配置</li>
+</ol>
+<pre><code class="language-yml">spring
+  boot
+    admin
+      url httplocalhost8080  #指向SBA服务端主页的地址，用于向服务端注册
+management
+  security
+    enabled false  #这里为了配置简便，直接关闭掉安全策略
+</code></pre>
+<h5 id="遇到的问题">遇到的问题</h5>
+<ol>
+<li>SpringBootAdmin默认获取的是外网的域名（我家联通宽带，获取到的域名是：pc0.zz.ha.cn），导致无法与客户端通讯<br>
+解答： 在客户端添加management.address属性即可解决</li>
+</ol>
+<h4 id="通过eurake方式工作">通过Eurake方式工作</h4>
+<p>通过服务发现的方式工作，即把SBA Server和Client都接入服务注册中心，SBA Server会自动从服务注册中心拉取服务列表，然后扫描所有服务列表对应的监控端点，收集数据</p>
+<h5 id="服务端配置-2">服务端配置</h5>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+  groupIdorg.springframework.cloudgroupId
+  artifactIdspring-cloud-starter-eurekaartifactId
+dependency
+</code></pre>
+<ol start="2">
+<li>在启动类上配置</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableDiscoveryClient
+@EnableAdminServer
+public class SpringBootAdminApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(SpringBootAdminApplication.class, args);
+  }
+}
+</code></pre>
+<ol start="3">
+<li>配置eureka</li>
+</ol>
+<pre><code class="language-yml">eureka  
+  instance
+    leaseRenewalIntervalInSeconds 10
+  client
+    registryFetchIntervalSeconds 5
+    serviceUrl
+      defaultZone ${EUREKA_SERVICE_URLhttplocalhost8761}eureka
+
+</code></pre>
+<h5 id="客户端配置-2">客户端配置</h5>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+    groupIdorg.springframework.cloudgroupId
+    artifactIdspring-cloud-starter-netflix-eureka-clientartifactId
+dependency
+</code></pre>
+<ol start="2">
+<li>配置eureka</li>
+</ol>
+<pre><code class="language-yml">eureka  
+  instance
+    leaseRenewalIntervalInSeconds 10
+  client
+    registryFetchIntervalSeconds 5
+    serviceUrl
+      defaultZone ${EUREKA_SERVICE_URLhttplocalhost8761}eureka
+</code></pre>
+<ol start="3">
+<li>配置监控端点安全策略</li>
+</ol>
+<pre><code class="language-yml">management
+  security
+    enabled false 
+</code></pre>
+<h5 id="遇到的问题-2">遇到的问题</h5>
+<ol>
+<li>用eureka服务发现方式工作时，如果配置了management.context-path后会有问题：</li>
+</ol>
+<pre><code>Error {timestamp1545821563706,status404,errorNot Found,messageNo message available,pathinfo}
+</code></pre>
+<p>解答：这是因为SpringBootAdmin Server无法从Eureka中获取到此配置，默认会访问client监控端点时context-path是，可以通过在客户端eureka配置中通过添加meta-data解决：</p>
+<pre><code class="language-yml">eureka
+  client
+    serviceUrl
+      defaultZone httppeer18781eureka
+    registry-fetch-interval-seconds 5
+  instance
+    prefer-ip-address true #配置Eureka
+    instance-id ${spring.application.name}${spring.application.instance_id${server.port}}
+    metadata-map 
+      management
+        context-path monitor
+        port 8898
+</code></pre>
+<p>上面两种方式配置都比较简单，如果项目中已经引入了eureka服务注册中心， 可以采用这种方式，客户端基本上没有什么额外的配置<br>
+另外，Spring Boot Admin还支持很多的配置参数，如果有需要可以查看<a href="httpcodecentric.github.iospring-boot-admin1.5.6">官方说明</a></p>
+<h4 id="邮件预警">邮件预警</h4>
+<p>Spring Boot Admin将微服务中所有应用信息在后台进行了展示，非常方便我们对微服务整体的监控和治理。但是我们的运营人员也不可能一天24小时盯着监控后台，因此如果服务有异常的时候，有对应的邮件告警就太好了，其实Spring Boot Admin也给出了支持。</p>
+<ol>
+<li>添加依赖</li>
+</ol>
+<pre><code class="language-xml">dependency
+  groupIdorg.springframework.bootgroupId
+  artifactIdspring-boot-starter-mailartifactId
+dependency
+</code></pre>
+<ol start="2">
+<li>配置文件</li>
+</ol>
+<pre><code class="language-yml">spring
+  mail
+    host smtp.qq.com
+    username xxxxx@qq.com
+    password xxxx
+    properties
+      mail
+        smtp
+          auth true
+          starttls
+            enable true
+            required true
+  boot
+    admin
+      notify
+        mail
+          from xxxx@qq.com
+          to xxxx@qq.com
+# httpcodecentric.github.iospring-boot-admin1.5.6#mail-notifications
+</code></pre>
+<p>配置完成后，重新启动项目spring-boot-admin-server，这样Admin Server就具备了邮件告警的功能，默认情况下Admin Server对Eureka中的服务上下线都进行了监控，当服务上下线的时候我们就会收到如下邮件：<br>
+<img src="http://www.itmind.net/assets/images/2018/springboot/admin5.png" alt="Spring Boot Admin Email"><br>
+当然这只是最基本的邮件监控，在实际的使用过程中，需要根据我们的情况对邮件告警内容进行自定义，比如监控堆内存的使用情况，当到达一定比例的时候进行告警等。</p>
+<h2 id="hystrix-dashboard">Hystrix Dashboard</h2>
+<p>Hystrix Dashboard是Hystrix给我们提供的实时查看单机熔断情况的工具。需要配合SpringBoot Actuator使用。</p>
+<h3 id="hystrix-dashboard使用方法">Hystrix Dashboard使用方法</h3>
+<p>Hystrix Dashboard就是一个独立的图表工具，与业务没有任何关联。我们可以单独创建一个工程，引入dashboard的包</p>
+<ol>
+<li>加入依赖包</li>
+</ol>
+<pre><code class="language-xml">dependency
+    groupIdorg.springframework.cloudgroupId
+    artifactIdspring-cloud-starter-hystrix-dashboardartifactId
+dependency
+</code></pre>
+<ol start="2">
+<li>在Application启动类中开启dashboard功能</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableHystrixDashboard
+public class DashboardApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DashboardApplication.class, args);
+    }
+}
+</code></pre>
+<ol start="3">
+<li>浏览器中访问：http://localhost:8090/hystrix 就可以打开dashboard首页了</li>
+</ol>
+<figure data-type="image" tabindex="1"><img src="http://www.itmind.net/assets/images/2017/springcloud/hystrix-dashboard-1.jpg" alt="Hystrix Dashboard首页图"></figure>
+<p>hystrix dashboard支持查看单个host的hystrix.stream、turbine.stream、turbine.streamcluster=xxx三种类型的流数据</p>
+<p>我们为了演示Hystrix dashboard效果可以输入单host数据流地址，(如：http://localhost:8081/hystrix.stream)，就可以看到监控界面<br>
+<img src="http://www.itmind.net/assets/images/2017/springcloud/hystrix-dashboard-2.jpg" alt="Hystrix单Host监控界面"></p>
+<p>关于监控界面上每个指标的含义，官方的wiki上有张图给出了详细说明<br>
+<img src="http://www.itmind.net/assets/images/2017/springcloud/hystrix-dashboard-3.png" alt="Hystrix Dashboard各项指标说明图"></p>
+<p>更多关于Hystrix Dashboard的说明请参见：<a href="httpsgithub.comNetflix-Skunkworkshystrix-dashboardwiki">Hystrix Dashboard官方wiki</a></p>
+<h2 id="turbine">Turbine</h2>
+<p>在复杂的分布式系统中，相同服务的节点经常需要部署上百甚至上千个，很多时候，运维人员希望能够把相同服务的节点状态以一个整体集群的形式展现出来，这样可以更好的把握整个系统的状态。 为此，Netflix提供了一个开源项目（Turbine）来提供把多个hystrix.stream的内容聚合为一个数据源供Dashboard展示。</p>
+<h3 id="turbine与dashboard-hystrix-eventstream的关系">Turbine与Dashboard、Hystrix EventStream的关系</h3>
+<figure data-type="image" tabindex="2"><img src="https://raw.githubusercontent.com/wiki/Netflix/Hystrix/images/dashboard-direct-vs-turbine-640.png" alt="Turbine与Dashboard关系图"></figure>
+<h3 id="turbine的使用方法">Turbine的使用方法</h3>
+<ol>
+<li>引入Turbine依赖</li>
+</ol>
+<pre><code class="language-xml">dependencies
+    dependency
+        groupIdorg.springframework.cloudgroupId
+        artifactIdspring-cloud-starter-turbineartifactId
+    dependency
+	dependency
+		groupIdorg.springframework.cloudgroupId
+		artifactIdspring-cloud-starter-hystrix-dashboardartifactId
+	dependency
+dependencies
+</code></pre>
+<p>添加Hystrix dashboard依赖的原因是因为Turbine只是一个数据聚合工具，实际使用中可以把Hystrix dashboard工具整合到Turbine工程中，这样就可以在同一个工程中整合数据，查看监控界面，部署起来也方便。</p>
+<ol start="2">
+<li>配置Turbine要监控的服务</li>
+</ol>
+<pre><code class="language-yml">server
+  port 8095
+
+spring
+  application
+    name myturbine
+
+turbine
+  app-config print-client,print-client2  
+  cluster-name-expression 'default'  
+  aggregator
+    cluster-config default 
+
+## Turbine需要从Eureka中获取服务列表，然后遍历每个服务每个节点上的hystrix.stream数据，然后汇聚到一起
+eureka
+  instance
+    hostname peer1
+    prefer-ip-address true 
+    instance-id ${spring.application.name}${spring.application.instance_id${server.port}}
+  client
+    service-url
+      defaultZone http${eureka.instance.hostname}8781eureka
+    registry-fetch-interval-seconds 10
+</code></pre>
+<ul>
+<li><code>turbine.appConfig</code> ：配置Eureka中的serviceId列表，表明监控哪些服务</li>
+<li><code>turbine.aggregator.clusterConfig</code> ：指定聚合哪些集群，多个使用”,”分割，默认为default。可使用http...turbine.streamcluster={clusterConfig之一}访问</li>
+<li><code>turbine.clusterNameExpression</code> ： 1. clusterNameExpression指定集群名称，默认表达式appName；此时：turbine.aggregator.clusterConfig需要配置想要监控的应用名称；2. 当clusterNameExpression default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default；3. 当clusterNameExpression metadata[‘cluster’]时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster ABC，则需要配置，同时turbine.aggregator.clusterConfig ABC</li>
+</ul>
+<ol start="3">
+<li>在Application启动类中开启Turbine功能</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableTurbine
+public class TurbineApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TurbineApplication.class, args);
+    }
+}
+</code></pre>
+<ol start="4">
+<li>访问turbine.stream<br>
+在浏览器中访问httplocalhost8095turbine.stream 就可以看到配置到Turbine上的所有微服务产生的流式事件数据</li>
+<li>在Hystrix Dashboard中查看所有、指定微服务的实时熔断监控。<br>
+将上述地址输入到Hystrix Dashboard中即可查看所有微服务的监控情况，或者加上cluster=[clusterName] 参数，只看某个微服务的情况<br>
+<img src="https://github.com/Netflix/Turbine/wiki/images/NetflixDash.jpg" alt="Turbine多服务熔断监控数据聚合后效果图"></li>
+<li></li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Netflix系列]]></title>
         <id>https://ysjhhhhhhh.github.io/post/netflix-xi-lie</id>
@@ -4154,358 +4631,6 @@ public class CalculatorLog {
 </code></pre>
 </li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Linux常用命令大全]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/linux-chang-yong-ming-ling-da-quan</id>
-        <link href="https://ysjhhhhhhh.github.io/post/linux-chang-yong-ming-ling-da-quan">
-        </link>
-        <updated>2018-04-06T02:28:57.000Z</updated>
-        <content type="html"><![CDATA[<p>最近都在和Linux打交道，这方面基础比较薄弱的我只好买了本鸟哥的书看看，感觉还不错。我觉得Linux相比windows比较麻烦的就是很多东西都要用命令来控制，当然，这也是很多人喜欢linux的原因，比较短小但却功能强大。为了方便大家查找linux的相关命令，我就将我了解到的命令列举一下，仅供大家参考：</p>
-<h2 id="系统信息">系统信息</h2>
-<p>arch 显示机器的处理器架构(1)<br>
-uname -m 显示机器的处理器架构(2)<br>
-uname -r 显示正在使用的内核版本<br>
-dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI)<br>
-hdparm -i /dev/hda 罗列一个磁盘的架构特性<br>
-hdparm -tT /dev/sda 在磁盘上执行测试性读取操作<br>
-cat /proc/cpuinfo 显示CPU info的信息<br>
-cat /proc/interrupts 显示中断<br>
-cat /proc/meminfo 校验内存使用<br>
-cat /proc/swaps 显示哪些swap被使用<br>
-cat /proc/version 显示内核的版本<br>
-cat /proc/net/dev 显示网络适配器及统计<br>
-cat /proc/mounts 显示已加载的文件系统<br>
-lspci -tv 罗列 PCI 设备<br>
-lsusb -tv 显示 USB 设备<br>
-date 显示系统日期<br>
-cal 2007 显示2007年的日历表<br>
-date 041217002007.00 设置日期和时间 - 月日时分年.秒<br>
-clock -w 将时间修改保存到 BIOS</p>
-<h2 id="关机-系统的关机-重启以及登出">关机 (系统的关机、重启以及登出 )</h2>
-<p>shutdown -h now 关闭系统(1)<br>
-init 0 关闭系统(2)<br>
-telinit 0 关闭系统(3)<br>
-shutdown -h hours:minutes &amp; 按预定时间关闭系统<br>
-shutdown -c 取消按预定时间关闭系统<br>
-shutdown -r now 重启(1)<br>
-reboot 重启(2)<br>
-logout 注销</p>
-<h2 id="文件和目录">文件和目录</h2>
-<p>cd /home 进入 '/ home' 目录'<br>
-cd .. 返回上一级目录<br>
-cd ../.. 返回上两级目录<br>
-cd 进入个人的主目录<br>
-cd ~user1 进入个人的主目录<br>
-cd - 返回上次所在的目录<br>
-pwd 显示工作路径<br>
-ls 查看目录中的文件<br>
-ls -F 查看目录中的文件<br>
-ls -l 显示文件和目录的详细资料<br>
-ls -a 显示隐藏文件<br>
-ls <em>[0-9]</em> 显示包含数字的文件名和目录名<br>
-tree 显示文件和目录由根目录开始的树形结构(1)<br>
-lstree 显示文件和目录由根目录开始的树形结构(2)<br>
-mkdir dir1 创建一个叫做 'dir1' 的目录'<br>
-mkdir dir1 dir2 同时创建两个目录<br>
-mkdir -p /tmp/dir1/dir2 创建一个目录树<br>
-rm -f file1 删除一个叫做 'file1' 的文件'<br>
-rmdir dir1 删除一个叫做 'dir1' 的目录'<br>
-rm -rf dir1 删除一个叫做 'dir1' 的目录并同时删除其内容<br>
-rm -rf dir1 dir2 同时删除两个目录及它们的内容<br>
-mv dir1 new_dir 重命名/移动 一个目录<br>
-cp file1 file2 复制一个文件<br>
-cp dir/* . 复制一个目录下的所有文件到当前工作目录<br>
-cp -a /tmp/dir1 . 复制一个目录到当前工作目录<br>
-cp -a dir1 dir2 复制一个目录<br>
-ln -s file1 lnk1 创建一个指向文件或目录的软链接<br>
-ln file1 lnk1 创建一个指向文件或目录的物理链接<br>
-touch -t 0712250000 file1 修改一个文件或目录的时间戳 - (YYMMDDhhmm)<br>
-file file1 outputs the mime type of the file as text<br>
-iconv -l 列出已知的编码<br>
-iconv -f fromEncoding -t toEncoding inputFile &gt; outputFile creates a new from the given input file by assuming it is encoded in fromEncoding and converting it to toEncoding.<br>
-find . -maxdepth 1 -name *.jpg -print -exec convert &quot;{}&quot; -resize 80x60 &quot;thumbs/{}&quot; ; batch resize files in the current directory and send them to a thumbnails directory (requires convert from Imagemagick)</p>
-<h2 id="文件搜索">文件搜索</h2>
-<p>find / -name file1 从 '/' 开始进入根文件系统搜索文件和目录<br>
-find / -user user1 搜索属于用户 'user1' 的文件和目录<br>
-find /home/user1 -name *.bin 在目录 '/ home/user1' 中搜索带有'.bin' 结尾的文件<br>
-find /usr/bin -type f -atime +100 搜索在过去100天内未被使用过的执行文件<br>
-find /usr/bin -type f -mtime -10 搜索在10天内被创建或者修改过的文件<br>
-find / -name *.rpm -exec chmod 755 '{}' ; 搜索以 '.rpm' 结尾的文件并定义其权限<br>
-find / -xdev -name *.rpm 搜索以 '.rpm' 结尾的文件，忽略光驱、捷盘等可移动设备<br>
-locate *.ps 寻找以 '.ps' 结尾的文件 - 先运行 'updatedb' 命令<br>
-whereis halt 显示一个二进制文件、源码或man的位置<br>
-which halt 显示一个二进制文件或可执行文件的完整路径</p>
-<h2 id="挂载一个文件系统">挂载一个文件系统</h2>
-<p>mount /dev/hda2 /mnt/hda2 挂载一个叫做hda2的盘 - 确定目录 '/ mnt/hda2' 已经存在<br>
-umount /dev/hda2 卸载一个叫做hda2的盘 - 先从挂载点 '/ mnt/hda2' 退出<br>
-fuser -km /mnt/hda2 当设备繁忙时强制卸载<br>
-umount -n /mnt/hda2 运行卸载操作而不写入 /etc/mtab 文件- 当文件为只读或当磁盘写满时非常有用<br>
-mount /dev/fd0 /mnt/floppy 挂载一个软盘<br>
-mount /dev/cdrom /mnt/cdrom 挂载一个cdrom或dvdrom<br>
-mount /dev/hdc /mnt/cdrecorder 挂载一个cdrw或dvdrom<br>
-mount /dev/hdb /mnt/cdrecorder 挂载一个cdrw或dvdrom<br>
-mount -o loop file.iso /mnt/cdrom 挂载一个文件或ISO镜像文件<br>
-mount -t vfat /dev/hda5 /mnt/hda5 挂载一个Windows FAT32文件系统<br>
-mount /dev/sda1 /mnt/usbdisk 挂载一个usb 捷盘或闪存设备<br>
-mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share 挂载一个windows网络共享</p>
-<h2 id="磁盘空间">磁盘空间</h2>
-<p>df -h 显示已经挂载的分区列表<br>
-ls -lSr |more 以尺寸大小排列文件和目录<br>
-du -sh dir1 估算目录 'dir1' 已经使用的磁盘空间'<br>
-du -sk * | sort -rn 以容量大小为依据依次显示文件和目录的大小<br>
-rpm -q -a --qf '%10{SIZE}t%{NAME}n' | sort -k1,1n 以大小为依据依次显示已安装的rpm包所使用的空间 (fedora, redhat类系统)<br>
-dpkg-query -W -f='<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi>I</mi><mi>n</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi>e</mi><mi>d</mi><mo>−</mo><mi>S</mi><mi>i</mi><mi>z</mi><mi>e</mi><mo separator="true">;</mo><mn>10</mn></mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">{Installed-Size;10}t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">n</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mord mathdefault">e</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span></span><span class="mord mathdefault">t</span></span></span></span>{Package}n' | sort -k1,1n 以大小为依据显示已安装的deb包所使用的空间 (ubuntu, debian类系统)</p>
-<h2 id="用户和群组">用户和群组</h2>
-<p>groupadd group_name 创建一个新用户组<br>
-groupdel group_name 删除一个用户组<br>
-groupmod -n new_group_name old_group_name 重命名一个用户组<br>
-useradd -c &quot;Name Surname &quot; -g admin -d /home/user1 -s /bin/bash user1 创建一个属于 &quot;admin&quot; 用户组的用户<br>
-useradd user1 创建一个新用户<br>
-userdel -r user1 删除一个用户 ( '-r' 排除主目录)<br>
-usermod -c &quot;User FTP&quot; -g system -d /ftp/user1 -s /bin/nologin user1 修改用户属性<br>
-passwd 修改口令<br>
-passwd user1 修改一个用户的口令 (只允许root执行)<br>
-chage -E 2005-12-31 user1 设置用户口令的失效期限<br>
-pwck 检查 '/etc/passwd' 的文件格式和语法修正以及存在的用户<br>
-grpck 检查 '/etc/passwd' 的文件格式和语法修正以及存在的群组<br>
-newgrp group_name 登陆进一个新的群组以改变新创建文件的预设群组</p>
-<h2 id="文件的权限-使用-设置权限使用-用于取消">文件的权限 - 使用 &quot;+&quot; 设置权限，使用 &quot;-&quot; 用于取消</h2>
-<p>ls -lh 显示权限<br>
-ls /tmp | pr -T5 -W$COLUMNS 将终端划分成5栏显示<br>
-chmod ugo+rwx directory1 设置目录的所有人(u)、群组(g)以及其他人(o)以读（r ）、写(w)和执行(x)的权限<br>
-chmod go-rwx directory1 删除群组(g)与其他人(o)对目录的读写执行权限<br>
-chown user1 file1 改变一个文件的所有人属性<br>
-chown -R user1 directory1 改变一个目录的所有人属性并同时改变改目录下所有文件的属性<br>
-chgrp group1 file1 改变文件的群组<br>
-chown user1:group1 file1 改变一个文件的所有人和群组属性<br>
-find / -perm -u+s 罗列一个系统中所有使用了SUID控制的文件<br>
-chmod u+s /bin/file1 设置一个二进制文件的 SUID 位 - 运行该文件的用户也被赋予和所有者同样的权限<br>
-chmod u-s /bin/file1 禁用一个二进制文件的 SUID位<br>
-chmod g+s /home/public 设置一个目录的SGID 位 - 类似SUID ，不过这是针对目录的<br>
-chmod g-s /home/public 禁用一个目录的 SGID 位<br>
-chmod o+t /home/public 设置一个文件的 STIKY 位 - 只允许合法所有人删除文件<br>
-chmod o-t /home/public 禁用一个目录的 STIKY 位</p>
-<h2 id="文件的特殊属性-使用-设置权限使用-用于取消">文件的特殊属性 - 使用 &quot;+&quot; 设置权限，使用 &quot;-&quot; 用于取消</h2>
-<p>chattr +a file1 只允许以追加方式读写文件<br>
-chattr +c file1 允许这个文件能被内核自动压缩/解压<br>
-chattr +d file1 在进行文件系统备份时，dump程序将忽略这个文件<br>
-chattr +i file1 设置成不可变的文件，不能被删除、修改、重命名或者链接<br>
-chattr +s file1 允许一个文件被安全地删除<br>
-chattr +S file1 一旦应用程序对这个文件执行了写操作，使系统立刻把修改的结果写到磁盘<br>
-chattr +u file1 若文件被删除，系统会允许你在以后恢复这个被删除的文件<br>
-lsattr 显示特殊的属性</p>
-<h2 id="打包和压缩文件">打包和压缩文件</h2>
-<p>bunzip2 file1.bz2 解压一个叫做 'file1.bz2'的文件<br>
-bzip2 file1 压缩一个叫做 'file1' 的文件<br>
-gunzip file1.gz 解压一个叫做 'file1.gz'的文件<br>
-gzip file1 压缩一个叫做 'file1'的文件<br>
-gzip -9 file1 最大程度压缩<br>
-rar a file1.rar test_file 创建一个叫做 'file1.rar' 的包<br>
-rar a file1.rar file1 file2 dir1 同时压缩 'file1', 'file2' 以及目录 'dir1'<br>
-rar x file1.rar 解压rar包<br>
-unrar x file1.rar 解压rar包<br>
-tar -cvf archive.tar file1 创建一个非压缩的 tarball<br>
-tar -cvf archive.tar file1 file2 dir1 创建一个包含了 'file1', 'file2' 以及 'dir1'的档案文件<br>
-tar -tf archive.tar 显示一个包中的内容<br>
-tar -xvf archive.tar 释放一个包<br>
-tar -xvf archive.tar -C /tmp 将压缩包释放到 /tmp目录下<br>
-tar -cvfj archive.tar.bz2 dir1 创建一个bzip2格式的压缩包<br>
-tar -xvfj archive.tar.bz2 解压一个bzip2格式的压缩包<br>
-tar -cvfz archive.tar.gz dir1 创建一个gzip格式的压缩包<br>
-tar -xvfz archive.tar.gz 解压一个gzip格式的压缩包<br>
-zip file1.zip file1 创建一个zip格式的压缩包<br>
-zip -r file1.zip file1 file2 dir1 将几个文件和目录同时压缩成一个zip格式的压缩包<br>
-unzip file1.zip 解压一个zip格式压缩包</p>
-<h2 id="rpm-包-fedora-redhat及类似系统">RPM 包 - （Fedora, Redhat及类似系统）</h2>
-<p>rpm -ivh package.rpm 安装一个rpm包<br>
-rpm -ivh --nodeeps package.rpm 安装一个rpm包而忽略依赖关系警告<br>
-rpm -U package.rpm 更新一个rpm包但不改变其配置文件<br>
-rpm -F package.rpm 更新一个确定已经安装的rpm包<br>
-rpm -e package_name.rpm 删除一个rpm包<br>
-rpm -qa 显示系统中所有已经安装的rpm包<br>
-rpm -qa | grep httpd 显示所有名称中包含 &quot;httpd&quot; 字样的rpm包<br>
-rpm -qi package_name 获取一个已安装包的特殊信息<br>
-rpm -qg &quot;System Environment/Daemons&quot; 显示一个组件的rpm包<br>
-rpm -ql package_name 显示一个已经安装的rpm包提供的文件列表<br>
-rpm -qc package_name 显示一个已经安装的rpm包提供的配置文件列表<br>
-rpm -q package_name --whatrequires 显示与一个rpm包存在依赖关系的列表<br>
-rpm -q package_name --whatprovides 显示一个rpm包所占的体积<br>
-rpm -q package_name --scripts 显示在安装/删除期间所执行的脚本l<br>
-rpm -q package_name --changelog 显示一个rpm包的修改历史<br>
-rpm -qf /etc/httpd/conf/httpd.conf 确认所给的文件由哪个rpm包所提供<br>
-rpm -qp package.rpm -l 显示由一个尚未安装的rpm包提供的文件列表<br>
-rpm --import /media/cdrom/RPM-GPG-KEY 导入公钥数字证书<br>
-rpm --checksig package.rpm 确认一个rpm包的完整性<br>
-rpm -qa gpg-pubkey 确认已安装的所有rpm包的完整性<br>
-rpm -V package_name 检查文件尺寸、 许可、类型、所有者、群组、MD5检查以及最后修改时间<br>
-rpm -Va 检查系统中所有已安装的rpm包- 小心使用<br>
-rpm -Vp package.rpm 确认一个rpm包还未安装<br>
-rpm2cpio package.rpm | cpio --extract --make-directories <em>bin</em> 从一个rpm包运行可执行文件<br>
-rpm -ivh /usr/src/redhat/RPMS/<code>arch</code>/package.rpm 从一个rpm源码安装一个构建好的包<br>
-rpmbuild --rebuild package_name.src.rpm 从一个rpm源码构建一个 rpm 包</p>
-<h2 id="yum-软件包升级器-fedora-redhat及类似系统">YUM 软件包升级器 - （Fedora, RedHat及类似系统）</h2>
-<p>yum install package_name 下载并安装一个rpm包<br>
-yum localinstall package_name.rpm 将安装一个rpm包，使用你自己的软件仓库为你解决所有依赖关系<br>
-yum update package_name.rpm 更新当前系统中所有安装的rpm包<br>
-yum update package_name 更新一个rpm包<br>
-yum remove package_name 删除一个rpm包<br>
-yum list 列出当前系统中安装的所有包<br>
-yum search package_name 在rpm仓库中搜寻软件包<br>
-yum clean packages 清理rpm缓存删除下载的包<br>
-yum clean headers 删除所有头文件<br>
-yum clean all 删除所有缓存的包和头文件</p>
-<h2 id="deb-包-debian-ubuntu-以及类似系统">DEB 包 (Debian, Ubuntu 以及类似系统)</h2>
-<p>dpkg -i package.deb 安装/更新一个 deb 包<br>
-dpkg -r package_name 从系统删除一个 deb 包<br>
-dpkg -l 显示系统中所有已经安装的 deb 包<br>
-dpkg -l | grep httpd 显示所有名称中包含 &quot;httpd&quot; 字样的deb包<br>
-dpkg -s package_name 获得已经安装在系统中一个特殊包的信息<br>
-dpkg -L package_name 显示系统中已经安装的一个deb包所提供的文件列表<br>
-dpkg --contents package.deb 显示尚未安装的一个包所提供的文件列表<br>
-dpkg -S /bin/ping 确认所给的文件由哪个deb包提供</p>
-<h2 id="apt-软件工具-debian-ubuntu-以及类似系统">APT 软件工具 (Debian, Ubuntu 以及类似系统)</h2>
-<p>apt-get install package_name 安装/更新一个 deb 包<br>
-apt-cdrom install package_name 从光盘安装/更新一个 deb 包<br>
-apt-get update 升级列表中的软件包<br>
-apt-get upgrade 升级所有已安装的软件<br>
-apt-get remove package_name 从系统删除一个deb包<br>
-apt-get check 确认依赖的软件仓库正确<br>
-apt-get clean 从下载的软件包中清理缓存<br>
-apt-cache search searched-package 返回包含所要搜索字符串的软件包名称</p>
-<h2 id="查看文件内容">查看文件内容</h2>
-<p>cat file1 从第一个字节开始正向查看文件的内容<br>
-tac file1 从最后一行开始反向查看一个文件的内容<br>
-more file1 查看一个长文件的内容<br>
-less file1 类似于 'more' 命令，但是它允许在文件中和正向操作一样的反向操作<br>
-head -2 file1 查看一个文件的前两行<br>
-tail -2 file1 查看一个文件的最后两行<br>
-tail -f /var/log/messages 实时查看被添加到一个文件中的内容</p>
-<h2 id="文本处理">文本处理</h2>
-<p>cat file1 file2 ... | command &lt;&gt; file1_in.txt_or_file1_out.txt general syntax for text manipulation using PIPE, STDIN and STDOUT<br>
-cat file1 | command( sed, grep, awk, grep, etc...) &gt; result.txt 合并一个文件的详细说明文本，并将简介写入一个新文件中<br>
-cat file1 | command( sed, grep, awk, grep, etc...) &gt;&gt; result.txt 合并一个文件的详细说明文本，并将简介写入一个已有的文件中<br>
-grep Aug /var/log/messages 在文件 '/var/log/messages'中查找关键词&quot;Aug&quot;<br>
-grep ^Aug /var/log/messages 在文件 '/var/log/messages'中查找以&quot;Aug&quot;开始的词汇<br>
-grep [0-9] /var/log/messages 选择 '/var/log/messages' 文件中所有包含数字的行<br>
-grep Aug -R /var/log/* 在目录 '/var/log' 及随后的目录中搜索字符串&quot;Aug&quot;<br>
-sed 's/stringa1/stringa2/g' example.txt 将example.txt文件中的 &quot;string1&quot; 替换成 &quot;string2&quot;<br>
-sed '/^<span class='katex-error' title='ParseError: KaTeX parse error: Expected &#039;EOF&#039;, got &#039;#&#039; at position 49: …所有空白行 
-sed &#039;/ *#̲/d; /^'>/d&#039; example.txt 从example.txt文件中删除所有空白行 
-sed &#039;/ *#/d; /^</span>/d' example.txt 从example.txt文件中删除所有注释和空白行<br>
-echo 'esempio' | tr '[:lower:]' '[:upper:]' 合并上下单元格内容<br>
-sed -e '1d' result.txt 从文件example.txt 中排除第一行<br>
-sed -n '/stringa1/p' 查看只包含词汇 &quot;string1&quot;的行<br>
-sed -e 's/ <em>$//' example.txt 删除每一行最后的空白字符<br>
-sed -e 's/stringa1//g' example.txt 从文档中只删除词汇 &quot;string1&quot; 并保留剩余全部<br>
-sed -n '1,5p;5q' example.txt 查看从第一行到第5行内容<br>
-sed -n '5p;5q' example.txt 查看第5行<br>
-sed -e 's/00</em>/0/g' example.txt 用单个零替换多个零<br>
-cat -n file1 标示文件的行数<br>
-cat example.txt | awk 'NR%2==1' 删除example.txt文件中的所有偶数行<br>
-echo a b c | awk '{print $1}' 查看一行第一栏<br>
-echo a b c | awk '{print $1,$3}' 查看一行的第一和第三栏<br>
-paste file1 file2 合并两个文件或两栏的内容<br>
-paste -d '+' file1 file2 合并两个文件或两栏的内容，中间用&quot;+&quot;区分<br>
-sort file1 file2 排序两个文件的内容<br>
-sort file1 file2 | uniq 取出两个文件的并集(重复的行只保留一份)<br>
-sort file1 file2 | uniq -u 删除交集，留下其他的行<br>
-sort file1 file2 | uniq -d 取出两个文件的交集(只留下同时存在于两个文件中的文件)<br>
-comm -1 file1 file2 比较两个文件的内容只删除 'file1' 所包含的内容<br>
-comm -2 file1 file2 比较两个文件的内容只删除 'file2' 所包含的内容<br>
-comm -3 file1 file2 比较两个文件的内容只删除两个文件共有的部分</p>
-<h2 id="字符设置和文件格式转换">字符设置和文件格式转换</h2>
-<p>dos2unix filedos.txt fileunix.txt 将一个文本文件的格式从MSDOS转换成UNIX<br>
-unix2dos fileunix.txt filedos.txt 将一个文本文件的格式从UNIX转换成MSDOS<br>
-recode ..HTML &lt; page.txt &gt; page.html 将一个文本文件转换成html<br>
-recode -l | more 显示所有允许的转换格式</p>
-<h2 id="文件系统分析">文件系统分析</h2>
-<p>badblocks -v /dev/hda1 检查磁盘hda1上的坏磁块<br>
-fsck /dev/hda1 修复/检查hda1磁盘上linux文件系统的完整性<br>
-fsck.ext2 /dev/hda1 修复/检查hda1磁盘上ext2文件系统的完整性<br>
-e2fsck /dev/hda1 修复/检查hda1磁盘上ext2文件系统的完整性<br>
-e2fsck -j /dev/hda1 修复/检查hda1磁盘上ext3文件系统的完整性<br>
-fsck.ext3 /dev/hda1 修复/检查hda1磁盘上ext3文件系统的完整性<br>
-fsck.vfat /dev/hda1 修复/检查hda1磁盘上fat文件系统的完整性<br>
-fsck.msdos /dev/hda1 修复/检查hda1磁盘上dos文件系统的完整性<br>
-dosfsck /dev/hda1 修复/检查hda1磁盘上dos文件系统的完整性</p>
-<h2 id="初始化一个文件系统">初始化一个文件系统</h2>
-<p>mkfs /dev/hda1 在hda1分区创建一个文件系统<br>
-mke2fs /dev/hda1 在hda1分区创建一个linux ext2的文件系统<br>
-mke2fs -j /dev/hda1 在hda1分区创建一个linux ext3(日志型)的文件系统<br>
-mkfs -t vfat 32 -F /dev/hda1 创建一个 FAT32 文件系统<br>
-fdformat -n /dev/fd0 格式化一个软盘<br>
-mkswap /dev/hda3 创建一个swap文件系统</p>
-<h2 id="swap文件系统">SWAP文件系统</h2>
-<p>mkswap /dev/hda3 创建一个swap文件系统<br>
-swapon /dev/hda3 启用一个新的swap文件系统<br>
-swapon /dev/hda2 /dev/hdb3 启用两个swap分区</p>
-<h2 id="备份">备份</h2>
-<p>dump -0aj -f /tmp/home0.bak /home 制作一个 '/home' 目录的完整备份<br>
-dump -1aj -f /tmp/home0.bak /home 制作一个 '/home' 目录的交互式备份<br>
-restore -if /tmp/home0.bak 还原一个交互式备份<br>
-rsync -rogpav --delete /home /tmp 同步两边的目录<br>
-rsync -rogpav -e ssh --delete /home ip_address:/tmp 通过SSH通道rsync<br>
-rsync -az -e ssh --delete ip_addr:/home/public /home/local 通过ssh和压缩将一个远程目录同步到本地目录<br>
-rsync -az -e ssh --delete /home/local ip_addr:/home/public 通过ssh和压缩将本地目录同步到远程目录<br>
-dd bs=1M if=/dev/hda | gzip | ssh user@ip_addr 'dd of=hda.gz' 通过ssh在远程主机上执行一次备份本地磁盘的操作<br>
-dd if=/dev/sda of=/tmp/file1 备份磁盘内容到一个文件<br>
-tar -Puf backup.tar /home/user 执行一次对 '/home/user' 目录的交互式备份操作<br>
-( cd /tmp/local/ &amp;&amp; tar c . ) | ssh -C user@ip_addr 'cd /home/share/ &amp;&amp; tar x -p' 通过ssh在远程目录中复制一个目录内容<br>
-( tar c /home ) | ssh -C user@ip_addr 'cd /home/backup-home &amp;&amp; tar x -p' 通过ssh在远程目录中复制一个本地目录<br>
-tar cf - . | (cd /tmp/backup ; tar xf - ) 本地将一个目录复制到另一个地方，保留原有权限及链接<br>
-find /home/user1 -name '<em>.txt' | xargs cp -av --target-directory=/home/backup/ --parents 从一个目录查找并复制所有以 '.txt' 结尾的文件到另一个目录<br>
-find /var/log -name '</em>.log' | tar cv --files-from=- | bzip2 &gt; log.tar.bz2 查找所有以 '.log' 结尾的文件并做成一个bzip包<br>
-dd if=/dev/hda of=/dev/fd0 bs=512 count=1 做一个将 MBR (Master Boot Record)内容复制到软盘的动作<br>
-dd if=/dev/fd0 of=/dev/hda bs=512 count=1 从已经保存到软盘的备份中恢复MBR内容</p>
-<h2 id="光盘">光盘</h2>
-<p>cdrecord -v gracetime=2 dev=/dev/cdrom -eject blank=fast -force 清空一个可复写的光盘内容<br>
-mkisofs /dev/cdrom &gt; cd.iso 在磁盘上创建一个光盘的iso镜像文件<br>
-mkisofs /dev/cdrom | gzip &gt; cd_iso.gz 在磁盘上创建一个压缩了的光盘iso镜像文件<br>
-mkisofs -J -allow-leading-dots -R -V &quot;Label CD&quot; -iso-level 4 -o ./cd.iso data_cd 创建一个目录的iso镜像文件<br>
-cdrecord -v dev=/dev/cdrom cd.iso 刻录一个ISO镜像文件<br>
-gzip -dc cd_iso.gz | cdrecord dev=/dev/cdrom - 刻录一个压缩了的ISO镜像文件<br>
-mount -o loop cd.iso /mnt/iso 挂载一个ISO镜像文件<br>
-cd-paranoia -B 从一个CD光盘转录音轨到 wav 文件中<br>
-cd-paranoia -- &quot;-3&quot; 从一个CD光盘转录音轨到 wav 文件中（参数-3）<br>
-cdrecord --scanbus 扫描总线以识别scsi通道<br>
-dd if=/dev/hdc | md5sum 校验一个设备的md5sum编码，例如一张 CD</p>
-<h2 id="网络-以太网和wifi无线">网络 - （以太网和WIFI无线）</h2>
-<p>ifconfig eth0 显示一个以太网卡的配置<br>
-ifup eth0 启用一个 'eth0' 网络设备<br>
-ifdown eth0 禁用一个 'eth0' 网络设备<br>
-ifconfig eth0 192.168.1.1 netmask 255.255.255.0 控制IP地址<br>
-ifconfig eth0 promisc 设置 'eth0' 成混杂模式以嗅探数据包 (sniffing)<br>
-dhclient eth0 以dhcp模式启用 'eth0'<br>
-route -n show routing table<br>
-route add -net 0/0 gw IP_Gateway configura default gateway<br>
-route add -net 192.168.0.0 netmask 255.255.0.0 gw 192.168.1.1 configure static route to reach network '192.168.0.0/16'<br>
-route del 0/0 gw IP_gateway remove static route<br>
-echo &quot;1&quot; &gt; /proc/sys/net/ipv4/ip_forward activate ip routing<br>
-hostname show hostname of system<br>
-host www.example.com lookup hostname to resolve name to ip address and viceversa(1)<br>
-nslookup www.example.com lookup hostname to resolve name to ip address and viceversa(2)<br>
-ip link show show link status of all interfaces<br>
-mii-tool eth0 show link status of 'eth0'<br>
-ethtool eth0 show statistics of network card 'eth0'<br>
-netstat -tup show all active network connections and their PID<br>
-netstat -tupl show all network services listening on the system and their PID<br>
-tcpdump tcp port 80 show all HTTP traffic<br>
-iwlist scan show wireless networks<br>
-iwconfig eth1 show configuration of a wireless network card<br>
-hostname show hostname<br>
-host www.example.com lookup hostname to resolve name to ip address and viceversa<br>
-nslookup www.example.com lookup hostname to resolve name to ip address and viceversa<br>
-whois www.example.com lookup on Whois database</p>
-<h2 id="go-top-index">GO TOP INDEX ^</h2>
-<p>Microsoft Windows networks (SAMBA)<br>
-nbtscan ip_addr netbios name resolution<br>
-nmblookup -A ip_addr netbios name resolution<br>
-smbclient -L ip_addr/hostname show remote shares of a windows host<br>
-smbget -Rr smb://ip_addr/share like wget can download files from a host windows via smb<br>
-mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share mount a windows network share</p>
-<p>转发自：<a href="http://www.cnblogs.com/fnlingnzb-learner/p/5831284.html">原博客</a> 谢谢。</p>
 ]]></content>
     </entry>
 </feed>
