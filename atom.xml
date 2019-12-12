@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-11T14:00:41.077Z</updated>
+    <updated>2019-12-12T07:42:11.087Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,398 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Spring框架]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/spring-kuang-jia</id>
+        <link href="https://ysjhhhhhhh.github.io/post/spring-kuang-jia">
+        </link>
+        <updated>2018-04-12T07:38:28.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="spring">Spring</h1>
+<ul>
+<li>
+<p>什么是spring</p>
+<blockquote>
+<p>Spring是一个开源框架，Spring是于2003 年兴起的一个轻量级的Java 开发框架，由Rod Johnson开发。</p>
+<p>它是为了解决企业应用开发的复杂性而创建的。框架的主要优势之一就是其分层架构，分层架构允许使用者选择使用哪一个组件，同时为 J2EE 应用程序开发提供集成的框架</p>
+<p>dao(JdbcTemplate)  service(spring控制事务)   web(springmvc)</p>
+<p>Spring的核心是控制反转（IoC）和面向切面（AOP）。</p>
+<p>简单来说，Spring是一个分层的JavaSE/EE full-stack 轻量级开源框架。  1）IoC  和DI  2）AOP</p>
+<p>一句话描述spring：full-stack 轻量级开源框架</p>
+</blockquote>
+</li>
+<li>
+<p>spring核心</p>
+<blockquote>
+<p>Spring的核心是控制反转IOC和面向切面AOP</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="ioc">IOC</h2>
+<ul>
+<li>
+<p>IOC是什么</p>
+<blockquote>
+<p>**Ioc—Inversion of Control，即“控制反转”，不是什么技术，而是一种设计思想。**在Java开发中，<strong>Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。</strong></p>
+</blockquote>
+</li>
+<li>
+<p>spring IOC容器初始化方式</p>
+<pre><code class="language-java">//xml初始化
+ApplicationContext ac = new ClassPathXmlApplicationContext(&quot;classpath:/ioc.xml&quot;);
+
+//注解类初始化
+ApplicationContext acc = new AnnotationConfigApplicationContext(ApplicationContextTest.class);
+</code></pre>
+</li>
+<li>
+<p>通过xml方式配置容器</p>
+<blockquote>
+<p>bean标签代指容器中的一个对象</p>
+<p>property标签使用在bean标签之中为bean对象属性赋值</p>
+</blockquote>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:p=&quot;http://www.springframework.org/schema/p&quot; xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
+
+
+    &lt;bean id=&quot;stu01&quot; class=&quot;com.lanou.bean.Student&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;张三&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;sex&quot; value=&quot;男&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;age&quot; value=&quot;28&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;stu02&quot; class=&quot;com.lanou.bean.Student&quot;&gt;
+        &lt;constructor-arg value=&quot;李四&quot;&gt;&lt;/constructor-arg&gt;
+        &lt;constructor-arg value=&quot;28&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;/bean&gt;
+
+    &lt;context:property-placeholder location=&quot;classpath:jdbcConfig.properties&quot;/&gt;
+
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
+        &lt;property name=&quot;user&quot; value=&quot;${jdbc.username}&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;password&quot; value=&quot;${jdbc.password}&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;driverClass&quot; value=&quot;${jdbc.driverClass}&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;jdbcUrl&quot; value=&quot;${jdbc.jdbcUrl}&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;plane&quot; class=&quot;com.lanou.bean.plane&quot; autowire=&quot;constructor&quot;&gt;
+        &lt;property name=&quot;hight&quot; value=&quot;#{3*12}&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;teacher&quot; class=&quot;com.lanou.bean.Teacher&quot; p:name=&quot;#{T(java.util.UUID).randomUUID().toString()}&quot; p:age=&quot;20&quot; p:sex=&quot;女&quot;&gt;&lt;/bean&gt;
+&lt;!--    &lt;bean id=&quot;teacher2&quot; class=&quot;com.lanou.bean.Teacher&quot; p:name=&quot;李老师&quot; p:age=&quot;20&quot; p:sex=&quot;男&quot;&gt;&lt;/bean&gt;--&gt;
+
+    &lt;bean id=&quot;banji&quot; class=&quot;com.lanou.bean.BanJi&quot; autowire=&quot;constructor&quot;&gt;
+&lt;!--        &lt;property name=&quot;teacher&quot; value=&quot;#{teacher2}&quot;&gt;&lt;/property&gt;--&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;dog1&quot; class=&quot;com.lanou.bean.Dog&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;红狗&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;age&quot; value=&quot;2&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;bean class=&quot;com.lanou.bean.Man&quot;&gt;
+
+    &lt;/bean&gt;
+
+    &lt;!-- 扫描通过注解配置的容器bean --&gt;
+    &lt;context:component-scan base-package=&quot;com.lanou&quot;&gt;&lt;/context:component-scan&gt;
+&lt;/beans&gt;
+</code></pre>
+<p>bean初始化方法：</p>
+<p>1.普通方式</p>
+<pre><code class="language-xml">&lt;bean class=&quot;com.lanou.bean.Man&quot;&gt;
+</code></pre>
+<p>2.静态工厂方式</p>
+<pre><code class="language-xml">&lt;!-- 
+	class：指定的是静态工厂类 factory-method: 指定的是工厂中的静态方法 
+--&gt;
+&lt;bean id=&quot;getMan&quot; class=&quot;com.test.ManFactory&quot; factory-method=&quot;getMan&quot; /&gt;
+</code></pre>
+<p>3.实例工厂方式</p>
+<pre><code class="language-xml">&lt;!-- 工厂实例bean --&gt;
+&lt;bean id=&quot;manFactory&quot; class=&quot;com.lanou.ManFactory&quot;&gt;&lt;/bean&gt;
+
+&lt;bean id=&quot;getMan&quot; factory-bean=&quot;manFactory&quot; factory-method=&quot;getMan&quot;&gt;&lt;/bean&gt;
+</code></pre>
+</li>
+<li>
+<p>通过注解的方式配置容器</p>
+<pre><code class="language-java">package com.lanou3g;
+
+import com.lanou3g.bean.Man;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
+
+import javax.annotation.Resource;
+
+@Configuration //通过这个注解指定此类为IOC容器配置类
+@ComponentScan(&quot;com.lanou3g&quot;)//次注解是指定容器初始化时扫描那些包下
+@ImportResource({&quot;ioc.xml&quot;})//此注解表示在此配置类初始化时包含其他配置文件中的配置
+@PropertySource(&quot;classpath:/manproperties.properties&quot;)//此注解表示在初始化容器时读取某properties文件中的配置信息
+public class ApplicationContextTest {
+
+    //此注解为属性赋值
+    @Value(&quot;${name}&quot;)
+    private String name;
+
+    @Value(&quot;${age}&quot;)
+    private Integer age;
+
+    //此注解向容器中配置bean
+    @Bean(&quot;man123&quot;)
+    public Man aaa(){
+        Man man = new Man();
+        man.setName(&quot;哈哈&quot;);
+        man.setAge(1);
+        return man;
+    }
+
+    @Bean(&quot;manTest&quot;)
+    public Man bbb(){
+        Man man = new Man();
+        man.setName(name);
+        man.setAge(age);
+        return man;
+    }
+
+}
+</code></pre>
+</li>
+<li>
+<p>bean的命名</p>
+<blockquote>
+<p>id是唯一标识，每个bean只能有一个id，且不同bean之间id也不能重复</p>
+<p>name也是bean的标识，每个bean可以拥有多个name。name属性已久不能重复</p>
+</blockquote>
+</li>
+<li>
+<p>bean的作用域</p>
+<blockquote>
+<p>prototype:此属性表示此bean为多例，因此对象不会在容器初始化时创建</p>
+<p>singleton(默认):单例bean会在容器初始化时创建bean对象</p>
+</blockquote>
+</li>
+</ul>
+<p>多例图解：</p>
+<figure data-type="image" tabindex="1"><img src="https://docs.spring.io/spring/docs/5.2.0.RELEASE/spring-framework-reference/images/prototype.png" alt=""></figure>
+<p>单例图解：</p>
+<figure data-type="image" tabindex="2"><img src="https://docs.spring.io/spring/docs/5.2.0.RELEASE/spring-framework-reference/images/singleton.png" alt=""></figure>
+<ul>
+<li>
+<p>bean懒加载：</p>
+<p>lazy-init属性 默认是false</p>
+<p>（懒加载主要是针对单例，可以让单例在容器初始化时不进行加载。在使用此bean是才去加载）</p>
+</li>
+</ul>
+<h2 id="di">DI</h2>
+<ul>
+<li>
+<p>DI-依赖注入</p>
+<blockquote>
+<p>创建对象的过程中Spring可以依据配置对对象的属性 进行设置，这个过程称之为依赖注入，即DI</p>
+</blockquote>
+</li>
+<li>
+<p>set方法注入</p>
+<blockquote>
+<p>通常javabean的属性都会私有化，而对外暴露setXx()getXx()方法，此时spring可以通过这样的setXx()方法将属性的值注入对象。</p>
+<p>1)spring内置的可直接注入类型的注入</p>
+<p>在<bean>标签下添加<property name="set方法名中set之后的单词(首字母小写)" value="要设置的属性的值"></p>
+<p>2)非spring内置(即另外的实体类，比如定义一个Person类中有猫和狗两个属性，而猫和狗分别是两个实体类Cat和Dog的对象)的可以直接注入类型的注入</p>
+<p>需要添加对应类的<bean>标签，在原始类中添加<property name="自定义名称(一般与类中的属性名称一致)" ref="非spring内置类配置的id值"></p>
+</blockquote>
+</li>
+<li>
+<p>基于构造方法的注入</p>
+<blockquote>
+<p>在<bean>标签下添加&lt;constructor-arg index=&quot;构造方法的第几个参数，下标从0开始&quot; name=&quot;为构造方法的哪个名字的参数ref:该构造方法参数的值,用来指定引用其他bean的值&gt;<br>
+ps：index和name可以配置任何一个或同时配置，但要求一旦配置必须正确，推荐优先使用index方式配置，防止没有源码造成name无法匹配到对应的参数</p>
+</blockquote>
+</li>
+<li>
+<p>自动装配</p>
+<blockquote>
+<p>在Spring的set方式实现的注入过程中，支持自动装配机制。所谓自动装配机制，会根据要设置的javabean属性的名字或类型，到spring中自动寻找对应id或类型的<bean>进行设置，从而省去依次配置的过程，简化了配置。</p>
+<p>自动装配的两种方式</p>
+<p>1)为指定<bean>开启自动装配</p>
+<p>在<bean>标签中添加autowire属性：<br>
+byName：根据javabean（javabean简单的讲就是实体类，用来封装对象，这个类里面全部都是属性值和get、set方法）中需要注入的属性的名字，在spring容器中找对应id的<bean>，将该<bean>的对象赋值给当前的属性<br>
+byType：根据javabean中需要注入的属性的类型，在Spring容器中找对应class类型的<bean>将该<bean>的对象赋值给当前的属性<br>
+byType方式根据类型进行匹配，可能匹配到多个<bean>，此时会抛出异常，而byName是通过id来寻找<bean>，id没有重复，不会有这方面的问题，所以推荐使用byName方式<br>
+总结：自动装配机制简化了set方法注入中的非Spring内置的可以直接注入类型的注入</p>
+<p>2)为全局配置自动装配</p>
+<p>在<beans>标签中添加default-autowire属性：<br>
+byName与byType和第一点相同</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="aop">AOP</h2>
+<ul>
+<li>
+<p>什么是AOP</p>
+<blockquote>
+<p>在软件业，AOP为Aspect Oriented Programming的缩写，意为：面向切面编程，通过预编译方<br>
+式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个<br>
+热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑<br>
+的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高<br>
+了开发的效率。</p>
+</blockquote>
+</li>
+<li>
+<p>aop术语</p>
+<blockquote>
+<p>切面（Aspect）</p>
+<p>简单来说，切面就是我们要往目标代码中插入进去的代码。</p>
+<p>连接点（Join Pointer）</p>
+<p>理论上所有可能会被切入的地方都可以称之为连接点</p>
+<p>切入点(Pointcut)</p>
+<p>选择某个连接点切入，将切面代码织入进去。这个连接点就叫做切入点。</p>
+<p>织入(Weaving)</p>
+<p>把切面代码糅合到目标代码中的过程就是织入。</p>
+<p>通知(Advice)</p>
+<p>通知决定了切面代码织入到目标代码中后，运行的时机(比如是在目标方法执行前，还是执行后)。</p>
+</blockquote>
+</li>
+<li>
+<p>在spring中使用aop</p>
+<p>定义被切的类和方法</p>
+<pre><code class="language-java">package com.lanou3g.bean;
+
+import com.lanou3g.Calculator;
+import org.springframework.stereotype.Component;
+
+public class MyCalculator implements Calculator {
+    @Override
+    public int add(int a, int b) {
+        return a+b;
+    }
+
+    @Override
+    public int sub(int a, int b) {
+        return a-b;
+    }
+
+    @Override
+    public int mul(int a, int b) {
+        return a*b;
+    }
+
+    @Override
+    public int div(int a, int b) {
+        return a/b;
+    }
+}
+
+</code></pre>
+<p>定义切面类</p>
+<pre><code class="language-java">package com.lanou3g.log;
+
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+
+public class CalculatorLog {
+
+//    public static void cutclass(){}
+
+    public static void logStart(JoinPoint joinPoint){
+        String methodname = joinPoint.getSignature().getName();
+        System.out.println(methodname+&quot;方法前置切面方法启动，参数为:&quot;+ Arrays.asList(joinPoint.getArgs()));
+    }
+
+
+
+    public static void logThrowing(JoinPoint joinPoint,Exception e){
+        String methodname = joinPoint.getSignature().getName();
+        System.out.println(methodname+&quot;方法异常切面方法启动，错误信息为:&quot;+ e.getMessage());
+    }
+
+    public static void logEnd(JoinPoint joinPoint){
+        String methodname = joinPoint.getSignature().getName();
+        System.out.println(methodname+&quot;方法最终切面方法启动&quot;);
+    }
+
+    public static Object logAround(ProceedingJoinPoint pjp) throws Throwable {
+        String methodname = pjp.getSignature().getName();
+        Object[] args = pjp.getArgs();
+        Object res = null;
+
+        try {
+            System.out.println(methodname+&quot;方法[环绕]前置切面方法启动，参数为:&quot;+ Arrays.asList(args));
+            res = pjp.proceed(args);
+            System.out.println(methodname+&quot;方法[环绕]返回切面方法启动，结果为:&quot;+ res);
+
+        }catch (Exception e){
+            System.out.println(methodname+&quot;方法[环绕]异常切面方法启动，异常信息为:&quot;+ e.getMessage());
+        }finally {
+            System.out.println(methodname+&quot;方法[环绕]最终切面方法启动&quot;);
+        }
+
+        return res;
+    }
+    public static void logReturning(JoinPoint joinPoint,Object res){
+        String methodname = joinPoint.getSignature().getName();
+        System.out.println(methodname+&quot;方法返回切面方法启动，结果为:&quot;+ res);
+    }
+
+}
+</code></pre>
+<blockquote>
+<p>在xml文件中配置aop</p>
+</blockquote>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
+
+
+
+    &lt;bean id=&quot;man&quot; class=&quot;com.lanou3g.bean.Man&quot; lazy-init=&quot;true&quot; init-method=&quot;init&quot; destroy-method=&quot;destroy&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;张三&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;age&quot; value=&quot;28&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;hobbys&quot;&gt;
+            &lt;map&gt;
+                &lt;entry key=&quot;王者&quot; value=&quot;最强王者&quot;/&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;aop:aspectj-autoproxy  expose-proxy=&quot;true&quot;    proxy-target-class=&quot;true&quot;/&gt;
+
+    &lt;bean id=&quot;myc&quot; class=&quot;com.lanou3g.bean.MyCalculator&quot; /&gt;
+
+    &lt;bean id=&quot;callog&quot; class=&quot;com.lanou3g.log.CalculatorLog&quot; /&gt;
+
+    &lt;aop:config&gt;
+        &lt;aop:pointcut id=&quot;mycutpoint&quot; expression=&quot;execution(* com.lanou3g.bean.MyCalculator.*(int,int))&quot;/&gt;
+
+        &lt;aop:aspect ref=&quot;callog&quot;&gt;
+            &lt;aop:before method=&quot;logStart&quot; pointcut-ref=&quot;mycutpoint&quot; /&gt;
+            &lt;aop:after-returning method=&quot;logReturning&quot; pointcut-ref=&quot;mycutpoint&quot; returning=&quot;res&quot;/&gt;
+            &lt;aop:after-throwing method=&quot;logThrowing&quot; pointcut-ref=&quot;mycutpoint&quot; throwing=&quot;e&quot;/&gt;
+            &lt;aop:after method=&quot;logEnd&quot; pointcut-ref=&quot;mycutpoint&quot; /&gt;
+            &lt;aop:around method=&quot;logAround&quot; pointcut-ref=&quot;mycutpoint&quot; /&gt;
+        &lt;/aop:aspect&gt;
+
+    &lt;/aop:config&gt;
+
+    &lt;context:component-scan base-package=&quot;com.lanou3g&quot; resource-pattern=&quot;com.lanou3g.log.*&quot;/&gt;
+   
+&lt;/beans&gt;
+</code></pre>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Linux常用命令大全]]></title>
         <id>https://ysjhhhhhhh.github.io/post/linux-chang-yong-ming-ling-da-quan</id>
