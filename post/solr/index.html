@@ -1,0 +1,710 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Solr | Gridea</title>
+<meta name="description" content="温故而知新" />
+<link rel="shortcut icon" href="https://ysjhhhhhhh.github.io/favicon.ico?v=1576142135341">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://ysjhhhhhhh.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://ysjhhhhhhh.github.io">
+  <img class="avatar" src="https://ysjhhhhhhh.github.io/images/avatar.png?v=1576142135341" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Solr
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-06-07
+              </span>
+              <span>
+                21 min read
+              </span>
+              
+                <a href="https://ysjhhhhhhh.github.io/tag/QNP_cGyqV" class="post-tag">
+                  # Gridea
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="data:image/png;base64,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" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="1-solr入门">1. Solr入门</h1>
+<h2 id="11-solr下载安装">1.1. Solr下载安装</h2>
+<p>官方下载地址：https://archive.apache.org/dist/lucene/solr/</p>
+<p>Windows系统下载zip包，Linux、MaxOS系统下载tgz包</p>
+<figure data-type="image" tabindex="1"><img src="https://ysjhhhhhhh.github.io/post-images/1576141759791.png" alt=""></figure>
+<h2 id="111-solr目录结构">1.1.1. Solr目录结构</h2>
+<figure data-type="image" tabindex="2"><img src="https://ysjhhhhhhh.github.io/post-images/1576141786354.png" alt=""></figure>
+<ul>
+<li>bin： 存放solr的可执行文件</li>
+<li>contrib： 存放solr提供的扩展包</li>
+<li>dist: Solr运行需要的jar包</li>
+<li>docs: 文档目录</li>
+<li>example: 官方提供的示例目录，配合官方示例教程，体验Solr功能</li>
+<li>licences: 协议目录</li>
+<li>server: solr工作的主目录，里面有默认的配置，将来创建的核心也会默认存储到此目录下，Solr Admin程序也在此目录下</li>
+</ul>
+<h2 id="12-solr入门">1.2. Solr入门</h2>
+<h3 id="121-运行官方示例项目">1.2.1. 运行官方示例项目</h3>
+<p>官方示例教程文档： https://lucene.apache.org/solr/guide/8_2/solr-tutorial.html</p>
+<p>官方提供了三个示例教程，从Solr怎么简单使用，到怎么创建自己的搜索库，一步一步有引导，推荐跟着练习一遍。</p>
+<h3 id="122-solr-admin-ui的使用">1.2.2. Solr Admin UI的使用</h3>
+<p>Solr Admin是Solr给我们提供的一个方便查询和管理Solr的Web控制台应用，通过此应用，我们不需要编写任何程序就可以对Solr的很多功能进行操作。</p>
+<p>默认访问地址： http://localhost:8983/solr</p>
+<figure data-type="image" tabindex="3"><img src="https://ysjhhhhhhh.github.io/post-images/1576141818790.png" alt=""></figure>
+<h4 id="1221-简单查询">1.2.2.1. 简单查询</h4>
+<h4 id="1222-按照某个字段搜索">1.2.2.2. 按照某个字段搜索</h4>
+<h4 id="1223-搜索短语">1.2.2.3. 搜索短语</h4>
+<h4 id="1224-搜索结果中只返回某些字段">1.2.2.4. 搜索结果中只返回某些字段</h4>
+<h4 id="1225-搜索结果分页">1.2.2.5. 搜索结果分页</h4>
+<figure data-type="image" tabindex="4"><img src="https://ysjhhhhhhh.github.io/post-images/1576141846360.png" alt=""></figure>
+<h4 id="1226-搜索结果高亮显示">1.2.2.6. 搜索结果高亮显示</h4>
+<p>搜索参数设置：</p>
+<figure data-type="image" tabindex="5"><img src="https://ysjhhhhhhh.github.io/post-images/1576141871632.png" alt=""></figure>
+<p>搜索结果展示：</p>
+<h4 id="1227-删除solr索引库中的数据">1.2.2.7. 删除Solr索引库中的数据</h4>
+<figure data-type="image" tabindex="6"><img src="https://ysjhhhhhhh.github.io/post-images/1576141898303.png" alt=""></figure>
+<h1 id="2-深入solr">2. 深入Solr</h1>
+<h2 id="21-solr配置文件">2.1. Solr配置文件</h2>
+<h3 id="211-managed-schema文件">2.1.1. managed-schema文件</h3>
+<p>managed-schema文件是Solr中core或collection的搜索库定义配置文件，里面配置了搜索库有哪些Field和FieldType等。</p>
+<p>Solr的工作流程大体如下：</p>
+<ul>
+<li>创建用于存储被搜索数据的core或collection(集群模式)；</li>
+<li>定义创建的core有哪些字段，以及哪些字段需要索引、哪些字段只存储，不需要索引。具体来说，就是通过Solr提供的SchemaAPI去管理core中的字段；</li>
+<li>将数据导入到Solr中，在此过程中，Solr会对导入的数据建索引（所以一定要先定义Schema字段，再导入数据）；</li>
+<li>调用Solr的HttpAPI搜索数据</li>
+</ul>
+<blockquote>
+<p>managed-schema文件就是用来管理某个core中有哪些字段或者字段类型，可以把Solr当成是一个数据库，里面有字段、有字段类型、能存储、能查询（搜索）</p>
+</blockquote>
+<h4 id="2111-solr中常用的数据类型">2.1.1.1. Solr中常用的数据类型</h4>
+<p>Solr中主要的数据类型由实现类和类型定义两部分组成， 数据类型是由Solr中定义好的Java类，类型定义是在managed-schema文件中定义的，数据类型不能直接使用，必须在managed-schema中定义后才能直接在字段中引用。</p>
+<p>在managed-schema中定义字段类型时，会将数据类型和其他属性（如：是否多值、是否存储）组合到一起</p>
+<p>默认的managed-schema配置文件中已经定义了一些常用的数据类型，如</p>
+<pre><code class="language-xml">&lt;fieldType name=&quot;string&quot; class=&quot;solr.StrField&quot; sortMissingLast=&quot;true&quot; docValues=&quot;true&quot; /&gt;
+&lt;fieldType name=&quot;strings&quot; class=&quot;solr.StrField&quot; sortMissingLast=&quot;true&quot; multiValued=&quot;true&quot; docValues=&quot;true&quot; /&gt;
+&lt;fieldType name=&quot;boolean&quot; class=&quot;solr.BoolField&quot; sortMissingLast=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;booleans&quot; class=&quot;solr.BoolField&quot; sortMissingLast=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pint&quot; class=&quot;solr.IntPointField&quot; docValues=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pfloat&quot; class=&quot;solr.FloatPointField&quot; docValues=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;plong&quot; class=&quot;solr.LongPointField&quot; docValues=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pdouble&quot; class=&quot;solr.DoublePointField&quot; docValues=&quot;true&quot;/&gt;
+
+&lt;fieldType name=&quot;pints&quot; class=&quot;solr.IntPointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pfloats&quot; class=&quot;solr.FloatPointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;plongs&quot; class=&quot;solr.LongPointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pdoubles&quot; class=&quot;solr.DoublePointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;random&quot; class=&quot;solr.RandomSortField&quot; indexed=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pdate&quot; class=&quot;solr.DatePointField&quot; docValues=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pdates&quot; class=&quot;solr.DatePointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;binary&quot; class=&quot;solr.BinaryField&quot;/&gt;
+</code></pre>
+<p>可以看到每个字段类型定义都由类型的实现类和若干个其他属性组合而成</p>
+<p>除了上面定义的简单类型之外默认的managed-schema文件中还定义了一些特殊的字段类型</p>
+<pre><code class="language-xml">&lt;!-- ignored类型本身是一个StrField类型，但是将stored和indexed都定义成了false，代表不存储、不建索引，实际上就是忽略数据中的此字段不处理 --&gt;
+&lt;fieldType name=&quot;ignored&quot; stored=&quot;false&quot; indexed=&quot;false&quot; multiValued=&quot;true&quot; class=&quot;solr.StrField&quot; /&gt;
+</code></pre>
+<p>带分词功能的字段类型</p>
+<pre><code class="language-xml">&lt;!-- text_general类型和上面的字段类型定义语法一样，本身数据solr.TextField类型，但是声明时通过内部的子标签指定了数据存储索引和数据搜索索引的分词器 --&gt;
+&lt;fieldType name=&quot;text_general&quot; class=&quot;solr.TextField&quot; positionIncrementGap=&quot;100&quot; multiValued=&quot;true&quot;&gt;
+    &lt;analyzer type=&quot;index&quot;&gt;
+        &lt;tokenizer class=&quot;solr.StandardTokenizerFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.StopFilterFactory&quot; ignoreCase=&quot;true&quot; words=&quot;stopwords.txt&quot; /&gt;
+        &lt;!-- in this example, we will only use synonyms at query time
+        &lt;filter class=&quot;solr.SynonymGraphFilterFactory&quot; synonyms=&quot;index_synonyms.txt&quot; ignoreCase=&quot;true&quot; expand=&quot;false&quot;/&gt;
+        &lt;filter class=&quot;solr.FlattenGraphFilterFactory&quot;/&gt;
+        --&gt;
+        &lt;filter class=&quot;solr.LowerCaseFilterFactory&quot;/&gt;
+    &lt;/analyzer&gt;
+    &lt;analyzer type=&quot;query&quot;&gt;
+        &lt;tokenizer class=&quot;solr.StandardTokenizerFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.StopFilterFactory&quot; ignoreCase=&quot;true&quot; words=&quot;stopwords.txt&quot; /&gt;
+        &lt;filter class=&quot;solr.SynonymGraphFilterFactory&quot; synonyms=&quot;synonyms.txt&quot; ignoreCase=&quot;true&quot; expand=&quot;true&quot;/&gt;
+        &lt;filter class=&quot;solr.LowerCaseFilterFactory&quot;/&gt;
+    &lt;/analyzer&gt;
+&lt;/fieldType&gt;
+</code></pre>
+<h4 id="2112-添加字段类型定义fieldtype">2.1.1.2. 添加字段类型定义(FieldType)</h4>
+<p>我们添加自定义字段类型的一个重要应用场景就是当我们的字段需要支持中文分词时，指定字段的实现类型是</p>
+<p>solr.TextField，然后指定数据存储索引和搜索的索引分词器为支持中文的分词器。</p>
+<p>语法参见上一章节 带分词功能的字段类型，中文分词器的配置参见配置中文分词器章节</p>
+<h4 id="2113-solr中的无模式模式和字段类型自动推测">2.1.1.3. Solr中的&quot;无模式&quot;模式和字段类型自动推测</h4>
+<p>我们在将数据导入到Solr中时，如果事先没有添加字段，Solr会根据数据的内容，自动推测应该用什么字段类型，并且自动生成field配置标签到当前core对应的managed-schema配置文件中</p>
+<h4 id="2114-添加字段field">2.1.1.4. 添加字段(Field)</h4>
+<p>前面说过managed-schema中主要就是定义了fieldType和field， 在以前老版本的solr中managed-schema的名字叫做schema.xml，可以直接手动编辑文件维护其中的字段定义。</p>
+<p>而在新版本的Solr中，官方不建议手动修改此文件，改用Schema API的方式来维护字段</p>
+<p>配置示例</p>
+<pre><code class="language-xml">&lt;field name=&quot;price&quot; type=&quot;float&quot; default=&quot;0.0&quot; indexed=&quot;true&quot; stored=&quot;true&quot;/&gt;
+</code></pre>
+<p>定义字段需要指定字段的名称、类型(引用上面声明的fieldType的名称)、默认值、是否存储、是否索引等。</p>
+<h4 id="2115-添加拷贝字段copy-field">2.1.1.5. 添加拷贝字段(Copy Field)</h4>
+<p>Solr支持通过配置Copy Field，将多个字段拷贝到某个字段上，这样在搜索时，可以只用一个字段实现同时搜索多个字段内容的效果。</p>
+<p>配置示例</p>
+<pre><code class="language-xml">&lt;copyField source=&quot;cat&quot; dest=&quot;text&quot; maxChars=&quot;30000&quot; /&gt;
+</code></pre>
+<h4 id="2116-动态字段dynamic-fields">2.1.1.6. 动态字段(Dynamic Fields)</h4>
+<p>Solr可以通过配置动态字段来实现对某些名称相似的字段统一管理，因为动态字段定义时名称中允许包含通配符。</p>
+<p>动态字段和普通字段作用一致，唯一不同的就是名称中允许包含通配符，Solr在索引数据时会优先查找配置中定义的准确字段(通过field配置的字段)，如果没有找到匹配的，就从动态字段中找是否有匹配的，如果找到，就用动态字段的字段定义来索引数据。</p>
+<p>配置示例</p>
+<pre><code class="language-xml">&lt;dynamicField name=&quot;*_i&quot; type=&quot;int&quot; indexed=&quot;true&quot;  stored=&quot;true&quot;/&gt;
+</code></pre>
+<h3 id="212-schema-api">2.1.2. Schema API</h3>
+<p>为了减少手动编辑managed-schema文件引入的错误，新版本的Solr提供了一套基于HTTP协议的Schema API来维护managed-schema文件</p>
+<p>Schema API可以完成以下操作</p>
+<h4 id="2121-add-field">2.1.2.1. add-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;add-field&quot;:{
+     &quot;name&quot;:&quot;sell_by&quot;,
+     &quot;type&quot;:&quot;pdate&quot;,
+     &quot;stored&quot;:true }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2122-delete-field">2.1.2.2. delete-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;delete-field&quot; : { &quot;name&quot;:&quot;sell_by&quot; }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2123-replace-field">2.1.2.3. replace-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;replace-field&quot;:{
+     &quot;name&quot;:&quot;sell_by&quot;,
+     &quot;type&quot;:&quot;date&quot;,
+     &quot;stored&quot;:false }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2124-add-dynamic-field">2.1.2.4. add-dynamic-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;add-dynamic-field&quot;:{
+     &quot;name&quot;:&quot;*_s&quot;,
+     &quot;type&quot;:&quot;string&quot;,
+     &quot;stored&quot;:true }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2125-delete-dynamic-field">2.1.2.5. delete-dynamic-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;delete-dynamic-field&quot;:{ &quot;name&quot;:&quot;*_s&quot; }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2126-replace-dynamic-field">2.1.2.6. replace-dynamic-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;replace-dynamic-field&quot;:{
+     &quot;name&quot;:&quot;*_s&quot;,
+     &quot;type&quot;:&quot;text_general&quot;,
+     &quot;stored&quot;:false }
+}' http://localhost:8983/solr/gettingstarted/schema
+</code></pre>
+<h4 id="2127-add-field-type">2.1.2.7. add-field-type</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;add-field-type&quot;:{
+     &quot;name&quot;:&quot;myNewTextField&quot;,
+     &quot;class&quot;:&quot;solr.TextField&quot;,
+     &quot;indexAnalyzer&quot;:{
+        &quot;tokenizer&quot;:{
+           &quot;class&quot;:&quot;solr.PathHierarchyTokenizerFactory&quot;,
+           &quot;delimiter&quot;:&quot;/&quot; }},
+     &quot;queryAnalyzer&quot;:{
+        &quot;tokenizer&quot;:{
+           &quot;class&quot;:&quot;solr.KeywordTokenizerFactory&quot; }}}
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2128-delete-field-type">2.1.2.8. delete-field-type</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;delete-field-type&quot;:{ &quot;name&quot;:&quot;myNewTxtField&quot; }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2129-replace-field-type">2.1.2.9. replace-field-type</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;replace-field-type&quot;:{
+     &quot;name&quot;:&quot;myNewTxtField&quot;,
+     &quot;class&quot;:&quot;solr.TextField&quot;,
+     &quot;positionIncrementGap&quot;:&quot;100&quot;,
+     &quot;analyzer&quot;:{
+        &quot;tokenizer&quot;:{
+           &quot;class&quot;:&quot;solr.StandardTokenizerFactory&quot; }}}
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="21210-add-copy-field">2.1.2.10. add-copy-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;add-copy-field&quot;:{
+     &quot;source&quot;:&quot;shelf&quot;,
+     &quot;dest&quot;:[ &quot;location&quot;, &quot;catchall&quot; ]}
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="21211-delete-copy-field">2.1.2.11. delete-copy-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;delete-copy-field&quot;:{ &quot;source&quot;:&quot;shelf&quot;, &quot;dest&quot;:&quot;location&quot; }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h3 id="213-solrconfigxml文件">2.1.3. solrconfig.xml文件</h3>
+<p>solrconfig.xml文件中定义了Solr core的数据目录、需要的第三方jar包、索引配置等。一般我们修改这个配置文件主要是配置中文分词器，因为Solr官方默认没有配置支持中文分词器的字段类型。</p>
+<h2 id="22-core-vs-collection">2.2. Core VS Collection</h2>
+<blockquote>
+<p>在单机模式启动的Solr中一个搜索数据集叫做core，而在集群模式启动的Solr中搜索数据集的名称叫做collection</p>
+</blockquote>
+<h3 id="221-单机模式使用solr">2.2.1. 单机模式使用Solr</h3>
+<h4 id="2211-以单机模式启动solr">2.2.1.1. 以单机模式启动Solr</h4>
+<pre><code class="language-bash">bin/solr start  # linux、macos
+bin\solr.cmd start # windows
+</code></pre>
+<p>启动成功后命令行会有如下输出</p>
+<pre><code>Started Solr server on port 8983. Happy searching!
+</code></pre>
+<h4 id="2212-创建core核心">2.2.1.2. 创建core核心</h4>
+<pre><code class="language-bash">bin/solr create -c 核心名  # linux、macos
+bin\solr.cmd create -c 核心名 # windows
+</code></pre>
+<h4 id="2213-导入数据到solr">2.2.1.3. 导入数据到Solr</h4>
+<blockquote>
+<p>参见使用SpringBoot操作Solr章节</p>
+</blockquote>
+<h4 id="2214-停止单机版solr">2.2.1.4. 停止单机版Solr</h4>
+<pre><code class="language-bash">bin/solr stop -all  # linux、macos
+bin\solr.cmd stop -all # windows
+</code></pre>
+<h3 id="222-以集群模式启动solr">2.2.2. 以集群模式启动Solr</h3>
+<h4 id="2221-以集群模式启动solr">2.2.2.1. 以集群模式启动Solr</h4>
+<p>以集群模式启动Solr</p>
+<pre><code class="language-bash">bin/solr start -c  # linux、macos
+bin\solr.cmd start -c # windows
+</code></pre>
+<p>以集群模式启动后，如果没指定端口号，Solr默认会启动一个8983的节点；同时还会将内置的Zookeeper服务也启动起来，运行到9983端口上</p>
+<p>向Solr集群中添加节点</p>
+<pre><code class="language-bash">bin/solr start -c -p 节点端口号 -z localhost:9983 # linux、macos
+bin\solr.cmd start -c -p 节点端口号 -z localhost:9983 # windows
+</code></pre>
+<p>-p参数指定节点运行的端口号，-z参数将新创建的节点添加到集群中</p>
+<blockquote>
+<p>Zookeeper是一个分布式管理框架，专门用来管理集群中各节点的状态。</p>
+</blockquote>
+<h4 id="2222-创建collection">2.2.2.2. 创建collection</h4>
+<pre><code class="language-bash">bin/solr create -c collection名称 -s 2 -rf 2  # linux、macos
+bin\solr.cmd create -c collection名称 -s 2 -rf 2 # windows
+</code></pre>
+<p>-c 参数指定创建的collection名称</p>
+<p>-s 参数表示该collection要分布到几个分片上</p>
+<p>-rf 参数表示每个分片有几个副本（用于容灾）</p>
+<blockquote>
+<p>Solr的集群模式和Reids集群类似，每个分片都有一个master节点和若干个slave节点组成，当master节点发生故障无法对外提供服务时，Solr集群会自动选举一个slave节点作为master对外服务。</p>
+</blockquote>
+<h4 id="2223-导入数据到solr集群">2.2.2.3. 导入数据到Solr集群</h4>
+<blockquote>
+<p>参见使用SpringBoot操作Solr章节</p>
+</blockquote>
+<h4 id="2224-停止solr集群">2.2.2.4. 停止Solr集群</h4>
+<ul>
+<li>
+<p>停止集群中某个节点</p>
+<pre><code class="language-bash">bin/solr stop -p 要停止的节点的端口号 # linux、macos
+bin\solr.cmd stop -p 要停止的节点的端口号 # windows
+</code></pre>
+</li>
+<li>
+<p>停止整个Solr集群</p>
+<pre><code class="language-bash">bin/solr stop -all # linux、macos
+bin\solr.cmd stop -all # windows
+</code></pre>
+</li>
+</ul>
+<h2 id="23-配置中文分词器">2.3. 配置中文分词器</h2>
+<p>分词器的作用在于将搜索的文本按照词组进行分割，可以大大的提高搜索的准确度。Solr对大部分的语言分词都进行了支持，其中也包括简体中文，但是遗憾的是截止最新的8.3.0版本，官方只是提供了中文分词的jar包，但是并没有对其进行配置。这就需要我们在用的时候配置中文分词器。</p>
+<p>Solr官方提供了两种中文分词器：smartcn和icu</p>
+<p>以smartcn分词器为例，配置方法如下：</p>
+<h3 id="231-修改solrconfigxml配置文件添加中文分词器依赖">2.3.1. 修改solrconfig.xml配置文件，添加中文分词器依赖</h3>
+<pre><code class="language-xml">......
+&lt;lib dir=&quot;${solr.install.dir:../../../..}/dist/&quot; regex=&quot;solr-ltr-\d.*\.jar&quot; /&gt;
+&lt;!-- 添加这行 --&gt;
+&lt;lib dir=&quot;${solr.install.dir:../../../..}/contrib/analysis-extras/lucene-libs&quot; regex=&quot;.*\.jar&quot; /&gt;
+......
+</code></pre>
+<h3 id="232-修改managed-schema配置文件新建fieldtype">2.3.2. 修改managed-schema配置文件，新建fieldType</h3>
+<pre><code class="language-xml">&lt;!-- 添加自定义的支持中文分词的字段类型 --&gt;
+&lt;fieldType name=&quot;text_zh&quot; class=&quot;solr.TextField&quot; positionIncrementGap=&quot;100&quot;&gt;
+    &lt;analyzer type=&quot;index&quot;&gt;
+        &lt;tokenizer class=&quot;org.apache.lucene.analysis.cn.smart.HMMChineseTokenizerFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.CJKWidthFilterFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.StopFilterFactory&quot;
+                words=&quot;org/apache/lucene/analysis/cn/smart/stopwords.txt&quot;/&gt;
+        &lt;filter class=&quot;solr.PorterStemFilterFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.LowerCaseFilterFactory&quot;/&gt;
+    &lt;/analyzer&gt;
+    &lt;analyzer type=&quot;query&quot;&gt;
+        &lt;tokenizer class=&quot;org.apache.lucene.analysis.cn.smart.HMMChineseTokenizerFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.CJKWidthFilterFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.StopFilterFactory&quot;
+                words=&quot;org/apache/lucene/analysis/cn/smart/stopwords.txt&quot;/&gt;
+        &lt;filter class=&quot;solr.PorterStemFilterFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.LowerCaseFilterFactory&quot;/&gt;
+    &lt;/analyzer&gt;
+&lt;/fieldType&gt;
+</code></pre>
+<blockquote>
+<p>在%solr安装目录%/server/configsets/_default/conf目录下有一份默认的配置文件managed-schema、solrconfig.xml。建议配置中文分词器时直接修改这个默认配置文件。因为在新建核心时，Solr会将这里的默认配置文件拷贝一份作为新核心的配置文件。</p>
+</blockquote>
+<h2 id="24-使用springboot操作solr">2.4. 使用SpringBoot操作Solr</h2>
+<p>添加依赖</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-solr&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>application.yml中配置</p>
+<pre><code class="language-yml">spring:
+  data:
+    solr:
+      host: http://localhost:8983/solr/
+</code></pre>
+<p>通过Java代码导入数据到Solr和搜索</p>
+<pre><code class="language-java">@Slf4j
+@Service
+public class SolrService {
+
+    @Autowired
+    private SolrClient solrClient;
+
+    @Autowired
+    private MessageDao messageDao;
+
+    public static final int BATCH_SIZE = 10;
+
+    public static final String CORE_NAME = &quot;lanou3g&quot;;
+
+    /**
+     * 将数据批量导入Solr中
+     * @throws IOException
+     * @throws SolrServerException
+     */
+    public void importData2Solr() throws IOException, SolrServerException {
+        List&lt;Message&gt; messages = messageDao.loadAllMessage();
+        List&lt;SolrInputDocument&gt; batchList = new ArrayList&lt;&gt;();
+        messages.forEach((message -&gt; {
+
+            // 将message对象转换成solr的inputDocument
+            SolrInputDocument inDoc = new SolrInputDocument();
+            inDoc.addField(&quot;id&quot;, message.getId());
+            inDoc.addField(&quot;from_id&quot;, message.getFromId());
+            inDoc.addField(&quot;to_id&quot;, message.getToId());
+            inDoc.addField(&quot;subject&quot;, message.getSubject());
+            inDoc.addField(&quot;content&quot;, message.getContent());
+            inDoc.addField(&quot;createtime&quot;, message.getCreatetime());
+            inDoc.addField(&quot;status&quot;, message.getStatus());
+            inDoc.addField(&quot;attachment&quot;, message.getAttachment());
+
+            batchList.add(inDoc);
+            if(batchList.size() % BATCH_SIZE == 0) {
+                try {
+                    solrClient.add(CORE_NAME ,batchList);
+                    batchList.clear();
+                    log.info(&quot;批量导入&quot;+BATCH_SIZE+&quot;条到solr.&quot;);
+                } catch (SolrServerException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
+
+        if(batchList.size() &gt; 0) {
+            solrClient.add(CORE_NAME, batchList);
+            log.info(&quot;批量导入&quot;+batchList.size()+&quot;条到solr.&quot;);
+            batchList.clear();
+        }
+        log.info(&quot;数据导入完成！&quot;);
+
+        // 提交数据到solr
+//        solrClient.commit();  // 无参的需要在配置文件中将核心名称添加到solr url中，参见application.yml
+        solrClient.commit(CORE_NAME);
+    }
+
+
+    /**
+     * 从Solr中分页搜索数据
+     * @param q 搜索关键字
+     * @param fields 限制返回的结果集中只允许哪个字段
+     * @param start 分页参数
+     * @param pageSize   分页参数
+     */
+    public void searchFromSolr(String q, String[] fields, int start, int pageSize) {
+
+        SolrQuery params = new SolrQuery(q);
+        if(fields != null &amp;&amp; fields.length &gt; 0) {
+            params.setFields(fields);
+        }
+
+        // 分页参数
+        params.setStart(start);
+        params.setRows(pageSize);
+
+        // 不设置按照哪个字段搜索的时候，默认搜索哪个字段
+        // （一般会将系统中所有支持检索的字段通过CopyField的方式拷贝到一个统一的字段上，用于搜索，比如下面的keywords）
+        params.setParam(&quot;df&quot;, &quot;keywords&quot;);
+
+        // 设置搜索结果高亮显示
+        params.setHighlight(true);
+        // 设置往搜索结果中所有匹配关键字的地方添加指定的前缀和后缀（内容随意）
+        params.setHighlightSimplePre(&quot;&lt;i class=\&quot;keywords\&quot;&gt;&quot;);
+        params.setHighlightSimplePost(&quot;&lt;/i&gt;&quot;);
+
+        try {
+//            QueryResponse queryResp = solrClient.query(params);
+            QueryResponse queryResp = solrClient.query(CORE_NAME, params);
+            SolrDocumentList results = queryResp.getResults();
+            long numFound = results.getNumFound();
+            System.out.println(&quot;总共搜索到&quot;+numFound+&quot;条结果&quot;);
+            results.forEach((solrDoc) -&gt; {
+                StringBuilder sb = new StringBuilder();
+                sb.append(&quot;{&quot;);
+                Collection&lt;String&gt; fieldNames = solrDoc.getFieldNames();
+                fieldNames.forEach((fieldName) -&gt; {
+                    Object fieldValue = solrDoc.getFieldValue(fieldName);
+                    sb.append(&quot;\&quot;&quot;+fieldName+&quot;\&quot;:\&quot;&quot;+fieldValue+&quot;\&quot;,&quot;);
+                });
+                if(sb.length() &gt; 1) {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+                sb.append(&quot;}&quot;);
+
+                System.out.println(&quot;row: &quot; + sb.toString());
+            });
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#1-solr%E5%85%A5%E9%97%A8">1. Solr入门</a>
+<ul>
+<li><a href="#11-solr%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85">1.1. Solr下载安装</a></li>
+<li><a href="#111-solr%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84">1.1.1. Solr目录结构</a></li>
+<li><a href="#12-solr%E5%85%A5%E9%97%A8">1.2. Solr入门</a>
+<ul>
+<li><a href="#121-%E8%BF%90%E8%A1%8C%E5%AE%98%E6%96%B9%E7%A4%BA%E4%BE%8B%E9%A1%B9%E7%9B%AE">1.2.1. 运行官方示例项目</a></li>
+<li><a href="#122-solr-admin-ui%E7%9A%84%E4%BD%BF%E7%94%A8">1.2.2. Solr Admin UI的使用</a>
+<ul>
+<li><a href="#1221-%E7%AE%80%E5%8D%95%E6%9F%A5%E8%AF%A2">1.2.2.1. 简单查询</a></li>
+<li><a href="#1222-%E6%8C%89%E7%85%A7%E6%9F%90%E4%B8%AA%E5%AD%97%E6%AE%B5%E6%90%9C%E7%B4%A2">1.2.2.2. 按照某个字段搜索</a></li>
+<li><a href="#1223-%E6%90%9C%E7%B4%A2%E7%9F%AD%E8%AF%AD">1.2.2.3. 搜索短语</a></li>
+<li><a href="#1224-%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C%E4%B8%AD%E5%8F%AA%E8%BF%94%E5%9B%9E%E6%9F%90%E4%BA%9B%E5%AD%97%E6%AE%B5">1.2.2.4. 搜索结果中只返回某些字段</a></li>
+<li><a href="#1225-%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C%E5%88%86%E9%A1%B5">1.2.2.5. 搜索结果分页</a></li>
+<li><a href="#1226-%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C%E9%AB%98%E4%BA%AE%E6%98%BE%E7%A4%BA">1.2.2.6. 搜索结果高亮显示</a></li>
+<li><a href="#1227-%E5%88%A0%E9%99%A4solr%E7%B4%A2%E5%BC%95%E5%BA%93%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE">1.2.2.7. 删除Solr索引库中的数据</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#2-%E6%B7%B1%E5%85%A5solr">2. 深入Solr</a>
+<ul>
+<li><a href="#21-solr%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">2.1. Solr配置文件</a>
+<ul>
+<li><a href="#211-managed-schema%E6%96%87%E4%BB%B6">2.1.1. managed-schema文件</a>
+<ul>
+<li><a href="#2111-solr%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">2.1.1.1. Solr中常用的数据类型</a></li>
+<li><a href="#2112-%E6%B7%BB%E5%8A%A0%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E5%AE%9A%E4%B9%89fieldtype">2.1.1.2. 添加字段类型定义(FieldType)</a></li>
+<li><a href="#2113-solr%E4%B8%AD%E7%9A%84%E6%97%A0%E6%A8%A1%E5%BC%8F%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E8%87%AA%E5%8A%A8%E6%8E%A8%E6%B5%8B">2.1.1.3. Solr中的&quot;无模式&quot;模式和字段类型自动推测</a></li>
+<li><a href="#2114-%E6%B7%BB%E5%8A%A0%E5%AD%97%E6%AE%B5field">2.1.1.4. 添加字段(Field)</a></li>
+<li><a href="#2115-%E6%B7%BB%E5%8A%A0%E6%8B%B7%E8%B4%9D%E5%AD%97%E6%AE%B5copy-field">2.1.1.5. 添加拷贝字段(Copy Field)</a></li>
+<li><a href="#2116-%E5%8A%A8%E6%80%81%E5%AD%97%E6%AE%B5dynamic-fields">2.1.1.6. 动态字段(Dynamic Fields)</a></li>
+</ul>
+</li>
+<li><a href="#212-schema-api">2.1.2. Schema API</a>
+<ul>
+<li><a href="#2121-add-field">2.1.2.1. add-field</a></li>
+<li><a href="#2122-delete-field">2.1.2.2. delete-field</a></li>
+<li><a href="#2123-replace-field">2.1.2.3. replace-field</a></li>
+<li><a href="#2124-add-dynamic-field">2.1.2.4. add-dynamic-field</a></li>
+<li><a href="#2125-delete-dynamic-field">2.1.2.5. delete-dynamic-field</a></li>
+<li><a href="#2126-replace-dynamic-field">2.1.2.6. replace-dynamic-field</a></li>
+<li><a href="#2127-add-field-type">2.1.2.7. add-field-type</a></li>
+<li><a href="#2128-delete-field-type">2.1.2.8. delete-field-type</a></li>
+<li><a href="#2129-replace-field-type">2.1.2.9. replace-field-type</a></li>
+<li><a href="#21210-add-copy-field">2.1.2.10. add-copy-field</a></li>
+<li><a href="#21211-delete-copy-field">2.1.2.11. delete-copy-field</a></li>
+</ul>
+</li>
+<li><a href="#213-solrconfigxml%E6%96%87%E4%BB%B6">2.1.3. solrconfig.xml文件</a></li>
+</ul>
+</li>
+<li><a href="#22-core-vs-collection">2.2. Core VS Collection</a>
+<ul>
+<li><a href="#221-%E5%8D%95%E6%9C%BA%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8solr">2.2.1. 单机模式使用Solr</a>
+<ul>
+<li><a href="#2211-%E4%BB%A5%E5%8D%95%E6%9C%BA%E6%A8%A1%E5%BC%8F%E5%90%AF%E5%8A%A8solr">2.2.1.1. 以单机模式启动Solr</a></li>
+<li><a href="#2212-%E5%88%9B%E5%BB%BAcore%E6%A0%B8%E5%BF%83">2.2.1.2. 创建core核心</a></li>
+<li><a href="#2213-%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E5%88%B0solr">2.2.1.3. 导入数据到Solr</a></li>
+<li><a href="#2214-%E5%81%9C%E6%AD%A2%E5%8D%95%E6%9C%BA%E7%89%88solr">2.2.1.4. 停止单机版Solr</a></li>
+</ul>
+</li>
+<li><a href="#222-%E4%BB%A5%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F%E5%90%AF%E5%8A%A8solr">2.2.2. 以集群模式启动Solr</a>
+<ul>
+<li><a href="#2221-%E4%BB%A5%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F%E5%90%AF%E5%8A%A8solr">2.2.2.1. 以集群模式启动Solr</a></li>
+<li><a href="#2222-%E5%88%9B%E5%BB%BAcollection">2.2.2.2. 创建collection</a></li>
+<li><a href="#2223-%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E5%88%B0solr%E9%9B%86%E7%BE%A4">2.2.2.3. 导入数据到Solr集群</a></li>
+<li><a href="#2224-%E5%81%9C%E6%AD%A2solr%E9%9B%86%E7%BE%A4">2.2.2.4. 停止Solr集群</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#23-%E9%85%8D%E7%BD%AE%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E5%99%A8">2.3. 配置中文分词器</a>
+<ul>
+<li><a href="#231-%E4%BF%AE%E6%94%B9solrconfigxml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%B7%BB%E5%8A%A0%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E5%99%A8%E4%BE%9D%E8%B5%96">2.3.1. 修改solrconfig.xml配置文件，添加中文分词器依赖</a></li>
+<li><a href="#232-%E4%BF%AE%E6%94%B9managed-schema%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%96%B0%E5%BB%BAfieldtype">2.3.2. 修改managed-schema配置文件，新建fieldType</a></li>
+</ul>
+</li>
+<li><a href="#24-%E4%BD%BF%E7%94%A8springboot%E6%93%8D%E4%BD%9Csolr">2.4. 使用SpringBoot操作Solr</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://ysjhhhhhhh.github.io/post/redis">
+              <h3 class="post-title">
+                Redis
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://ysjhhhhhhh.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

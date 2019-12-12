@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ysjhhhhhhh.github.io</id>
     <title>Gridea</title>
-    <updated>2019-12-12T09:06:05.500Z</updated>
+    <updated>2019-12-12T09:16:05.721Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ysjhhhhhhh.github.io"/>
     <link rel="self" href="https://ysjhhhhhhh.github.io/atom.xml"/>
@@ -10,6 +10,472 @@
     <logo>https://ysjhhhhhhh.github.io/images/avatar.png</logo>
     <icon>https://ysjhhhhhhh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Solr]]></title>
+        <id>https://ysjhhhhhhh.github.io/post/solr</id>
+        <link href="https://ysjhhhhhhh.github.io/post/solr">
+        </link>
+        <updated>2018-06-07T15:08:32.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-solr入门">1. Solr入门</h1>
+<h2 id="11-solr下载安装">1.1. Solr下载安装</h2>
+<p>官方下载地址：https://archive.apache.org/dist/lucene/solr/</p>
+<p>Windows系统下载zip包，Linux、MaxOS系统下载tgz包</p>
+<figure data-type="image" tabindex="1"><img src="https://ysjhhhhhhh.github.io/post-images/1576141759791.png" alt=""></figure>
+<h2 id="111-solr目录结构">1.1.1. Solr目录结构</h2>
+<figure data-type="image" tabindex="2"><img src="https://ysjhhhhhhh.github.io/post-images/1576141786354.png" alt=""></figure>
+<ul>
+<li>bin： 存放solr的可执行文件</li>
+<li>contrib： 存放solr提供的扩展包</li>
+<li>dist: Solr运行需要的jar包</li>
+<li>docs: 文档目录</li>
+<li>example: 官方提供的示例目录，配合官方示例教程，体验Solr功能</li>
+<li>licences: 协议目录</li>
+<li>server: solr工作的主目录，里面有默认的配置，将来创建的核心也会默认存储到此目录下，Solr Admin程序也在此目录下</li>
+</ul>
+<h2 id="12-solr入门">1.2. Solr入门</h2>
+<h3 id="121-运行官方示例项目">1.2.1. 运行官方示例项目</h3>
+<p>官方示例教程文档： https://lucene.apache.org/solr/guide/8_2/solr-tutorial.html</p>
+<p>官方提供了三个示例教程，从Solr怎么简单使用，到怎么创建自己的搜索库，一步一步有引导，推荐跟着练习一遍。</p>
+<h3 id="122-solr-admin-ui的使用">1.2.2. Solr Admin UI的使用</h3>
+<p>Solr Admin是Solr给我们提供的一个方便查询和管理Solr的Web控制台应用，通过此应用，我们不需要编写任何程序就可以对Solr的很多功能进行操作。</p>
+<p>默认访问地址： http://localhost:8983/solr</p>
+<figure data-type="image" tabindex="3"><img src="https://ysjhhhhhhh.github.io/post-images/1576141818790.png" alt=""></figure>
+<h4 id="1221-简单查询">1.2.2.1. 简单查询</h4>
+<h4 id="1222-按照某个字段搜索">1.2.2.2. 按照某个字段搜索</h4>
+<h4 id="1223-搜索短语">1.2.2.3. 搜索短语</h4>
+<h4 id="1224-搜索结果中只返回某些字段">1.2.2.4. 搜索结果中只返回某些字段</h4>
+<h4 id="1225-搜索结果分页">1.2.2.5. 搜索结果分页</h4>
+<figure data-type="image" tabindex="4"><img src="https://ysjhhhhhhh.github.io/post-images/1576141846360.png" alt=""></figure>
+<h4 id="1226-搜索结果高亮显示">1.2.2.6. 搜索结果高亮显示</h4>
+<p>搜索参数设置：</p>
+<figure data-type="image" tabindex="5"><img src="https://ysjhhhhhhh.github.io/post-images/1576141871632.png" alt=""></figure>
+<p>搜索结果展示：</p>
+<h4 id="1227-删除solr索引库中的数据">1.2.2.7. 删除Solr索引库中的数据</h4>
+<figure data-type="image" tabindex="6"><img src="https://ysjhhhhhhh.github.io/post-images/1576141898303.png" alt=""></figure>
+<h1 id="2-深入solr">2. 深入Solr</h1>
+<h2 id="21-solr配置文件">2.1. Solr配置文件</h2>
+<h3 id="211-managed-schema文件">2.1.1. managed-schema文件</h3>
+<p>managed-schema文件是Solr中core或collection的搜索库定义配置文件，里面配置了搜索库有哪些Field和FieldType等。</p>
+<p>Solr的工作流程大体如下：</p>
+<ul>
+<li>创建用于存储被搜索数据的core或collection(集群模式)；</li>
+<li>定义创建的core有哪些字段，以及哪些字段需要索引、哪些字段只存储，不需要索引。具体来说，就是通过Solr提供的SchemaAPI去管理core中的字段；</li>
+<li>将数据导入到Solr中，在此过程中，Solr会对导入的数据建索引（所以一定要先定义Schema字段，再导入数据）；</li>
+<li>调用Solr的HttpAPI搜索数据</li>
+</ul>
+<blockquote>
+<p>managed-schema文件就是用来管理某个core中有哪些字段或者字段类型，可以把Solr当成是一个数据库，里面有字段、有字段类型、能存储、能查询（搜索）</p>
+</blockquote>
+<h4 id="2111-solr中常用的数据类型">2.1.1.1. Solr中常用的数据类型</h4>
+<p>Solr中主要的数据类型由实现类和类型定义两部分组成， 数据类型是由Solr中定义好的Java类，类型定义是在managed-schema文件中定义的，数据类型不能直接使用，必须在managed-schema中定义后才能直接在字段中引用。</p>
+<p>在managed-schema中定义字段类型时，会将数据类型和其他属性（如：是否多值、是否存储）组合到一起</p>
+<p>默认的managed-schema配置文件中已经定义了一些常用的数据类型，如</p>
+<pre><code class="language-xml">&lt;fieldType name=&quot;string&quot; class=&quot;solr.StrField&quot; sortMissingLast=&quot;true&quot; docValues=&quot;true&quot; /&gt;
+&lt;fieldType name=&quot;strings&quot; class=&quot;solr.StrField&quot; sortMissingLast=&quot;true&quot; multiValued=&quot;true&quot; docValues=&quot;true&quot; /&gt;
+&lt;fieldType name=&quot;boolean&quot; class=&quot;solr.BoolField&quot; sortMissingLast=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;booleans&quot; class=&quot;solr.BoolField&quot; sortMissingLast=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pint&quot; class=&quot;solr.IntPointField&quot; docValues=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pfloat&quot; class=&quot;solr.FloatPointField&quot; docValues=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;plong&quot; class=&quot;solr.LongPointField&quot; docValues=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pdouble&quot; class=&quot;solr.DoublePointField&quot; docValues=&quot;true&quot;/&gt;
+
+&lt;fieldType name=&quot;pints&quot; class=&quot;solr.IntPointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pfloats&quot; class=&quot;solr.FloatPointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;plongs&quot; class=&quot;solr.LongPointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pdoubles&quot; class=&quot;solr.DoublePointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;random&quot; class=&quot;solr.RandomSortField&quot; indexed=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pdate&quot; class=&quot;solr.DatePointField&quot; docValues=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;pdates&quot; class=&quot;solr.DatePointField&quot; docValues=&quot;true&quot; multiValued=&quot;true&quot;/&gt;
+&lt;fieldType name=&quot;binary&quot; class=&quot;solr.BinaryField&quot;/&gt;
+</code></pre>
+<p>可以看到每个字段类型定义都由类型的实现类和若干个其他属性组合而成</p>
+<p>除了上面定义的简单类型之外默认的managed-schema文件中还定义了一些特殊的字段类型</p>
+<pre><code class="language-xml">&lt;!-- ignored类型本身是一个StrField类型，但是将stored和indexed都定义成了false，代表不存储、不建索引，实际上就是忽略数据中的此字段不处理 --&gt;
+&lt;fieldType name=&quot;ignored&quot; stored=&quot;false&quot; indexed=&quot;false&quot; multiValued=&quot;true&quot; class=&quot;solr.StrField&quot; /&gt;
+</code></pre>
+<p>带分词功能的字段类型</p>
+<pre><code class="language-xml">&lt;!-- text_general类型和上面的字段类型定义语法一样，本身数据solr.TextField类型，但是声明时通过内部的子标签指定了数据存储索引和数据搜索索引的分词器 --&gt;
+&lt;fieldType name=&quot;text_general&quot; class=&quot;solr.TextField&quot; positionIncrementGap=&quot;100&quot; multiValued=&quot;true&quot;&gt;
+    &lt;analyzer type=&quot;index&quot;&gt;
+        &lt;tokenizer class=&quot;solr.StandardTokenizerFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.StopFilterFactory&quot; ignoreCase=&quot;true&quot; words=&quot;stopwords.txt&quot; /&gt;
+        &lt;!-- in this example, we will only use synonyms at query time
+        &lt;filter class=&quot;solr.SynonymGraphFilterFactory&quot; synonyms=&quot;index_synonyms.txt&quot; ignoreCase=&quot;true&quot; expand=&quot;false&quot;/&gt;
+        &lt;filter class=&quot;solr.FlattenGraphFilterFactory&quot;/&gt;
+        --&gt;
+        &lt;filter class=&quot;solr.LowerCaseFilterFactory&quot;/&gt;
+    &lt;/analyzer&gt;
+    &lt;analyzer type=&quot;query&quot;&gt;
+        &lt;tokenizer class=&quot;solr.StandardTokenizerFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.StopFilterFactory&quot; ignoreCase=&quot;true&quot; words=&quot;stopwords.txt&quot; /&gt;
+        &lt;filter class=&quot;solr.SynonymGraphFilterFactory&quot; synonyms=&quot;synonyms.txt&quot; ignoreCase=&quot;true&quot; expand=&quot;true&quot;/&gt;
+        &lt;filter class=&quot;solr.LowerCaseFilterFactory&quot;/&gt;
+    &lt;/analyzer&gt;
+&lt;/fieldType&gt;
+</code></pre>
+<h4 id="2112-添加字段类型定义fieldtype">2.1.1.2. 添加字段类型定义(FieldType)</h4>
+<p>我们添加自定义字段类型的一个重要应用场景就是当我们的字段需要支持中文分词时，指定字段的实现类型是</p>
+<p>solr.TextField，然后指定数据存储索引和搜索的索引分词器为支持中文的分词器。</p>
+<p>语法参见上一章节 带分词功能的字段类型，中文分词器的配置参见配置中文分词器章节</p>
+<h4 id="2113-solr中的无模式模式和字段类型自动推测">2.1.1.3. Solr中的&quot;无模式&quot;模式和字段类型自动推测</h4>
+<p>我们在将数据导入到Solr中时，如果事先没有添加字段，Solr会根据数据的内容，自动推测应该用什么字段类型，并且自动生成field配置标签到当前core对应的managed-schema配置文件中</p>
+<h4 id="2114-添加字段field">2.1.1.4. 添加字段(Field)</h4>
+<p>前面说过managed-schema中主要就是定义了fieldType和field， 在以前老版本的solr中managed-schema的名字叫做schema.xml，可以直接手动编辑文件维护其中的字段定义。</p>
+<p>而在新版本的Solr中，官方不建议手动修改此文件，改用Schema API的方式来维护字段</p>
+<p>配置示例</p>
+<pre><code class="language-xml">&lt;field name=&quot;price&quot; type=&quot;float&quot; default=&quot;0.0&quot; indexed=&quot;true&quot; stored=&quot;true&quot;/&gt;
+</code></pre>
+<p>定义字段需要指定字段的名称、类型(引用上面声明的fieldType的名称)、默认值、是否存储、是否索引等。</p>
+<h4 id="2115-添加拷贝字段copy-field">2.1.1.5. 添加拷贝字段(Copy Field)</h4>
+<p>Solr支持通过配置Copy Field，将多个字段拷贝到某个字段上，这样在搜索时，可以只用一个字段实现同时搜索多个字段内容的效果。</p>
+<p>配置示例</p>
+<pre><code class="language-xml">&lt;copyField source=&quot;cat&quot; dest=&quot;text&quot; maxChars=&quot;30000&quot; /&gt;
+</code></pre>
+<h4 id="2116-动态字段dynamic-fields">2.1.1.6. 动态字段(Dynamic Fields)</h4>
+<p>Solr可以通过配置动态字段来实现对某些名称相似的字段统一管理，因为动态字段定义时名称中允许包含通配符。</p>
+<p>动态字段和普通字段作用一致，唯一不同的就是名称中允许包含通配符，Solr在索引数据时会优先查找配置中定义的准确字段(通过field配置的字段)，如果没有找到匹配的，就从动态字段中找是否有匹配的，如果找到，就用动态字段的字段定义来索引数据。</p>
+<p>配置示例</p>
+<pre><code class="language-xml">&lt;dynamicField name=&quot;*_i&quot; type=&quot;int&quot; indexed=&quot;true&quot;  stored=&quot;true&quot;/&gt;
+</code></pre>
+<h3 id="212-schema-api">2.1.2. Schema API</h3>
+<p>为了减少手动编辑managed-schema文件引入的错误，新版本的Solr提供了一套基于HTTP协议的Schema API来维护managed-schema文件</p>
+<p>Schema API可以完成以下操作</p>
+<h4 id="2121-add-field">2.1.2.1. add-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;add-field&quot;:{
+     &quot;name&quot;:&quot;sell_by&quot;,
+     &quot;type&quot;:&quot;pdate&quot;,
+     &quot;stored&quot;:true }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2122-delete-field">2.1.2.2. delete-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;delete-field&quot; : { &quot;name&quot;:&quot;sell_by&quot; }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2123-replace-field">2.1.2.3. replace-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;replace-field&quot;:{
+     &quot;name&quot;:&quot;sell_by&quot;,
+     &quot;type&quot;:&quot;date&quot;,
+     &quot;stored&quot;:false }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2124-add-dynamic-field">2.1.2.4. add-dynamic-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;add-dynamic-field&quot;:{
+     &quot;name&quot;:&quot;*_s&quot;,
+     &quot;type&quot;:&quot;string&quot;,
+     &quot;stored&quot;:true }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2125-delete-dynamic-field">2.1.2.5. delete-dynamic-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;delete-dynamic-field&quot;:{ &quot;name&quot;:&quot;*_s&quot; }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2126-replace-dynamic-field">2.1.2.6. replace-dynamic-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;replace-dynamic-field&quot;:{
+     &quot;name&quot;:&quot;*_s&quot;,
+     &quot;type&quot;:&quot;text_general&quot;,
+     &quot;stored&quot;:false }
+}' http://localhost:8983/solr/gettingstarted/schema
+</code></pre>
+<h4 id="2127-add-field-type">2.1.2.7. add-field-type</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;add-field-type&quot;:{
+     &quot;name&quot;:&quot;myNewTextField&quot;,
+     &quot;class&quot;:&quot;solr.TextField&quot;,
+     &quot;indexAnalyzer&quot;:{
+        &quot;tokenizer&quot;:{
+           &quot;class&quot;:&quot;solr.PathHierarchyTokenizerFactory&quot;,
+           &quot;delimiter&quot;:&quot;/&quot; }},
+     &quot;queryAnalyzer&quot;:{
+        &quot;tokenizer&quot;:{
+           &quot;class&quot;:&quot;solr.KeywordTokenizerFactory&quot; }}}
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2128-delete-field-type">2.1.2.8. delete-field-type</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;delete-field-type&quot;:{ &quot;name&quot;:&quot;myNewTxtField&quot; }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="2129-replace-field-type">2.1.2.9. replace-field-type</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;replace-field-type&quot;:{
+     &quot;name&quot;:&quot;myNewTxtField&quot;,
+     &quot;class&quot;:&quot;solr.TextField&quot;,
+     &quot;positionIncrementGap&quot;:&quot;100&quot;,
+     &quot;analyzer&quot;:{
+        &quot;tokenizer&quot;:{
+           &quot;class&quot;:&quot;solr.StandardTokenizerFactory&quot; }}}
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="21210-add-copy-field">2.1.2.10. add-copy-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;add-copy-field&quot;:{
+     &quot;source&quot;:&quot;shelf&quot;,
+     &quot;dest&quot;:[ &quot;location&quot;, &quot;catchall&quot; ]}
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h4 id="21211-delete-copy-field">2.1.2.11. delete-copy-field</h4>
+<p>使用示例</p>
+<pre><code class="language-bash">curl -X POST -H 'Content-type:application/json' --data-binary '{
+  &quot;delete-copy-field&quot;:{ &quot;source&quot;:&quot;shelf&quot;, &quot;dest&quot;:&quot;location&quot; }
+}' http://localhost:8983/api/cores/gettingstarted/schema
+</code></pre>
+<h3 id="213-solrconfigxml文件">2.1.3. solrconfig.xml文件</h3>
+<p>solrconfig.xml文件中定义了Solr core的数据目录、需要的第三方jar包、索引配置等。一般我们修改这个配置文件主要是配置中文分词器，因为Solr官方默认没有配置支持中文分词器的字段类型。</p>
+<h2 id="22-core-vs-collection">2.2. Core VS Collection</h2>
+<blockquote>
+<p>在单机模式启动的Solr中一个搜索数据集叫做core，而在集群模式启动的Solr中搜索数据集的名称叫做collection</p>
+</blockquote>
+<h3 id="221-单机模式使用solr">2.2.1. 单机模式使用Solr</h3>
+<h4 id="2211-以单机模式启动solr">2.2.1.1. 以单机模式启动Solr</h4>
+<pre><code class="language-bash">bin/solr start  # linux、macos
+bin\solr.cmd start # windows
+</code></pre>
+<p>启动成功后命令行会有如下输出</p>
+<pre><code>Started Solr server on port 8983. Happy searching!
+</code></pre>
+<h4 id="2212-创建core核心">2.2.1.2. 创建core核心</h4>
+<pre><code class="language-bash">bin/solr create -c 核心名  # linux、macos
+bin\solr.cmd create -c 核心名 # windows
+</code></pre>
+<h4 id="2213-导入数据到solr">2.2.1.3. 导入数据到Solr</h4>
+<blockquote>
+<p>参见使用SpringBoot操作Solr章节</p>
+</blockquote>
+<h4 id="2214-停止单机版solr">2.2.1.4. 停止单机版Solr</h4>
+<pre><code class="language-bash">bin/solr stop -all  # linux、macos
+bin\solr.cmd stop -all # windows
+</code></pre>
+<h3 id="222-以集群模式启动solr">2.2.2. 以集群模式启动Solr</h3>
+<h4 id="2221-以集群模式启动solr">2.2.2.1. 以集群模式启动Solr</h4>
+<p>以集群模式启动Solr</p>
+<pre><code class="language-bash">bin/solr start -c  # linux、macos
+bin\solr.cmd start -c # windows
+</code></pre>
+<p>以集群模式启动后，如果没指定端口号，Solr默认会启动一个8983的节点；同时还会将内置的Zookeeper服务也启动起来，运行到9983端口上</p>
+<p>向Solr集群中添加节点</p>
+<pre><code class="language-bash">bin/solr start -c -p 节点端口号 -z localhost:9983 # linux、macos
+bin\solr.cmd start -c -p 节点端口号 -z localhost:9983 # windows
+</code></pre>
+<p>-p参数指定节点运行的端口号，-z参数将新创建的节点添加到集群中</p>
+<blockquote>
+<p>Zookeeper是一个分布式管理框架，专门用来管理集群中各节点的状态。</p>
+</blockquote>
+<h4 id="2222-创建collection">2.2.2.2. 创建collection</h4>
+<pre><code class="language-bash">bin/solr create -c collection名称 -s 2 -rf 2  # linux、macos
+bin\solr.cmd create -c collection名称 -s 2 -rf 2 # windows
+</code></pre>
+<p>-c 参数指定创建的collection名称</p>
+<p>-s 参数表示该collection要分布到几个分片上</p>
+<p>-rf 参数表示每个分片有几个副本（用于容灾）</p>
+<blockquote>
+<p>Solr的集群模式和Reids集群类似，每个分片都有一个master节点和若干个slave节点组成，当master节点发生故障无法对外提供服务时，Solr集群会自动选举一个slave节点作为master对外服务。</p>
+</blockquote>
+<h4 id="2223-导入数据到solr集群">2.2.2.3. 导入数据到Solr集群</h4>
+<blockquote>
+<p>参见使用SpringBoot操作Solr章节</p>
+</blockquote>
+<h4 id="2224-停止solr集群">2.2.2.4. 停止Solr集群</h4>
+<ul>
+<li>
+<p>停止集群中某个节点</p>
+<pre><code class="language-bash">bin/solr stop -p 要停止的节点的端口号 # linux、macos
+bin\solr.cmd stop -p 要停止的节点的端口号 # windows
+</code></pre>
+</li>
+<li>
+<p>停止整个Solr集群</p>
+<pre><code class="language-bash">bin/solr stop -all # linux、macos
+bin\solr.cmd stop -all # windows
+</code></pre>
+</li>
+</ul>
+<h2 id="23-配置中文分词器">2.3. 配置中文分词器</h2>
+<p>分词器的作用在于将搜索的文本按照词组进行分割，可以大大的提高搜索的准确度。Solr对大部分的语言分词都进行了支持，其中也包括简体中文，但是遗憾的是截止最新的8.3.0版本，官方只是提供了中文分词的jar包，但是并没有对其进行配置。这就需要我们在用的时候配置中文分词器。</p>
+<p>Solr官方提供了两种中文分词器：smartcn和icu</p>
+<p>以smartcn分词器为例，配置方法如下：</p>
+<h3 id="231-修改solrconfigxml配置文件添加中文分词器依赖">2.3.1. 修改solrconfig.xml配置文件，添加中文分词器依赖</h3>
+<pre><code class="language-xml">......
+&lt;lib dir=&quot;${solr.install.dir:../../../..}/dist/&quot; regex=&quot;solr-ltr-\d.*\.jar&quot; /&gt;
+&lt;!-- 添加这行 --&gt;
+&lt;lib dir=&quot;${solr.install.dir:../../../..}/contrib/analysis-extras/lucene-libs&quot; regex=&quot;.*\.jar&quot; /&gt;
+......
+</code></pre>
+<h3 id="232-修改managed-schema配置文件新建fieldtype">2.3.2. 修改managed-schema配置文件，新建fieldType</h3>
+<pre><code class="language-xml">&lt;!-- 添加自定义的支持中文分词的字段类型 --&gt;
+&lt;fieldType name=&quot;text_zh&quot; class=&quot;solr.TextField&quot; positionIncrementGap=&quot;100&quot;&gt;
+    &lt;analyzer type=&quot;index&quot;&gt;
+        &lt;tokenizer class=&quot;org.apache.lucene.analysis.cn.smart.HMMChineseTokenizerFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.CJKWidthFilterFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.StopFilterFactory&quot;
+                words=&quot;org/apache/lucene/analysis/cn/smart/stopwords.txt&quot;/&gt;
+        &lt;filter class=&quot;solr.PorterStemFilterFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.LowerCaseFilterFactory&quot;/&gt;
+    &lt;/analyzer&gt;
+    &lt;analyzer type=&quot;query&quot;&gt;
+        &lt;tokenizer class=&quot;org.apache.lucene.analysis.cn.smart.HMMChineseTokenizerFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.CJKWidthFilterFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.StopFilterFactory&quot;
+                words=&quot;org/apache/lucene/analysis/cn/smart/stopwords.txt&quot;/&gt;
+        &lt;filter class=&quot;solr.PorterStemFilterFactory&quot;/&gt;
+        &lt;filter class=&quot;solr.LowerCaseFilterFactory&quot;/&gt;
+    &lt;/analyzer&gt;
+&lt;/fieldType&gt;
+</code></pre>
+<blockquote>
+<p>在%solr安装目录%/server/configsets/_default/conf目录下有一份默认的配置文件managed-schema、solrconfig.xml。建议配置中文分词器时直接修改这个默认配置文件。因为在新建核心时，Solr会将这里的默认配置文件拷贝一份作为新核心的配置文件。</p>
+</blockquote>
+<h2 id="24-使用springboot操作solr">2.4. 使用SpringBoot操作Solr</h2>
+<p>添加依赖</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-solr&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>application.yml中配置</p>
+<pre><code class="language-yml">spring:
+  data:
+    solr:
+      host: http://localhost:8983/solr/
+</code></pre>
+<p>通过Java代码导入数据到Solr和搜索</p>
+<pre><code class="language-java">@Slf4j
+@Service
+public class SolrService {
+
+    @Autowired
+    private SolrClient solrClient;
+
+    @Autowired
+    private MessageDao messageDao;
+
+    public static final int BATCH_SIZE = 10;
+
+    public static final String CORE_NAME = &quot;lanou3g&quot;;
+
+    /**
+     * 将数据批量导入Solr中
+     * @throws IOException
+     * @throws SolrServerException
+     */
+    public void importData2Solr() throws IOException, SolrServerException {
+        List&lt;Message&gt; messages = messageDao.loadAllMessage();
+        List&lt;SolrInputDocument&gt; batchList = new ArrayList&lt;&gt;();
+        messages.forEach((message -&gt; {
+
+            // 将message对象转换成solr的inputDocument
+            SolrInputDocument inDoc = new SolrInputDocument();
+            inDoc.addField(&quot;id&quot;, message.getId());
+            inDoc.addField(&quot;from_id&quot;, message.getFromId());
+            inDoc.addField(&quot;to_id&quot;, message.getToId());
+            inDoc.addField(&quot;subject&quot;, message.getSubject());
+            inDoc.addField(&quot;content&quot;, message.getContent());
+            inDoc.addField(&quot;createtime&quot;, message.getCreatetime());
+            inDoc.addField(&quot;status&quot;, message.getStatus());
+            inDoc.addField(&quot;attachment&quot;, message.getAttachment());
+
+            batchList.add(inDoc);
+            if(batchList.size() % BATCH_SIZE == 0) {
+                try {
+                    solrClient.add(CORE_NAME ,batchList);
+                    batchList.clear();
+                    log.info(&quot;批量导入&quot;+BATCH_SIZE+&quot;条到solr.&quot;);
+                } catch (SolrServerException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
+
+        if(batchList.size() &gt; 0) {
+            solrClient.add(CORE_NAME, batchList);
+            log.info(&quot;批量导入&quot;+batchList.size()+&quot;条到solr.&quot;);
+            batchList.clear();
+        }
+        log.info(&quot;数据导入完成！&quot;);
+
+        // 提交数据到solr
+//        solrClient.commit();  // 无参的需要在配置文件中将核心名称添加到solr url中，参见application.yml
+        solrClient.commit(CORE_NAME);
+    }
+
+
+    /**
+     * 从Solr中分页搜索数据
+     * @param q 搜索关键字
+     * @param fields 限制返回的结果集中只允许哪个字段
+     * @param start 分页参数
+     * @param pageSize   分页参数
+     */
+    public void searchFromSolr(String q, String[] fields, int start, int pageSize) {
+
+        SolrQuery params = new SolrQuery(q);
+        if(fields != null &amp;&amp; fields.length &gt; 0) {
+            params.setFields(fields);
+        }
+
+        // 分页参数
+        params.setStart(start);
+        params.setRows(pageSize);
+
+        // 不设置按照哪个字段搜索的时候，默认搜索哪个字段
+        // （一般会将系统中所有支持检索的字段通过CopyField的方式拷贝到一个统一的字段上，用于搜索，比如下面的keywords）
+        params.setParam(&quot;df&quot;, &quot;keywords&quot;);
+
+        // 设置搜索结果高亮显示
+        params.setHighlight(true);
+        // 设置往搜索结果中所有匹配关键字的地方添加指定的前缀和后缀（内容随意）
+        params.setHighlightSimplePre(&quot;&lt;i class=\&quot;keywords\&quot;&gt;&quot;);
+        params.setHighlightSimplePost(&quot;&lt;/i&gt;&quot;);
+
+        try {
+//            QueryResponse queryResp = solrClient.query(params);
+            QueryResponse queryResp = solrClient.query(CORE_NAME, params);
+            SolrDocumentList results = queryResp.getResults();
+            long numFound = results.getNumFound();
+            System.out.println(&quot;总共搜索到&quot;+numFound+&quot;条结果&quot;);
+            results.forEach((solrDoc) -&gt; {
+                StringBuilder sb = new StringBuilder();
+                sb.append(&quot;{&quot;);
+                Collection&lt;String&gt; fieldNames = solrDoc.getFieldNames();
+                fieldNames.forEach((fieldName) -&gt; {
+                    Object fieldValue = solrDoc.getFieldValue(fieldName);
+                    sb.append(&quot;\&quot;&quot;+fieldName+&quot;\&quot;:\&quot;&quot;+fieldValue+&quot;\&quot;,&quot;);
+                });
+                if(sb.length() &gt; 1) {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+                sb.append(&quot;}&quot;);
+
+                System.out.println(&quot;row: &quot; + sb.toString());
+            });
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Redis]]></title>
         <id>https://ysjhhhhhhh.github.io/post/redis</id>
@@ -3516,335 +3982,6 @@ JSON.parseArray();		// 将json数组decode成java List或 JSONArray类型</p>
 <li>$.getJSON()</li>
 <li>jQuery中各个ajax方法之间的区别和联系</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Cookie&Session]]></title>
-        <id>https://ysjhhhhhhh.github.io/post/Cookie&amp;Session</id>
-        <link href="https://ysjhhhhhhh.github.io/post/Cookie&amp;Session">
-        </link>
-        <updated>2018-03-30T12:48:19.000Z</updated>
-        <content type="html"><![CDATA[<p>[TOC]</p>
-<h1 id="cookie">Cookie</h1>
-<blockquote>
-<p>饼干. 其实是一份小数据， 是服务器给客户端，并且存储在客户端上的一份小数据</p>
-</blockquote>
-<h2 id="应用场景">应用场景</h2>
-<blockquote>
-<p>自动登录、浏览记录、购物车。</p>
-</blockquote>
-<h2 id="为什么要有这个cookie">为什么要有这个Cookie</h2>
-<blockquote>
-<p>http的请求是无状态。 客户端与服务器在通讯的时候，是无状态的，其实就是客户端在第二次来访的时候，服务器根本就不知道这个客户端以前有没有来访问过。 为了更好的用户体验，更好的交互 [自动登录]，其实从公司层面讲，就是为了更好的收集用户习惯[大数据]</p>
-</blockquote>
-<h2 id="cookie怎么用">Cookie怎么用</h2>
-<h3 id="添加cookie给客户端">添加Cookie给客户端</h3>
-<ol>
-<li>在响应的时候，添加cookie</li>
-</ol>
-<pre><code class="language-java">	Cookie cookie = new Cookie(&quot;aa&quot;, &quot;bb&quot;);	
-	//给响应，添加一个cookie
-	response.addCookie(cookie);
-</code></pre>
-<ol start="2">
-<li>客户端收到的信息里面，响应头中多了一个字段 Set-Cookie<br>
-<img src="https://ysjhhhhhhh.github.io/post-images/1576045567472.png" alt=""></li>
-</ol>
-<h3 id="获取客户端带过来的cookie">获取客户端带过来的Cookie</h3>
-<pre><code class="language-java">//获取客户端带过来的cookie
-Cookie[] cookies = request.getCookies();
-if(cookies != null){
-    for (Cookie c : cookies) {
-        String cookieName = c.getName();
-        String cookieValue = c.getValue();
-        System.out.println(cookieName + &quot; = &quot;+ cookieValue);
-    }
-}
-</code></pre>
-<h3 id="清除cookie">清除Cookie</h3>
-<blockquote>
-<p>Cookie没有提供delete方法，我们要删除需要设置maxAge 为0 。</p>
-</blockquote>
-<pre><code>Cookie cookie = new Cookie(&quot;history&quot;,&quot;&quot;);
-cookie.setMaxAge(0); //设置立即删除
-cookie.setPath(&quot;/CookieDemo02&quot;);
-response.addCookie(cookie);
-</code></pre>
-<h3 id="其他常用方法">其他常用方法</h3>
-<pre><code class="language-java">//关闭浏览器后，cookie就没有了。 ---&gt; 针对没有设置cookie的有效期。
-//	expiry： 有效 以秒计算。
-//正值 ： 表示 在这个数字过后，cookie将会失效。
-//负值： 关闭浏览器，那么cookie就失效， 默认值是 -1
-cookie.setMaxAge(60 * 60 * 24 * 7);
-
-//赋值新的值
-//cookie.setValue(newValue);
-
-//用于指定只有请求了指定的域名，才会带上该cookie
-cookie.setDomain(&quot;.itheima.com&quot;);
-
-//只有访问该域名下的cookieDemo的这个路径地址才会带cookie
-cookie.setPath(&quot;/CookieDemo&quot;);
-</code></pre>
-<h2 id="cookie示例-实现记住密码功能">Cookie示例 实现记住密码功能</h2>
-<ol>
-<li>用户打开网站后，自动读取Cookie中存储的用户名、密码</li>
-<li>如果存在，自动填充到表单中</li>
-<li>如果不存在，说明是第一次登录，需要登录后在后台将用户名、密码写入Cookie中，以便下次登录时自动填充</li>
-</ol>
-<h3 id="主要实现代码">主要实现代码</h3>
-<h4 id="前端登录页">前端登录页</h4>
-<pre><code class="language-jsp">&lt;body&gt;
-	&lt;form action=&quot;LoginServlet&quot; method=&quot;post&quot;&gt;
-		用户名： &lt;input id=&quot;username&quot; type=&quot;text&quot; name=&quot;userName&quot; onblur=&quot;inputPwd()&quot; &gt;
-		&lt;br /&gt;
-		密&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;码：
-		&lt;input id=&quot;pwd&quot; type=&quot;password&quot; name=&quot;password&quot;&gt;
-		&lt;br /&gt;
-		&lt;input type=&quot;checkbox&quot; name=&quot;remeber_me&quot; value=&quot;true&quot; /&gt; 记住密码 
-		&lt;br /&gt;
-		&lt;input type=&quot;submit&quot; value=&quot;登录&quot;&gt;
-	&lt;/form&gt;
-&lt;/body&gt;
-&lt;!-- 引入js操作Cookie的第三方库，也可以使用原生js API --&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-	
-	// 从cookies里面按照用户输入的username去查找对应的password,
-	// 如果找到，说明用户已经登录成功过，并且已经记录到cookie里。
-	// 我们直接把对应的密码从cookie中拿出来，设置password密码框里
-	
-	// my_cookies其实就是一个map， 存储了所有的cookie键值对
-	var my_cookies = Cookies.get();
-	console.log(my_cookies);
-	
-	var pwdInput = document.getElementById(&quot;pwd&quot;);
-	var username = document.getElementById(&quot;username&quot;);
-	
-	// 当输入完用户名，文本框失去焦点时，去cookie中找对应的密码，
-	// 如果找到，直接填充到密码框里
-	function inputPwd() {
-		var userName = username.value;
-		var cookieKey = &quot;username-&quot; + userName;
-		console.log(cookieKey);
-		var cookiePwd = my_cookies[cookieKey];
-		console.log(cookiePwd);
-		if(cookiePwd) {
-			pwdInput.value = cookiePwd;
-		}
-	}
-&lt;/script&gt;
-</code></pre>
-<h4 id="后台处理代码">后台处理代码</h4>
-<pre><code class="language-java">protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		request.setCharacterEncoding(&quot;UTF-8&quot;);
-		
-		// 获取前台表单提交的用户名、密码
-		String userName = request.getParameter(&quot;userName&quot;);
-		String password = request.getParameter(&quot;password&quot;);
-		
-		// 获取前台是否勾上了记住密码
-		String sRemeber = request.getParameter(&quot;remeber_me&quot;);
-		boolean remeber = false;
-		try {
-			remeber = Boolean.parseBoolean(sRemeber);
-		} catch (Exception e) {
-		}
-		
-		
-		// 设置响应格式和编码
-		response.setContentType(&quot;text/html;charset=UTF-8&quot;);
-		
-		PrintWriter out = response.getWriter();
-		if(isBlank(userName) || isBlank(password)) {
-			out.println(&quot;&lt;script&gt;alert('用户名或密码不能为空!'); window.location.href='login.jsp';&lt;/script&gt;&quot;);
-			return;
-		}
-		
-		if(!userAccountData.containsKey(userName)) {
-			out.println(&quot;&lt;script&gt;alert('不好意思，您还没有注册！'); window.location.href='login.jsp';&lt;/script&gt;&quot;);
-			return;
-		}
-		
-		String orginPassword = userAccountData.get(userName);
-		if(password.startsWith(&quot;pwd-&quot;)) {
-			password = password.substring(4);
-		}
-		
-		if(orginPassword.equals(password)) {
-			out.println(&quot;登录成功！&quot;);
-			if(remeber) {
-				Cookie cookie = new Cookie(&quot;username-&quot; + userName, &quot;pwd-&quot; + password);
-				cookie.setMaxAge(120);
-				response.addCookie(cookie);
-			}
-			return;
-		} else {
-			out.println(&quot;&lt;script&gt;alert('用户名或密码不正确，请重新输入！'); window.location.href='login.jsp';&lt;/script&gt;&quot;);
-			return;
-		}
-	}
-</code></pre>
-<h2 id="cookie总结">Cookie总结</h2>
-<ol>
-<li>
-<p>服务器给客户端发送过来的一小份数据，并且存放在客户端上。</p>
-</li>
-<li>
-<p>创建Cookie:</p>
-<p>使用new来创建Cookie对象</p>
-<pre><code class="language-java">Cookie cookie = new Cookie(&quot;xxx&quot;, &quot;wangzhenongyao&quot;);
-</code></pre>
-</li>
-<li>
-<p>添加cookie</p>
-<p>添加cookie通过响应对象的addCookie方法</p>
-<pre><code class="language-java">// 底层实现原理其实是在响应头中添加了一个： Set-Cookie: password=qiaoshouyuan; Max-Age=60; Expires=Fri, 20-Sep-2019 08:41:19 GMT; HttpOnly
-response.addCookie();
-</code></pre>
-</li>
-<li>
-<p>获取cookie</p>
-<pre><code class="language-java">Cookie[] cookies = request.getCookies();
-</code></pre>
-</li>
-<li>
-<p>Cookie有效时间</p>
-<ol>
-<li>
-<p>会话Cookie</p>
-<p>默认情况下，关闭了浏览器，那么cookie就会消失。</p>
-<blockquote>
-<p>这是默认的行为，但是大部分现代的浏览器都不会这么做，比如chrome浏览器，默认打开时会恢复上次关闭时的状态，所有关闭浏览器cookie并不会失效。 我们可以设置浏览器打开时不恢复上次状态，改为打开新的标签页即可。</p>
-</blockquote>
-</li>
-<li>
-<p>持久Cookie</p>
-<p>通过设置MaxAge指定存活时间，在存活时间内，都有效，并且会保存在客户端上。</p>
-</li>
-</ol>
-<pre><code>cookie.setMaxAge(0); //设置立即删除  
-cookie.setMaxAge(100); //100 秒
-</code></pre>
-</li>
-<li>
-<p>Cookie的安全问题。</p>
-<blockquote>
-<p>由于Cookie会保存在客户端上，所以有安全隐患问题。  还有一个问题， Cookie的大小与个数有限制。 为了解决这个问题 ---&gt; Session .</p>
-</blockquote>
-</li>
-<li>
-<p>Cookie不能直接存储中文，需要做转码</p>
-</li>
-</ol>
-<h1 id="session">Session</h1>
-<blockquote>
-<p>会话 ， Session是基于Cookie的一种会话机制。 Cookie是服务器返回一小份数据给客户端，并且存放在客户端上。 Session是，数据存放在服务器端。</p>
-</blockquote>
-<h2 id="常用api">常用API</h2>
-<pre><code class="language-java">//得到会话ID
-String id = session.getId();
-
-//存值
-session.setAttribute(name, value);
-
-//取值
-session.getAttribute(name);
-
-//移除值
-session.removeAttribute(name);
-</code></pre>
-<h2 id="session创建和销毁">Session创建和销毁</h2>
-<h3 id="创建">创建</h3>
-<blockquote>
-<p>在调用所有可以获取session的页面中(如：JSP、Servlet)，就会创建Session，并且浏览器Cookie中也会生成JSESSIONID</p>
-</blockquote>
-<h3 id="获取session">获取Session</h3>
-<pre><code>request.getSession();
-</code></pre>
-<h3 id="销毁">销毁</h3>
-<blockquote>
-<p>session 是存放在服务器的内存中的一份数据。</p>
-</blockquote>
-<blockquote>
-<ol>
-<li>关闭服务器</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="2">
-<li>session会话时间过期。 有效期过了，默认有效期： 30分钟。</li>
-</ol>
-</blockquote>
-<h3 id="移除session中的元素">移除Session中的元素</h3>
-<pre><code>//强制干掉会话，里面存放的任何数据就都没有了。
-session.invalidate();
-
-//从session中移除某一个数据
-//session.removeAttribute(&quot;cart&quot;);
-</code></pre>
-<h1 id="总结">总结：</h1>
-<h2 id="cookie-2">Cookie</h2>
-<p>服务器给客户端发送一小份数据， 存放在客户端上。</p>
-<h3 id="基本用法">基本用法：</h3>
-<pre><code>添加cookie
-
-获取cookie。
-</code></pre>
-<h3 id="什么时候有cookie">什么时候有cookie</h3>
-<p>response.addCookie(new Cookie())</p>
-<h3 id="cookie-分类">Cookie 分类</h3>
-<ul>
-<li>
-<p>会话Cookie</p>
-<pre><code>  关闭浏览器，就失效
-</code></pre>
-</li>
-<li>
-<p>持久cookie</p>
-<p>存放在客户端上。 在指定的期限内有效。</p>
-<pre><code>	setMaxAge();
-</code></pre>
-</li>
-</ul>
-<h2 id="session-2">Session</h2>
-<p>也是基于cookie的一种会话技术，  数据存放存放在服务器端，会在cookie里面添加一个字段 JSESSIONID . 是tomcat服务器生成。</p>
-<h3 id="常用api-2">常用API</h3>
-<pre><code>
-setAttribute 存数据
- 
-getAttribute 取数据
-
-removeAttribute  移除数据
-
-req.getRequestedSessionId();  获取会话id
-session.getId();  获取会话id
-
-invalidate() 强制让会话失效。
-</code></pre>
-<h3 id="创建和销毁">创建和销毁</h3>
-<ul>
-<li>创建： 首次访问所有可以调用request.getSession方法的页面时，session创建，同时JSESSIONID也会生成</li>
-<li>销毁：
-<ul>
-<li>关闭浏览器</li>
-<li>会话超时（默认是30分钟）</li>
-<li>服务端调用invalidate</li>
-</ul>
-</li>
-</ul>
-<h2 id="cookie和session的区别">Cookie和Session的区别</h2>
-<ol>
-<li>Cookie数据存放到客户端（浏览器），Session存放在服务端；</li>
-<li>Cookie存放的数据大小有限制，不能超过4k；很多浏览器都限制一个站点最多保存20个cookie。</li>
-<li>Cookie由于存放在客户端硬盘上，所以相较于Session来说安全性低一点；</li>
-<li>cookie失效时间是通过setMaxAge来设置，session是通过setInactiveInterval方法设置</li>
-<li>Cookie中只能存储字符串的值，而且还不能中文。而Session中可以存储任意语言的字符串，或者Java中的所有类型。</li>
-<li>Cookie是由程序员在业务代码中自己创建的，而Session是由容器创建的。</li>
-</ol>
-<h2 id="cookie和session的关系">Cookie和Session的关系</h2>
-<p>HTTP协议本身是无状态的，也就是说服务端无法通过一个请求判断出谁是谁，而Session作为服务端跟踪用户状态的一项技术，在整个容器中存在很多份数据。如何知道一个请求进来应该拿哪份Session数据这是个问题。那么要解决这个问题，我们需要在请求中添加一个标识，Cookie技术就解决了这个问题。具体来说，Tomcat会在浏览器第一次访问JSP、Servlet时分配一个独一无二的Cookie标识(JSESSIONID)，写到浏览器端。后续每次请求时，浏览器会携带这个标识，进而服务端就可以区分出来谁是谁，然后拿对应的Session数据。</p>
 ]]></content>
     </entry>
 </feed>
